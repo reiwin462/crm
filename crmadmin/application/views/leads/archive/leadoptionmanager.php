@@ -7,12 +7,17 @@
 		<hr class="widget-separator">
 		<div class="widget-body">
 				
+				<div id="leadalert" class="alert alert-success alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+					<strong>Well done! </strong>
+					<span id="alertmsg">...</span>
+				</div>
+				
 				<br/>
 				<div class="row">
 					<div class="col-md-3">
 						<label ><b>DropDown Option List</b></label>
 						<select class="form-control" id="dropdown" name="dropdown" onchange="showmyoption(this);">
-							<option value="" disabled selected>Select From Item Below</option>
 							<?php foreach($dropdown as $key=>$val): ?>
 								<option value="<?php echo $val->Field; ?>"><?php echo $val->Field; ?></option>
 							<?php endforeach; ?>
@@ -55,7 +60,7 @@
 function showmyoption(d){
 	$('#optlist').html();
 	var sel = d.value;
-	var xlink = "<?php echo base_url(); ?>leadcontrol/leaddropdownoption/" + sel;
+	var xlink = "<?php echo base_url(); ?>/index.php/process/showdropdownoption/" + sel;
 	$.get(xlink, function(data, status){
         $('#optlist').html(data);
     });
@@ -65,19 +70,15 @@ function newitem(){
 	var optfield = $('#dropdown').val();
 	var newitem = $('#newitem').val();
 	if(newitem == "" || optfield == ""){
-		swal({
-			type: 'error',
-			title: 'Form Validation',
-			text: 'Kindly supply the necessary Field!',
-			footer: '<a href>Field Missing</a>'
-		});
+		alert("Please select Field Name And Value");
 		return false;
 	}
 	
-	var xlink = "<?php echo base_url(); ?>process/newitemx/" + optfield + "/" + newitem;
+	var xlink = "<?php echo base_url(); ?>index.php/process/newitem/" + optfield + "/" + newitem;
 		 $.post(xlink,) 
 			.success(function(data) {
 				if(data == "success"){
+					
 				swal({
 				  type: 'success',
 				  title: 'Horray...',
@@ -104,30 +105,30 @@ function newitem(){
 
 function removeitem(i){
 	var optfield = $('#dropdown').val();
-	Swal({
-		  title: 'Are you sure?',
-		  text: 'Item will be permanently be removed from the database',
-		  type: 'warning',
-		  showCancelButton: true,
-		  confirmButtonText: 'Yes, delete it!',
-		  cancelButtonText: 'No, keep it'
-		}).then((result) => {
-		  if (result.value) {
-			var xlink = "<?php echo base_url(); ?>leadcontrol/deleteoption/" + optfield + "/" + i;
-			 $.post(xlink,) 
-				.success(function(data) {
-					swal({
-						  type: 'success',
-						  title: 'Done',
-						  text: 'Item has been removed!',
-						  footer: '<a href>'+ data +'</a>'
-						});
+	var xlink = "<?php echo base_url(); ?>index.php/process/deleteoption/" + optfield + "/" + i;
+		 $.post(xlink,) 
+			.success(function(data) {
+			if(data == "success"){
+				swal({
+				  type: 'success',
+				  title: 'Done',
+				  text: 'Item has been removed!',
+				  footer: '<a href>'+ data +'</a>'
+				});
+				
 				$('#dropdown').change();
-			});
-		  } else if (result.dismiss === Swal.DismissReason.cancel) {
-			
-		  }
+			}
+			else{
+				swal({
+				  type: 'error',
+				  title: 'Oops...',
+				  text: 'Unable to delete the selected file!',
+				  footer: '<a href>'+ data +'</a>'
+				});
+			}
 		});
 }
+
+
 
 </script>

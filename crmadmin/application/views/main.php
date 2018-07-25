@@ -20,6 +20,9 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/app.css">
 	
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/crm.css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/spinners.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>libs/bower/summernote/dist/summernote.css">
+	
 	<!-- endbuild
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900,300">
 	 -->
@@ -29,11 +32,11 @@
 	</script>
 </head>
 	
-<body class="menubar-left  menubar-unfold theme-dark menubar-dark pace-done">
+<body class="menubar-left menubar-unfold  theme-primary pace-done menubar-dark">
 <!--============= start main area -->
 
 <!-- APP NAVBAR ==========-->
-<nav id="app-navbar" class="navbar navbar-default navbar-fixed-top primary">
+<nav id="app-navbar" class="navbar navbar-inverse navbar-fixed-top primary in">
   
   <!-- navbar header -->
   <div class="navbar-header">
@@ -67,7 +70,7 @@
           </a>
         </li>
         <li>
-          <h5 class="page-title hidden-menubar-top hidden-float">Customer Relationship Management Tool</h5>
+          <h5 class="page-title hidden-menubar-top hidden-float">Customer Relation Management Tool</h5>
         </li>
       </ul>
 
@@ -79,77 +82,12 @@
         </li>
 
         <li class="dropdown">
-          <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="zmdi zmdi-hc-lg zmdi-notifications"></i></a>
-          <div class="media-group dropdown-menu animated flipInY">
-            <a href="javascript:void(0)" class="media-group-item">
-              <div class="media">
-                <div class="media-left">
-                  <div class="avatar avatar-xs avatar-circle">
-                    <img src="<?php echo base_url(); ?>assets/images/221.jpg" alt="">
-                    <i class="status status-online"></i>
-                  </div>
-                </div>
-                <div class="media-body">
-                  <h5 class="media-heading">John Doe</h5>
-                  <small class="media-meta">Active now</small>
-                </div>
-              </div>
-            </a><!-- .media-group-item -->
-
-            <a href="javascript:void(0)" class="media-group-item">
-              <div class="media">
-                <div class="media-left">
-                  <div class="avatar avatar-xs avatar-circle">
-                    <img src="<?php echo base_url(); ?>assets/images/205.jpg" alt="">
-                    <i class="status status-offline"></i>
-                  </div>
-                </div>
-                <div class="media-body">
-                  <h5 class="media-heading">John Doe</h5>
-                  <small class="media-meta">2 hours ago</small>
-                </div>
-              </div>
-            </a><!-- .media-group-item -->
-
-            <a href="javascript:void(0)" class="media-group-item">
-              <div class="media">
-                <div class="media-left">
-                  <div class="avatar avatar-xs avatar-circle">
-                    <img src="<?php echo base_url(); ?>assets/images/207.jpg" alt="">
-                    <i class="status status-away"></i>
-                  </div>
-                </div>
-                <div class="media-body">
-                  <h5 class="media-heading">Sara Smith</h5>
-                  <small class="media-meta">idle 5 min ago</small>
-                </div>
-              </div>
-            </a><!-- .media-group-item -->
-
-            <a href="javascript:void(0)" class="media-group-item">
-              <div class="media">
-                <div class="media-left">
-                  <div class="avatar avatar-xs avatar-circle">
-                    <img src="<?php echo base_url(); ?>assets/images/211.jpg" alt="">
-                    <i class="status status-away"></i>
-                  </div>
-                </div>
-                <div class="media-body">
-                  <h5 class="media-heading">Donia Dyab</h5>
-                  <small class="media-meta">idle 5 min ago</small>
-                </div>
-              </div>
-            </a><!-- .media-group-item -->
-          </div>
-        </li>
-
-        <li class="dropdown">
           <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="zmdi zmdi-hc-lg zmdi-settings"></i></a>
           <ul class="dropdown-menu animated flipInY">
-            <li><a href="javascript:void(0)"><i class="zmdi m-r-md zmdi-hc-lg zmdi-account-box"></i>My Profile</a></li>
+            <li><a href="javascript:void(0)"><i class="zmdi m-r-md zmdi-hc-lg zmdi-account-box"></i><?php echo $this->session->userdata('crmuser'); ?></a></li>
             <li><a href="javascript:void(0)"><i class="zmdi m-r-md zmdi-hc-lg zmdi-balance-wallet"></i>Balance</a></li>
             <li><a href="javascript:void(0)"><i class="zmdi m-r-md zmdi-hc-lg zmdi-phone-msg"></i>Connection<span class="label label-primary">3</span></a></li>
-            <li><a href="javascript:void(0)"><i class="zmdi m-r-md zmdi-hc-lg zmdi-info"></i>privacy</a></li>
+            <li><a href="<?php echo base_url('crm/logout'); ?>"><i class="zmdi m-r-md zmdi-hc-lg zmdi-info"></i>Logout</a></li>
           </ul>
         </li>
 
@@ -163,13 +101,12 @@
 <!--========== END app navbar -->
 
 <!-- APP ASIDE ==========-->
-<aside id="menubar" class="menubar in dark">
+<aside id="menubar" class="menubar dark in">
  
   <div class="menubar-scroll">
     <div class="menubar-scroll-inner">
       <ul class="app-menu">
-
-	  
+		
 		<li class="has-submenu">
           <a href="javascript:void(0)" class="submenu-toggle">
             <i class="menu-icon zmdi zmdi-view-dashboard zmdi-hc-lg"></i>
@@ -180,15 +117,28 @@
 			<li><a href="<?php echo base_url(); ?>crm/dashboard"><span class="menu-text">CRM Dashboard</span></a></li>
           </ul>
         </li>
+
+		<li class="has-submenu">
+          <a href="javascript:void(0)" class="submenu-toggle">
+           <i class="menu-icon fa fa-users" aria-hidden="true"></i>
+            <span class="menu-text">Contact</span>
+           <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
+          </a>
+          <ul class="submenu">
+			<li><a href="<?php echo base_url(); ?>crm/addcontacts"><span class="menu-text">Add A Contact</span></a></li>
+			<li><a href="<?php echo base_url(); ?>crm/showcontacttables"><span class="menu-text">Show Contact List</span></a></li>
+          </ul>
+        </li>
 		
 		<li class="has-submenu">
           <a href="javascript:void(0)" class="submenu-toggle">
-           <i class="fa fa-cubes" aria-hidden="true"></i>
+           <i class="menu-icon fa fa-cubes" aria-hidden="true"></i>
             <span class="menu-text">Campaign</span>
-            <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
+			<i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
           </a>
           <ul class="submenu">
-			<li><a href="<?php echo base_url(); ?>crm/campaign"><span class="menu-text">Manage Campaign</span></a></li>
+			<li><a href="<?php echo base_url(); ?>crm/campaign"><span class="menu-text">Add A Campaign</span></a></li>
+			<li><a href="<?php echo base_url(); ?>crm/showcampaigntables"><span class="menu-text">Show Campaign Table</span></a></li>
           </ul>
         </li>
         
@@ -208,15 +158,28 @@
 		
 		<li class="has-submenu">
           <a href="javascript:void(0)" class="submenu-toggle">
-            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+            <i class="menu-icon fa fa-laptop"></i>
+            <span class="menu-text">Project Leads</span>
+            <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
+          </a>
+          <ul class="submenu">
+			<li><a href="<?php echo base_url(); ?>crm/createprojleads"><span class="menu-text">Add A Lead</span></a></li>
+			<li><a href="<?php echo base_url(); ?>crm/previewprojleads"><span class="menu-text">Preview Leads</span></a></li>
+          </ul>
+        </li>
+		
+		<li class="has-submenu">
+          <a href="javascript:void(0)" class="submenu-toggle">
+            <i class="menu-icon fa fa-cloud-upload" aria-hidden="true"></i>
             <span class="menu-text">Uploader</span>
             <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
           </a>
           <ul class="submenu">
 			<li><a href="<?php echo base_url(); ?>crm/upload"><span class="menu-text">Upload Leads</span></a></li>
+			<li><a href="<?php echo base_url(); ?>crm/upload"><span class="menu-text">Upload Contacts</span></a></li>
           </ul>
         </li>
-		
+
        
       </ul><!-- .app-menu -->
     </div><!-- .menubar-scroll-inner -->
@@ -240,9 +203,15 @@
 
 <!-- APP MAIN ==========-->
 <main id="app-main" class="app-main">
+
+<div class="preloader">
+		<h6 style='text-align:center'>Please wait while we load your page...</h6>
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+</div>
+
 <div class="wrap">
 	<section class="app-content">
-		<div class="row">
 			<?php 
 				if(isset($otherdata)){
 					$data['param'] = $otherdata;
@@ -251,16 +220,14 @@
 					if($url != "none"){
 						$this->load->view($url);
 					}
-					
 				}
 			?>
 			
-		</div>
+	
 	</section>
 </div>
 </main>
-
-
+	
 	<!-- build:js ../assets/js/core.min.js -->
 	<script src="<?php echo base_url(); ?>libs/bower/jquery/dist/jquery.js"></script>
 	<script src="<?php echo base_url(); ?>libs/bower/jquery-ui/jquery-ui.min.js"></script>
@@ -278,15 +245,22 @@
 	<!-- build:js ../assets/js/app.min.js -->
 	<script src="<?php echo base_url(); ?>assets/js/library.js"></script>
 	
+	<script src="<?php echo base_url(); ?>/libs/bower/summernote/dist/summernote.min.js"></script>
+	
 	<script src="<?php echo base_url(); ?>assets/js/plugins.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/app.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>
 	
 	<!-- endbuild -->
 	<script src="<?php echo base_url(); ?>libs/bower/moment/moment.js"></script>
 	<script src="<?php echo base_url(); ?>libs/bower/fullcalendar/dist/fullcalendar.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/fullcalendar.js"></script>
 	
-	
+	<script>
+		document.addEventListener("DOMContentLoaded", function(){
+			$('.preloader').hide();
+		});
+	</script>
 	
 
 	
