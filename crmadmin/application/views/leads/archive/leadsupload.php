@@ -5,7 +5,7 @@
 	<hr class="widget-separator">
 	<div class="widget-body">
 			<small>
-				Please upload using the right format or use the <a href="<?php echo base_url(); ?>/Excellprocess/exporttemplate" target="_blank">template</a> for your reference..
+				Please upload using the right format or use the <a href="<?php echo base_url(); ?>/index.php/Excellprocess/exporttemplate" target="_blank">template</a> for your reference..
 			</small>
 		<br>
 		<br>
@@ -14,7 +14,7 @@
 				<input type="file" name="file" id="file" required accept=".xls, .xlsx, .csv" /></p>
 			<br />
 			<input type="button" name="import" class="btn btn-primary"  id="upload" value="Upload File" onclick="fileupload(event)"></input>
-			<a type="button" href="<?php echo base_url(); ?>/Excellprocess/exporttemplate" target="_blank" name="download" class="btn btn-warning"  id="download" value="Download Template" >Download Template</a>
+			<a type="button" href="<?php echo base_url(); ?>/index.php/Excellprocess/exporttemplate" target="_blank" name="download" class="btn btn-warning"  id="download" value="Download Template" >Download Template</a>
 		</form>
 		
 		<br>
@@ -42,7 +42,7 @@ function fileupload(e){
 	var fd = new FormData($("#import_form"));
 	fd.append('file', document.getElementById("file").files[0]);
 		$.ajax({
-		   url:"<?php echo base_url(); ?>Excellprocess/import",
+		   url:"<?php echo base_url(); ?>index.php/Excellprocess/import",
 		   method:"POST",
 		   data: fd,
 		   contentType:false,

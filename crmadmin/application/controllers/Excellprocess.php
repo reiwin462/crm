@@ -1,12 +1,11 @@
 <?php
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 class Excellprocess extends CI_Controller{
 	
 	public function __construct()
 	{
 		parent::__construct();
 		$this->load->library('excel');
-		$this->load->helper(array('form', 'url'));
 	}
 
 	public function index(){
@@ -21,28 +20,9 @@ class Excellprocess extends CI_Controller{
 				$failedInsert = array();
 			
 				$dataarray = array();
-				//$path =  $_FILES["file"]["tmp_name"];
+				$path =  $_FILES["file"]["tmp_name"];
 				
-			
-				$name =  $_FILES["file"]["name"];
-				$path = 'gs://steve-crm.appspot.com/'.$name;
-				$temp_name = $_FILES['file']['tmp_name'];
-				move_uploaded_file($temp_name, $path);
-				
-				/*
-				$config['gs_bucket_name']          = 'steve-crm.appspot.com';
-                $config['allowed_types']        = 'gif|jpg|png|xls|xlsx|doc|docx|csv';
-                $config['max_size']             = 100;
-                $config['max_width']            = 1024;
-                $config['max_height']           = 768;
-
-                $this->load->library('upload', $config);
-				$this->upload->do_upload('file');
-				*/
-				
-				
-				$pubpath = "https://storage.googleapis.com/steve-crm.appspot.com/".$name;
-				$object = PHPExcel_IOFactory::load($pubpath);
+				$object = PHPExcel_IOFactory::load($path);
 				
 				$this->load->model('Crmmodel');
 				foreach($object->getWorksheetIterator() as $worksheet)

@@ -17,7 +17,7 @@ foreach($param as $field => $val){
 
 <div class="col-md-12">
 	<div class="widget">
-		<header class="widget-header">
+		<header class="widget-header primary">
 				<h4 class="widget-title"><i class="fa fa-calendar"></i> Lead Information Entries</h4>
 		</header>
 		<hr class="widget-separator">
@@ -131,7 +131,13 @@ function processlead(){
 		var isRequired = $(this).attr('required');
 		if(isRequired == "required"){
 			if($(this).val() == ""){
-				alert($(this).attr('name') + " is required!");
+				swal({
+				  type: 'error',
+				  title: 'Checking...',
+				  text: $(this).attr('name') + ' is a required field. Thank you!',
+				  footer: '<a href>'+ data +'</a>'
+				});
+				
 				isNull = "fail";
 				return false;
 			}
@@ -142,12 +148,14 @@ function processlead(){
 		$.post("<?php echo base_url("index.php/process/leadinsert"); ?>",
 		{data: JSON.stringify($("#lead").serializeArray()) }) 
 		.success(function(data) {
-			$('#leadalert').fadeIn('slow', function(){
-						$('#alertmsg').html('Lead Record has been Created! ' + data);
-					$('#leadalert').delay(1000).fadeOut(); 
+			swal({
+				  type: 'success',
+				  title: 'Uploaded...',
+				  text: 'Lead Record has been Created. Thank you!',
+				  footer: '<a href>'+ data +'</a>'
 				});
-			});
 			reset();
+		}
 	}
 		
 }
@@ -156,9 +164,11 @@ function addmyitem(){
 	var newitem = '';
 	newitem = $('#newitem').val();
 	if(newitem == ""){
-		$('#newitemalert').fadeIn('slow', function(){
-			$('#newitmmsg').html('Please enter some Details');
-			$('#newitemalert').delay(1000).fadeOut(); 
+		swal({
+			type: 'error',
+			title: 'Oops...',
+			text: 'Please supply the necessary field Thank you!',
+			footer: '<a href> - </a>'
 		});
 	}else{
 		var xlink = "<?php echo base_url(); ?>index.php/process/newitem/" + optfield + "/" + newitem;
@@ -170,20 +180,23 @@ function addmyitem(){
 					text: newitem,
 				}));
 				$("#newitemmodal").modal('hide');
-				$('#leadalert').fadeIn('slow', function(){
-					$('alertmsg').html('New Item Has been Added');
-					$('#leadalert').delay(1000).fadeOut(); 
+				swal({
+				  type: 'success',
+				  title: 'Uploaded...',
+				  text: 'Item has been Added. Thank you!',
+				  footer: '<a href>'+ data +'</a>'
 				});
 				$('#newitem').val('');
 				newitem='';
-			}else{
-				$('#newitemalert').fadeIn('slow', function(){
-					$('#newitmmsg').html("Error " + data);
-					$('#newitemalert').delay(1000).fadeOut(); 
+			}
+			else{
+				swal({
+				  type: 'error',
+				  title: 'Oops...',
+				  text: 'You have an error in the data you are about to insert Kindly double check! Thank you!',
+				  footer: '<a href>'+ data +'</a>'
 				});
 			}
-
-
 		});
 		
 	}
