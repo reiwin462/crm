@@ -44,11 +44,32 @@ class Process extends CI_Controller{
 				);
 			}
 			$this->session->set_userdata($ses);
-			header('location: '. base_url());
+			//header('location: '. base_url());
+			redirect(base_url());
 		}else{
-			header('location: '. base_url('/crm/login'));
+			//header('location: '. base_url('/crm/login'));
+			redirect(base_url('/crm/login'));
 		}
 		
+	}
+	
+	public function apilogin(){
+		$uname = $this->input->get('username');
+		$this->load->model('Crmmodel');
+		$isExist = $this->Crmmodel->apiauthenticate(trim($uname));
+		if($isExist != "error"){
+			$ses =  array('');
+			foreach($isExist as $key=>$val){
+				$ses =  array('crmuser'=> $val->username,
+					'crmfullname'=> $val->fullname,
+					'crmlevel'=> $val->level,
+				);
+			}
+			$this->session->set_userdata($ses);
+			redirect(base_url());
+		}else{
+			redirect(base_url('/crm/login'));
+		}
 	}
 	
 	public function test(){

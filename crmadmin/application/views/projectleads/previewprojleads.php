@@ -55,7 +55,7 @@ function datatablereload(){
 		table.destroy();
 		var table = $('#responsive-datatable').DataTable( {
 		dom: "tpi",
-		ajax: "<?php echo base_url(); ?>index.php/Projectleadcontrol/showallprojleads",
+		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads",
 		searching: true,
 		responsive: true,
 		columns: [
@@ -73,7 +73,7 @@ function datatablereload(){
 		var table = $('#responsive-datatable').DataTable();
 		table.destroy();
 		var table = $('#responsive-datatable').DataTable( {
-		ajax: "<?php echo base_url(); ?>index.php/Projectleadcontrol/showallprojleads",
+		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads",
 		dom: 'ftlpi',
 		searching: true,
 		responsive: true,
@@ -106,7 +106,7 @@ function updateprojlead(){
 	if(isNull == "pass"){
 		$('#prevDiv').hide();
 		$('.preloader').fadeIn();	
-		$.post("<?php echo base_url("index.php/Projectleadcontrol/projleadupdate"); ?>",
+		$.post("<?php echo base_url("Projectleadcontrol/projleadupdate"); ?>",
 		{data: JSON.stringify($("#projleadform").serializeArray()) }) 
 			.success(function(data) {
 				swal({
@@ -130,7 +130,7 @@ function updateprojlead(){
 
 function projleadupdate(bt){
 	$('#more_info').summernote('destroy');
-	var xlink = "<?php echo base_url(); ?>" + 'index.php/Projectleadcontrol/getleaddetail/'  + bt;
+	var xlink = "<?php echo base_url(); ?>" + 'Projectleadcontrol/getleaddetail/'  + bt;
 	$.get(xlink, function(data, status)
 	 {
 		$('#id').val(bt);
@@ -187,10 +187,9 @@ function projleaddelete(id){
 		  if (result.value) {
 			  $('#prevDiv').hide();
 			  $('.preloader').fadeIn();	
-				var xlink = "<?php echo base_url(); ?>index.php/Projectleadcontrol/projleadremove/" + id;
+				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/projleadremove/" + id;
 				$.post(xlink,) 
-					.success(function(data) {
-					if(data == "success"){
+				.success(function(data) {
 						datatablereload();
 						swal({
 							  type: 'success',
@@ -199,18 +198,7 @@ function projleaddelete(id){
 							  footer: '<a href>'+ data +'</a>'
 							});
 						$('.preloader').fadeOut();
-						$('#prevDiv').show();
-					}else{
-						datatablereload();
-						swal({
-							  type: 'error',
-							  title: 'Oops...',
-							  text: 'You have an error in the action you are trying to do. Kindly double check and retry. Thank you!',
-							  footer: '<a href>'+ data +'</a>'
-							});
-						$('.preloader').fadeOut();
-						$('#prevDiv').show();
-					}		
+						$('#prevDiv').show();		
 				});
 				
 		  } else if (result.dismiss === Swal.DismissReason.cancel) {

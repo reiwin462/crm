@@ -1,6 +1,6 @@
 <?php
-
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once(APPPATH.'third_party/sendgrid/SendGrid_loader.php');
 
 class Projectleadcontrol extends CI_Controller{
 
@@ -190,30 +190,47 @@ class Projectleadcontrol extends CI_Controller{
 	
 	function sendemail($sbj, $to, $msg){
 		
-		$this->load->library('email');
-		$config = array(
-			'protocol'  => 'smtp',
-			'smtp_host' => 'ssl://smtp.googlemail.com',
-			'_smtp_auth' => TRUE,
-			'smtp_port' => 465,
-			'smtp_user' => 'mynotification007@gmail.com',
-			'smtp_pass' => 'user@123',
-			'mailtype'  => 'html',
-			'smtp_timeout' => '60',
-		);
-		
-		$this->email->initialize($config);
-		$this->email->set_mailtype("html");
-		$this->email->set_newline("\r\n");
-		
-		$this->email->to($to);
-		$this->email->from('mynotification007@gmail.com','Notification');
-		$this->email->subject($sbj);
-		$this->email->message($msg);
+		try {
+			$sendgrid = new SendGrid\SendGrid('mynotification007', 'user@123ata');
+			$mail = new SendGrid\Mail();
 
-		//Send email
-		$this->email->send();
-		//echo $this->email->print_debugger();
+			$mail->addTo($to)->
+				   setFrom('mynotification007@gmail.com')->
+				   setSubject($sbj)->
+				   setText(strip_tags($msg))->
+				   setHtml($msg);
+				echo $sendgrid->send($mail);
+					
+		} catch (InvalidArgumentException $e) {
+			echo 'There was an error'. $e;
+		}
+		
+		/* send via codeigniter library
+			$this->load->library('email');
+			$config = array(
+				'protocol'  => 'smtp',
+				'smtp_host' => 'ssl://smtp.googlemail.com',
+				'_smtp_auth' => TRUE,
+				'smtp_port' => 465,
+				'smtp_user' => 'mynotification007@gmail.com',
+				'smtp_pass' => 'user@123',
+				'mailtype'  => 'html',
+				'smtp_timeout' => '60',
+			);
+			
+			$this->email->initialize($config);
+			$this->email->set_mailtype("html");
+			$this->email->set_newline("\r\n");
+			
+			$this->email->to($to);
+			$this->email->from('mynotification007@gmail.com','Notification');
+			$this->email->subject($sbj);
+			$this->email->message($msg);
+
+			//Send email
+			$this->email->send();
+			//echo $this->email->print_debugger();
+		*/
 
 	}
 	
