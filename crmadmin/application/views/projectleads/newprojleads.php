@@ -56,7 +56,7 @@ function addnewprojlead(){
 		$('#adddiv').hide();
 		$('.preloader').fadeIn();
 		
-		$.post("<?php echo base_url("index.php/Projectleadcontrol/newProjLead"); ?>",
+		$.post("<?php echo base_url("Projectleadcontrol/newProjLead"); ?>",
 		{data: JSON.stringify($("#projleadform").serializeArray()) }) 
 			.success(function(data) {
 				swal({

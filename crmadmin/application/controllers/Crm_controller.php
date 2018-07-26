@@ -1,11 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once(APPPATH.'third_party/sendgrid/SendGrid_loader.php');
 class Crm_controller extends CI_Controller{
 	
 	public function index(){
 		if($this->amilog() == "OUT"){
-			header('location: '. base_url('/crm/login'));
+			redirect(base_url('/crm/login'));
 		}else{
 			$data['url'] = "landing";
 			$this->load->view("main", $data);
@@ -285,7 +286,7 @@ class Crm_controller extends CI_Controller{
 				
 			}
 			elseif($str == "sendemail"){
-				$this->sendemail();
+				$this->gsend();
 			}
 			else{
 				
@@ -329,6 +330,22 @@ class Crm_controller extends CI_Controller{
 		$this->email->send();
 		echo $this->email->print_debugger();
 
+	}
+	
+	function gsend(){
+		try {
+			$sendgrid = new SendGrid\SendGrid('mynotification007', 'user@123ata');
+			$mail = new SendGrid\Mail();
+			$mail->addTo('reiwin462@gmail')->
+				   setFrom('mynotification007@gmail.com')->
+				   setSubject('Subject goes here')->
+				   setText('Hello World!')->
+				   setHtml('<strong>Hello World!</strong>');
+				   
+			echo $sendgrid->send($mail);
+		} catch (InvalidArgumentException $e) {
+			echo 'There was an error'. $e;
+		}
 	}
 	
 	public function amilog(){

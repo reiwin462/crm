@@ -9,11 +9,11 @@
 		menubar: {
 			folded: false,
 			theme: 'dark',
-			themes: ['dark','light']
+			themes: ['light', 'dark']
 		},
 		navbar: {
-			theme: 'primary',
-			themes: [ 'dark', 'primary', 'success', 'warning', 'danger', 'pink', 'purple', 'inverse']
+			theme: 'dark',
+			themes: ['primary', 'success', 'warning', 'danger', 'pink', 'purple', 'inverse', 'dark']
 		}
 	};
 
@@ -51,7 +51,7 @@
 
 	// initialize menubar
 	app.$menubar.removeClass('dark').addClass(app.settings.menubar.theme).addClass('in');
-	//app.$body.removeClass('menubar-light').addClass('menubar-'+app.settings.menubar.theme);
+	app.$body.removeClass('menubar-dark').addClass('menubar-'+app.settings.menubar.theme);
 
 	// initialize main
 	app.$main.addClass('in');

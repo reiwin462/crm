@@ -50,7 +50,7 @@ function datatablereload(){
 		table.destroy();
 		var table = $('#responsive-datatable').DataTable( {
 		dom: "tpi",
-		ajax: "<?php echo base_url(); ?>index.php/campaigncontrol/showallcampaign",
+		ajax: "<?php echo base_url(); ?>campaigncontrol/showallcampaign",
 		searching: true,
 		responsive: true,
 		columns: [
@@ -67,7 +67,7 @@ function datatablereload(){
 		var table = $('#responsive-datatable').DataTable();
 		table.destroy();
 		var table = $('#responsive-datatable').DataTable( {
-		ajax: "<?php echo base_url(); ?>index.php/campaigncontrol/showallcampaign",
+		ajax: "<?php echo base_url(); ?>campaigncontrol/showallcampaign",
 		dom: 'ftlpi',
 		searching: true,
 		responsive: true,
@@ -98,7 +98,7 @@ function updatecampaign(){
 	});
 	
 	if(isNull == "pass"){
-		$.post("<?php echo base_url("index.php/campaigncontrol/campaignupdate"); ?>",
+		$.post("<?php echo base_url("campaigncontrol/campaignupdate"); ?>",
 		{data: JSON.stringify($("#campaignupdate").serializeArray()) }) 
 			.success(function(data) {
 				swal({
@@ -119,7 +119,7 @@ function updatecampaign(){
 }
 
 function campaignupdate(bt){
-	var xlink = "<?php echo base_url(); ?>" + 'index.php/campaigncontrol/getcampaigndetail/'  + bt;
+	var xlink = "<?php echo base_url(); ?>" + 'campaigncontrol/getcampaigndetail/'  + bt;
 	$.get(xlink, function(data, status)
 	 {
 		$('#id').val(bt);
@@ -157,7 +157,7 @@ function campaigndelete(id){
 		  cancelButtonText: 'No, keep it'
 		}).then((result) => {
 		  if (result.value) {
-				var xlink = "<?php echo base_url(); ?>index.php/campaigncontrol/campaignremove/" + id;
+				var xlink = "<?php echo base_url(); ?>campaigncontrol/campaignremove/" + id;
 				$.post(xlink,) 
 					.success(function(data) {
 					if(data == "success"){
