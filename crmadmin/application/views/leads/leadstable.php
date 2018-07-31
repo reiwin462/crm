@@ -105,33 +105,37 @@
 	
 	<div id="dtbl">
 		<!-- data table -->
-		<?php if(isset($leadstat)): ?>
-					<div class="col-md-3">
-						<label ><b>LEAD STATUS</b></label>
-						<select class="form-control" id="dispo_lead_status" name="dispo_lead_status" onchange="reloadtbl($(this));">
-							<option value="" disabled selected>Select From Item Below</option>
-							<?php foreach($leadstat as $field=>$val): ?>
-								<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
-							<?php endforeach; ?>
-						</select>
+				<?php if(isset($leadstat)): ?>
+					<div class="row">
+						<div class="col-md-3">
+							<label ><b>LEAD STATUS</b></label>
+							<select class="form-control" id="dispo_lead_status" name="dispo_lead_status" onchange="reloadtbl($(this));">
+								<option value="" disabled selected>Select From Item Below</option>
+								<?php foreach($leadstat as $field=>$val): ?>
+									<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</div>
 					</div>
-			<?php endif; ?>	
-		
-        <table id="responsive-datatable"  class="table table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-					<?php 
-						echo $columns;
-					?>
-                </tr>
-            </thead>
-			<tbody>
+				<?php endif; ?>	
+				
+				<div class="table-responsive">
+					<table id="responsive-datatable" class="table table-striped " cellspacing="1" width="100%">
+						<thead>
+							<tr>
+								<?php 
+									echo $columns;
+								?>
+							</tr>
+						</thead>
+						<tbody>
+						
+						</tbody>
+						<tfoot>
+						</tfoot>
+					</table>
+				</div>
 			
-			</tbody>
-            <tfoot>
-            </tfoot>
-        </table>
-		
 		</div>
     </div>
 
@@ -266,8 +270,9 @@ function datatablereload(){
 		var table = $('#responsive-datatable').DataTable( {
 		ajax: "<?php echo base_url(); ?>leadcontrol/showallleads",
 		dom: 'tpi',
+		scrollX: true,
+		scrollY: true,
 		searching: true,
-		responsive: true,
 		columns: [
 			null,
 			null,
@@ -279,7 +284,7 @@ function datatablereload(){
 			null,
 		],
 		columnDefs: [
-            { width: 100, targets: 8 }
+            { width: 150, targets: 7 }
         ],
 		} );
     }else{
@@ -288,8 +293,9 @@ function datatablereload(){
 		var table = $('#responsive-datatable').DataTable( {
 		ajax: "<?php echo base_url(); ?>leadcontrol/showallleads",
 		dom: 'ftlpi',
+		scrollX: true,
+		scrollY: true,
 		searching: true,
-		responsive: true,
 		columns: [
 			null,
 			null,
@@ -301,7 +307,7 @@ function datatablereload(){
 			null,
 		],
 		columnDefs: [
-            { width: 100, targets: 8 }
+            { width: 150, targets: 7 }
         ]
 		} );
 	}
@@ -369,9 +375,10 @@ function reloadtbl(sel){
 	table.destroy();
 	var table = $('#responsive-datatable').DataTable( {
 		dom: 'tpi',
+		scrollX: true,
+		scrollY: true,
 		ajax:xlink,
 		searching: true,
-		responsive: true,
 		columns: [
 			null,
 			null,
@@ -383,7 +390,7 @@ function reloadtbl(sel){
 			null,
 		],
 		columnDefs: [
-            { width: 100, targets: 8 }
+            { width: 100, targets: 7 }
         ],
 	});
 	

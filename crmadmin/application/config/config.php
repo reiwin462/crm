@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+//$config['base_url'] = 'https://'.$_SERVER['HTTP_HOST'];
 $config['base_url'] = 'https://steve-crm.appspot.com/';
 
 $config['index_page'] = 'index.php';
@@ -21,12 +22,11 @@ $config['composer_autoload'] = FALSE;
 
 $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 
+$config['allow_get_array'] = TRUE;
 $config['enable_query_strings'] = FALSE;
 $config['controller_trigger'] = 'c';
 $config['function_trigger'] = 'm';
 $config['directory_trigger'] = 'd';
-
-$config['allow_get_array'] = TRUE;
 
 $config['log_threshold'] = 0;
 
@@ -44,10 +44,10 @@ $config['cache_path'] = '';
 
 $config['cache_query_string'] = FALSE;
 
-$config['encryption_key'] = 'asd12easoOIUaosdiu102938asdk120398asd912312e807coiyziahkfajkkJHKJHKJDhsaffasd';
+$config['encryption_key'] = '';
 
 $config['sess_driver'] = 'database';
-$config['sess_cookie_name'] = 'online_sessions_crm';
+$config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = 'online_sessions_crm';
 $config['sess_match_ip'] = FALSE;

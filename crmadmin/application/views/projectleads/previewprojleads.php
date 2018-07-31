@@ -20,22 +20,22 @@
 			</div>
 					
 		
-        <div id="dtbl">
-		<table id="responsive-datatable" class="table table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-					<?php 
-						echo $columns;
-					?>
-                </tr>
-            </thead>
-			<tbody>
-			
-			</tbody>
-            <tfoot>
-            
-			</tfoot>
-        </table>
+        <div id="dtbl" class="table-responsive">
+			<table id="responsive-datatable" class="table table-striped" cellspacing="0" width="100%">
+				<thead>
+					<tr>
+						<?php 
+							echo $columns;
+						?>
+					</tr>
+				</thead>
+				<tbody>
+				
+				</tbody>
+				<tfoot>
+				
+				</tfoot>
+			</table>
 		</div>
 	</div>
 </div>
@@ -59,6 +59,7 @@ function datatablereload(){
 		searching: true,
 		responsive: true,
 		columns: [
+			null,
 			null,
 			null,
 			null,
@@ -157,6 +158,9 @@ function projleadupdate(bt){
 								['height', ['height']]
 								],
 							});
+						}else if(name == "bid_value"){
+							//$(this).val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
+							$('#bid_value').val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
 						}else{
 							$(this).val(value);
 						}
