@@ -12,43 +12,7 @@ class Process extends CI_Controller{
 		
 	}
 	
-	public function leadinsert(){
-		$decoded = json_decode($_POST['data'],true);
-		$insert = '';
-		foreach ($decoded as $value) {
-		   $insert .= $value["name"] . "='" . addslashes($value["value"])."',";
-		}	
-		$this->load->model('Crmmodel');
-		echo $this->Crmmodel->insertnewlead($insert);
-	}
-	
-	public function leadupdate(){
-		$decoded = json_decode($_POST['data'],true);
-		$update = '';
-		$id = '';
-		foreach ($decoded as $value) {
-			if($value["name"] != "id"){
-				$update .= $value["name"] . "='" . addslashes($value["value"])."',";
-			}else{
-				$id = addslashes($value["value"]);
-			}
-		}	
-
-		$this->load->model('Crmmodel');
-		echo $this->Crmmodel->updateLead(rtrim($update,","). "where id = '".trim($id)."'");
-		//echo $update . " where id='".trim($id )."'";
-	}
-	
-	public function leaddelete($id){
-		if($id != ""){
-			$this->load->model('Crmmodel');
-			echo $lead = $this->Crmmodel->deletelead($id);
-		}else{
-			echo  "invalid";
-		}
-	}
-	
-	public function newitem($field, $value){
+	public function newitemx($field, $value){
 		if($value != ""){
 			$this->load->model('Crmmodel');
 			echo $lead = $this->Crmmodel->addselectopt($field, urldecode($value));
@@ -57,12 +21,6 @@ class Process extends CI_Controller{
 		}
 	}
 	
-	public function showallleads(){
-		$this->load->model('Crmmodel');
-		$lead = $this->Crmmodel->getleads();
-		//header('Content-Type: application/json');
-		echo json_encode($lead);
-	}
 	
 	public function getLeadCol(){
 		$this->load->model('Crmmodel');
@@ -70,155 +28,57 @@ class Process extends CI_Controller{
 		echo json_encode($lead);
 	}
 	
-	public function getleadinfo($rw){
+	public function auth(){
+		$uname = $this->input->post('username');
+		$upass = $this->input->post('password');
 		$this->load->model('Crmmodel');
-		if(strlen($rw)> 10 ){
-			echo "error";
-		}else{
-			echo json_encode($this->Crmmodel->getleaddata($rw));
-		}
-	}
-	
-	
-	public function campaignInsert(){
-	
-		$decoded = json_decode($_POST['data'],true);
-		$insert = '';
-		foreach ($decoded as $value) {
-		   $insert .= $value["name"] . "='" . addslashes($value["value"])."',";
-		}	
-		$this->load->model('Crmmodel');
-		echo $this->Crmmodel->insertnewcampaign($insert);
-	
-	}
-	
-	function noteinsert(){
-		$insertdate = date("Y-m-d H:i:s");
-		if(isset($_FILES["file"]["name"]))
-		{
-			$album = $_POST['noteid'];
-			try {
-				
-				//$path = './uploads/'.$album.'/';
-				$path = 'gs://steve-crm.appspot.com';
-				
-				$config['allowed_types'] = 'gif|jpg|png|docx|doc|xls|xlsx';
-				if (!is_dir($path))
-				{
-					mkdir($path, 0777, true);
-				}
-				$dir_exist = true; 
-				if (!is_dir($path))
-				{
-					mkdir('./uploads/' . $album, 0777, true);
-					$dir_exist = false; 
-				}
-				$xpath = $path . basename( $_FILES['file']['name']);
-				if(move_uploaded_file($_FILES['file']['tmp_name'], $xpath)) {
-					$insertarray = array(
-							'lead_id' => $_POST['noteid'],
-							'category' => $_POST['notecategory'], 
-							'title' =>  $_POST['notesubject'],
-							'TEXT' => $_POST['message'],
-							'file_attachment' =>  basename( $_FILES['file']['name']),
-							'path' =>  $xpath,
-							'created_by' => 'mojo',
-							'created_datetime' => $insertdate,);
-					
-					$this->load->model('Crmmodel');
-					$noteinsert = $this->Crmmodel->insertcrmnote($insertarray);
-					if($noteinsert > 0){
-						echo "successfully inserted";
-					}else{
-						echo "error commenting";
-					}
-				} else{
-					
-					$insertarray = array(
-							'lead_id' => $_POST['noteid'],
-							'category' => $_POST['notecategory'], 
-							'title' =>  $_POST['notesubject'],
-							'TEXT' => $_POST['message'],
-							'created_by' => 'mojo',
-							'created_datetime' => $insertdate,);
-					
-					$this->load->model('Crmmodel');
-					$noteinsert = $this->Crmmodel->insertcrmnote($insertarray);
-					if($noteinsert > 0){
-						echo "successfully inserted";
-					}else{
-						echo "error commenting";
-					}
-				}
-				
-			}catch(Exception $e) {
-			  echo 'error:' .$e->getMessage();
+		$arr = array('username' => $uname,
+						'password' => md5($upass));
+		$isExist = $this->Crmmodel->authenticate($arr);
+		if($isExist != "error"){
+			$ses =  array('');
+			foreach($isExist as $key=>$val){
+				$ses =  array('crmuser'=> $val->username,
+					'crmfullname'=> $val->fullname,
+					'crmlevel'=> $val->level,
+				);
 			}
+			$this->session->set_userdata($ses);
+			//header('location: '. base_url());
+			redirect(base_url());
 		}else{
-					$insertarray = array(
-							'lead_id' => $_POST['noteid'],
-							'category' => $_POST['notecategory'], 
-							'title' =>  $_POST['notesubject'],
-							'TEXT' => $_POST['message'],
-							'created_by' => 'mojo',
-							'created_datetime' => $insertdate,);
-					
-					$this->load->model('Crmmodel');
-					$noteinsert = $this->Crmmodel->insertcrmnote($insertarray);
-					if($noteinsert > 0){
-						echo "successfully inserted";
-					}else{
-						echo "error commenting";
-					}
-		}		
-		
+			//header('location: '. base_url('/crm/login'));
+			redirect(base_url('/crm/login'));
+		}
 		
 	}
 	
-	public function gettimeline($lead){
-		$htm = "";
+	public function apilogin(){
+		$uname = $this->input->get('username');
 		$this->load->model('Crmmodel');
-		$act = $this->Crmmodel->showactivitylog($lead);
-		foreach($act as $key=>$val){
-			$htm .= '<div class="sl-item sl-primary">
-				<div class="sl-content">
-					<small class="text-muted"><i class="fa fa-clock-o" aria-hidden="true"></i> &nbsp;'.$val->created_datetime.'</small>
-					<p>'.$val->created_by.'  wrote : ' .$val->text.'</p>
-					<span>Attachment : <a href="..'.$val->path.'">'.$val->file_attachment.'</a></span>
-				</div>
-			</div>';
+		$isExist = $this->Crmmodel->apiauthenticate(trim($uname));
+		if($isExist != "error"){
+			$ses =  array('');
+			foreach($isExist as $key=>$val){
+				$ses =  array('crmuser'=> $val->username,
+					'crmfullname'=> $val->fullname,
+					'crmlevel'=> $val->level,
+				);
+			}
+			$this->session->set_userdata($ses);
+			redirect(base_url());
+		}else{
+			redirect(base_url('/crm/login'));
 		}
-		echo $htm;
 	}
 	
-	public function showdispoleads($dispo){
-		$this->load->model('Crmmodel');
-		$lead = $this->Crmmodel->getdispoleads(urldecode($dispo));
-		//header('Content-Type: application/json');
-		echo json_encode($lead);
+	public function test(){
+		$a1=array("a"=>"red","b"=>"green","c"=>"bluxe","d"=>"yellow");
+		$a2=array("e"=>"red","f"=>"green","g"=>"blue");
+
+		$result=array_diff($a1,$a2);
+		print_r($result);
 	}
-	
-	public function showdropdownoption($fld){
-		$html ="";
-		$this->load->model('Crmmodel');
-		$option = $this->Crmmodel->getoptions(urldecode($fld));
-		foreach($option as $key=>$val){
-			$html .='<tr>
-						<td>'.$val->description.'</td>
-						<td>
-							<button class="danger" onclick="removeitem('.$val->id.')"> Remove</button>
-						</td>
-					</tr>';
-		}
-		echo $html;
-	}
-	
-	public function deleteoption($table, $fld){
-		$this->load->model('Crmmodel');
-		$isdelete = $this->Crmmodel->removeselectoption("crm_".urldecode($table), urldecode($fld));
-		echo $isdelete;
-	}
-	
 	
 }
 

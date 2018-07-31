@@ -17,7 +17,7 @@ foreach($param as $field => $val){
 
 <div class="col-md-12">
 	<div class="widget">
-		<header class="widget-header primary">
+		<header class="widget-header">
 				<h4 class="widget-title"><i class="fa fa-calendar"></i> Lead Information Entries</h4>
 		</header>
 		<hr class="widget-separator">
@@ -131,13 +131,7 @@ function processlead(){
 		var isRequired = $(this).attr('required');
 		if(isRequired == "required"){
 			if($(this).val() == ""){
-				swal({
-				  type: 'error',
-				  title: 'Checking...',
-				  text: $(this).attr('name') + ' is a required field. Thank you!',
-				  footer: '<a href>'+ data +'</a>'
-				});
-				
+				alert($(this).attr('name') + " is required!");
 				isNull = "fail";
 				return false;
 			}
@@ -145,17 +139,15 @@ function processlead(){
 	});
 	
 	if(isNull == "pass"){
-		$.post("<?php echo base_url("process/leadinsert"); ?>",
+		$.post("<?php echo base_url("index.php/process/leadinsert"); ?>",
 		{data: JSON.stringify($("#lead").serializeArray()) }) 
 		.success(function(data) {
-			swal({
-				  type: 'success',
-				  title: 'Uploaded...',
-				  text: 'Lead Record has been Created. Thank you!',
-				  footer: '<a href>'+ data +'</a>'
+			$('#leadalert').fadeIn('slow', function(){
+						$('#alertmsg').html('Lead Record has been Created! ' + data);
+					$('#leadalert').delay(1000).fadeOut(); 
 				});
+			});
 			reset();
-		}
 	}
 		
 }
@@ -164,14 +156,12 @@ function addmyitem(){
 	var newitem = '';
 	newitem = $('#newitem').val();
 	if(newitem == ""){
-		swal({
-			type: 'error',
-			title: 'Oops...',
-			text: 'Please supply the necessary field Thank you!',
-			footer: '<a href> - </a>'
+		$('#newitemalert').fadeIn('slow', function(){
+			$('#newitmmsg').html('Please enter some Details');
+			$('#newitemalert').delay(1000).fadeOut(); 
 		});
 	}else{
-		var xlink = "<?php echo base_url(); ?>process/newitem/" + optfield + "/" + newitem;
+		var xlink = "<?php echo base_url(); ?>index.php/process/newitem/" + optfield + "/" + newitem;
 		 $.post(xlink,) 
 			.success(function(data) {
 			if(data == "success"){
@@ -180,23 +170,20 @@ function addmyitem(){
 					text: newitem,
 				}));
 				$("#newitemmodal").modal('hide');
-				swal({
-				  type: 'success',
-				  title: 'Uploaded...',
-				  text: 'Item has been Added. Thank you!',
-				  footer: '<a href>'+ data +'</a>'
+				$('#leadalert').fadeIn('slow', function(){
+					$('alertmsg').html('New Item Has been Added');
+					$('#leadalert').delay(1000).fadeOut(); 
 				});
 				$('#newitem').val('');
 				newitem='';
-			}
-			else{
-				swal({
-				  type: 'error',
-				  title: 'Oops...',
-				  text: 'You have an error in the data you are about to insert Kindly double check! Thank you!',
-				  footer: '<a href>'+ data +'</a>'
+			}else{
+				$('#newitemalert').fadeIn('slow', function(){
+					$('#newitmmsg').html("Error " + data);
+					$('#newitemalert').delay(1000).fadeOut(); 
 				});
 			}
+
+
 		});
 		
 	}

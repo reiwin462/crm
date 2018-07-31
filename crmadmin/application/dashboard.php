@@ -85,7 +85,81 @@
 					</footer>
 				</div><!-- .widget -->
 			</div>
-		</div><!-- .row -->
+		</div>
+		
+		<div style="clear:both">&nbsp;</div>
+		<div style="clear:both">&nbsp;</div>
+		<div style="clear:both">&nbsp;</div>
+		<div style="clear:both">&nbsp;</div>
+		<div style="clear:both">&nbsp;</div>
+		
+		<div class="row">
+			<div class="col-md-3 col-sm-6">
+				<div class="widget stats-widget">
+					<div class="widget-body clearfix">
+						<div class="pull-left">
+							<h3 class="widget-title text-primary"><span class="counter" data-plugin="counterUp">212</span></h3>
+							<small class="text-color">Total Prospect</small>
+						</div>
+						<span class="pull-right big-icon watermark"><i class="fa fa-phone"></i></span>
+					</div>
+					<footer class="widget-footer bg-primary">
+						<small>22% Prospect Lead</small>
+						<span class="small-chart pull-right" data-plugin="sparkline" data-options="[4,3,5,2,1], { type: 'bar', barColor: '#ffffff', barWidth: 5, barSpacing: 2 }"></span>
+					</footer>
+				</div><!-- .widget -->
+			</div>
+
+			<div class="col-md-3 col-sm-6">
+				<div class="widget stats-widget">
+					<div class="widget-body clearfix">
+						<div class="pull-left">
+							<h3 class="widget-title text-success"><span class="counter" data-plugin="counterUp">88</span></h3>
+							<small class="text-color">Total Sale</small>
+						</div>
+						<span class="pull-right big-icon watermark"><i class="fa fa-phone-square"></i></span>
+					</div>
+					<footer class="widget-footer bg-success">
+						<small>41 Successful Sale</small>
+						<span class="small-chart pull-right" data-plugin="sparkline" data-options="[1,2,3,5,4], { type: 'bar', barColor: '#ffffff', barWidth: 5, barSpacing: 2 }"></span>
+					</footer>
+				</div><!-- .widget -->
+			</div>
+
+			<div class="col-md-3 col-sm-6">
+				<div class="widget stats-widget">
+					<div class="widget-body clearfix">
+						<div class="pull-left">
+							<h3 class="widget-title text-danger"><span class="counter" data-plugin="counterUp">0</span></h3>
+							<small class="text-color">Total Suspect</small>
+						</div>
+						<span class="pull-right big-icon watermark"><i class="fa fa-remove"></i></span>
+					</div>
+					<footer class="widget-footer bg-danger">
+						<small>0 Suspect Lead</small>
+						<span class="small-chart pull-right" data-plugin="sparkline" data-options="[2,4,3,4,3], { type: 'bar', barColor: '#ffffff', barWidth: 5, barSpacing: 2 }"></span>
+					</footer>
+				</div><!-- .widget -->
+			</div>
+
+			<div class="col-md-3 col-sm-6">
+				<div class="widget stats-widget">
+					<div class="widget-body clearfix">
+						<div class="pull-left">
+							<h3 class="widget-title text-warning"><span class="counter" data-plugin="counterUp">2</span></h3>
+							<small class="text-color">Lost</small>
+						</div>
+						<span class="pull-right big-icon watermark"><i class="fa fa-tasks"></i></span>
+					</div>
+					<footer class="widget-footer bg-warning">
+						<small>2 Lost Lead</small>
+						<span class="small-chart pull-right" data-plugin="sparkline" data-options="[5,4,3,5,2],{ type: 'bar', barColor: '#ffffff', barWidth: 5, barSpacing: 2 }"></span>
+					</footer>
+				</div><!-- .widget -->
+			</div>
+		</div>
+		<!-- .row -->
+		<div style="clear:both">&nbsp;</div>
 		<div style="clear:both">&nbsp;</div>
 		<div style="clear:both">&nbsp;</div>
 		<div style="clear:both">&nbsp;</div>

@@ -1,18 +1,21 @@
-<div class="widget">
 
+
+<div class="widget">
     <header class="widget-header primary">
         <h4 class="widget-title">Lead Tables Details</h4>
     </header>
     <!-- .widget-header -->	
     <hr class="widget-separator">
 	<div class="widget-body">
-	<div class="row">
+			
+			<div class="row">
+			
 			<div id="leadalldata"  class="nav-tabs-horizontal white m-b-lg">
 					<!-- tabs list -->
 					<ul class="nav nav-tabs" role="tablist">
 						<li role="presentation" class="active"><a href="#leadinfo" aria-controls="leadinfo" role="tab" data-toggle="tab" aria-expanded="true"><i class="fa fa-info-circle" aria-hidden="true"></i> Lead Information</a></li>
 						<li role="presentation" class=""><a href="#leadnotes" aria-controls="leadnotes" role="tab" data-toggle="tab" aria-expanded="false" onclick="reloadhistrory();"> <i class="fa fa-sticky-note" aria-hidden="true"></i> Notes</a></li>
-						<li role="presentation" class=""><a href="#leadtask" aria-controls="leadtask" role="tab" data-toggle="tab" aria-expanded="false" onclick="reloadtask();"> <i class="fa fa-tasks" aria-hidden="true"></i> Task</a></li>
+						<li role="presentation" class=""><a href="#leadtask" aria-controls="leadtask" role="tab" data-toggle="tab" aria-expanded="false" onclick="swal('no one here');"> <i class="fa fa-tasks" aria-hidden="true"></i> Task</a></li>
 					</ul><!-- .nav-tabs -->
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane fade active in" id="leadinfo">
@@ -26,10 +29,10 @@
 											<button type="button" class="btn mw-md btn-danger" onclick="cancel();" >Cancel</button>
 										</div>
 									</div>
-							</div>
+							</form>
+						</div>
 						</div>
 						<div role="tabpanel" class="tab-pane" id="leadnotes">
-						
 							<div class="row">
 								<form method="post" id="formnote" enctype="multipart/form-data" action="#">
 										<div class="col-md-6">
@@ -70,72 +73,45 @@
 									<hr class="widget-separator">
 									<div class="widget-body">
 										<div id="timeline" class="streamline">
-											streamline
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div role="tabpanel" class="tab-pane fade" id="leadtask">
-							<div class="row">
-								<?php echo $formtask; ?>
-							</div>
-							<div class="row">
-								<input type="hidden" id="lead_id" name="lead_id"></input>
-								<button type="button" class="btn mw-md btn-success float-right" onclick="addtask();" >Add Lead Task</button>
-								<button type="button" class="btn mw-md btn-danger" onclick="cancel();">Cancel</button>
-							</div>
-							<br>
-							<div class="row">
-								<div class="widget">
-									<hr class="widget-separator">
-									<div class="widget-body">
-										<div id="tasktimeline" class="streamline">
-											streamline
+											aaaaa
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					
 			</div>
 		</div>
 	
 	<div id="dtbl">
 		<!-- data table -->
-				<?php if(isset($leadstat)): ?>
-					<div class="row">
-						<div class="col-md-3">
-							<label ><b>LEAD STATUS</b></label>
-							<select class="form-control" id="dispo_lead_status" name="dispo_lead_status" onchange="reloadtbl($(this));">
-								<option value="" disabled selected>Select From Item Below</option>
-								<?php foreach($leadstat as $field=>$val): ?>
-									<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
-								<?php endforeach; ?>
-							</select>
-						</div>
+		<?php if(isset($leadstat)): ?>
+					<div class="col-md-3">
+						<label ><b>LEAD STATUS</b></label>
+						<select class="form-control" id="dispo_lead_status" name="dispo_lead_status" onchange="reloadtbl(this);">
+							<?php foreach($leadstat as $field=>$val): ?>
+								<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
+							<?php endforeach; ?>
+						</select>
 					</div>
-				<?php endif; ?>	
-				
-				<div class="table-responsive">
-					<table id="responsive-datatable" class="table table-striped " cellspacing="1" width="100%">
-						<thead>
-							<tr>
-								<?php 
-									echo $columns;
-								?>
-							</tr>
-						</thead>
-						<tbody>
-						
-						</tbody>
-						<tfoot>
-						</tfoot>
-					</table>
-				</div>
+			<?php endif; ?>	
+		
+        <table id="responsive-datatable"  class="table table-striped" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+					<?php 
+						echo $columns;
+					?>
+                </tr>
+            </thead>
+			<tbody>
 			
+			</tbody>
+            <tfoot>
+                
+            </tfoot>
+        </table>
+		
 		</div>
     </div>
 
@@ -153,9 +129,8 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function leadupdate(bt){
-	var xlink = "<?php echo base_url(); ?>" + 'leadcontrol/getleadinfo/'  + bt;
+	var xlink = "<?php echo base_url(); ?>" + 'index.php/leadcontrol/getleadinfo/'  + bt;
 	$("#noteid").val(bt);
-	$("#lead_id").val(bt);
 	$('#timeline').html('');
 	$.get(xlink, function(data, status)
 	 {
@@ -177,7 +152,8 @@ function leadupdate(bt){
 
 
 function leaddelete(id){
-
+	
+	
 	Swal({
 		  title: 'Are you sure?',
 		  text: 'Item will be permanently be removed from the database',
@@ -187,7 +163,7 @@ function leaddelete(id){
 		  cancelButtonText: 'No, keep it'
 		}).then((result) => {
 		  if (result.value) {
-				var xlink = "<?php echo base_url(); ?>leadcontrol/leaddelete/" + id;
+				var xlink = "<?php echo base_url(); ?>index.php/leadcontrol/leaddelete/" + id;
 				$.post(xlink,) 
 					.success(function(data) {
 					if(data == "success"){
@@ -212,13 +188,15 @@ function leaddelete(id){
 			
 		  }
 		});
+
+	
 }
 
 function cancel(){
 	$("#dtbl").toggle();
 	$("#leadalldata").toggle();
-	
 }
+
 
 function updatelead(){
 	
@@ -245,7 +223,7 @@ function updatelead(){
 	});
 	
 	if(isNull == "pass"){
-		$.post("<?php echo base_url("leadcontrol/leadupdate"); ?>",
+		$.post("<?php echo base_url("index.php/leadcontrol/leadupdate"); ?>",
 		{data: JSON.stringify($("#leadform").serializeArray()) }) 
 			.success(function(data) {
 				swal({
@@ -268,11 +246,10 @@ function datatablereload(){
 		var table = $('#responsive-datatable').DataTable();
 		table.destroy();
 		var table = $('#responsive-datatable').DataTable( {
-		ajax: "<?php echo base_url(); ?>leadcontrol/showallleads",
+		ajax: "<?php echo base_url(); ?>index.php/leadcontrol/showallleads",
 		dom: 'tpi',
-		scrollX: true,
-		scrollY: true,
 		searching: true,
+		responsive: true,
 		columns: [
 			null,
 			null,
@@ -282,20 +259,17 @@ function datatablereload(){
 			null,
 			null,
 			null,
+			{ "width": "15%" },
 		],
-		columnDefs: [
-            { width: 150, targets: 7 }
-        ],
 		} );
     }else{
 		var table = $('#responsive-datatable').DataTable();
 		table.destroy();
 		var table = $('#responsive-datatable').DataTable( {
-		ajax: "<?php echo base_url(); ?>leadcontrol/showallleads",
+		ajax: "<?php echo base_url(); ?>index.php/leadcontrol/showallleads",
 		dom: 'ftlpi',
-		scrollX: true,
-		scrollY: true,
 		searching: true,
+		responsive: true,
 		columns: [
 			null,
 			null,
@@ -305,10 +279,8 @@ function datatablereload(){
 			null,
 			null,
 			null,
+			{ "width": "15%" },
 		],
-		columnDefs: [
-            { width: 150, targets: 7 }
-        ]
 		} );
 	}
 	
@@ -324,7 +296,7 @@ function addcrmnotes(e){
 
 	fd.append('file', document.getElementById("file").files[0]);
 		$.ajax({
-		   url:"<?php echo base_url(); ?>leadcontrol/noteinsert",
+		   url:"<?php echo base_url(); ?>index.php/leadcontrol/noteinsert",
 		   method:"POST",
 		   enctype: 'multipart/form-data',
 		   data: fd,
@@ -358,7 +330,7 @@ function reloadhistrory(){
 	$('#timeline').html('');
 	var ldid = $("#noteid").val();
 	console.log(ldid);
-	var xlink = "<?php echo base_url(); ?>leadcontrol/gettimeline/" + ldid;
+	var xlink = "<?php echo base_url(); ?>index.php/leadcontrol/gettimeline/" + ldid;
 	
 	console.log(xlink);
 	$.get(xlink, function(data, status){
@@ -369,81 +341,18 @@ function reloadhistrory(){
 
 function reloadtbl(sel){
 	
-	var dispo = sel.val();
-	var xlink = "<?php echo base_url(); ?>leadcontrol/showdispoleads/" + dispo;
+	var dispo = sel.value;
+	var xlink = "<?php echo base_url(); ?>index.php/leadcontrol/showdispoleads/" + dispo;
+	console.log(xlink);
 	var table = $('#responsive-datatable').DataTable();
 	table.destroy();
 	var table = $('#responsive-datatable').DataTable( {
-		dom: 'tpi',
-		scrollX: true,
-		scrollY: true,
-		ajax:xlink,
-		searching: true,
-		columns: [
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-		],
-		columnDefs: [
-            { width: 100, targets: 7 }
-        ],
+	dom: 'tpi',
+	ajax:xlink,
+	searching: true,
+	responsive: true,
 	});
 	
-}
-
-
-function addtask(e){
-	
-	var isNull = "pass";
-	var formElements = new Array();
-	$("#taskform :input").each(function(){
-		var isRequired = $(this).attr('required');
-		if(isRequired == "required"){
-			if($(this).val() == ""){
-				swal({
-				  type: 'error',
-				  title: 'Validation',
-				  text: $(this).attr('name') + ' is a required field. Thank you!',
-				  footer: '<a href> - </a>'
-				});
-				
-				isNull = "fail";
-				return false;
-			}
-		}
-	});
-	
-	if(isNull == "pass"){
-		$.post("<?php echo base_url("taskcontrol/newtask"); ?>",
-		{data: JSON.stringify($("#taskform").serializeArray()) }) 
-		.success(function(response) {
-			swal({
-				  type: 'success',
-				  title: 'New Lead Insert',
-				  text: 'New Lead Record has been Created. Thank you!',
-				  footer: '<a href onclick=""> '+ response +'</a>'
-				});
-				reloadtask();
-				
-			$("#taskform :input").each(function(){
-				$(this).val('');;
-			});
-		});	
-	}
-}
-
-function reloadtask(){
-	$('#tasktimeline').html('');
-	var ldid = $("#lead_id").val();
-	var xlink = "<?php echo base_url(); ?>taskcontrol/showtask/" + ldid;
-	$.get(xlink, function(data, status){
-        $('#tasktimeline').html(data);
-    });
 }
 
 </script>
