@@ -264,7 +264,7 @@ class Crm_controller extends CI_Controller{
 				$colhtm .= "<th>Client Name</th>";
 				$colhtm .= "<th>Address</th>";
 				$colhtm .= "<th>Bid Value</th>";
-				$colhtm .= "<th>Status</th>";
+				$colhtm .= "<th>Source</th>";
 				$colhtm .= "<th>Created By</th>";
 				$colhtm .= "<th>Action</th>";
 				
