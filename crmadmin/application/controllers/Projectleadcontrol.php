@@ -17,11 +17,11 @@ class Projectleadcontrol extends CI_Controller{
 		$newdata = array();
 		foreach ($decoded as $value) {
 			if($value["name"] == "more_info"){
-				$insert .= $value["name"] . "='" . $value["value"]."',";
+				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
 			}
 			elseif($value["name"] == "proj_no"){
 				$prjno = $value["value"];
-				$insert .= $value["name"] . "='" . $value["value"]."',";
+				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
 			}
 			elseif($value["name"] == "bid_value"){
 				$insert .= $value["name"] . "='" .preg_replace("/\.+$/i", "", preg_replace("/[^0-9\.]/i", "", $value["value"]))."',";
@@ -223,7 +223,7 @@ class Projectleadcontrol extends CI_Controller{
 	function sendemail($sbj, $to, $msg){
 		
 		try {
-			$sendgrid = new SendGrid\SendGrid('mynotification007', 'user@123ata');
+			$sendgrid = new SendGrid\SendGrid('send_grid_user', 'send_grid_password');
 			$mail = new SendGrid\Mail();
 
 			$mail->addTo($to)->
@@ -245,7 +245,7 @@ class Projectleadcontrol extends CI_Controller{
 				'_smtp_auth' => TRUE,
 				'smtp_port' => 465,
 				'smtp_user' => 'mynotification007@gmail.com',
-				'smtp_pass' => 'user@123',
+				'smtp_pass' => 'xxxxx',
 				'mailtype'  => 'html',
 				'smtp_timeout' => '60',
 			);
