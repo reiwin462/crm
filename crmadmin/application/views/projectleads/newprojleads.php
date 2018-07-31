@@ -59,17 +59,25 @@ function addnewprojlead(){
 		$.post("<?php echo base_url("Projectleadcontrol/newProjLead"); ?>",
 		{data: JSON.stringify($("#projleadform").serializeArray()) }) 
 			.success(function(data) {
-				swal({
-					  type: 'success',
-					  title: 'New Contact',
-					  text: 'New Contact has been Created. Thank you!',
-					  footer: '<a href>'+ data +'</a>'
-					});
-				
-				$('#projleadform').trigger("reset");
-				$('#more_info').summernote('code', '');
-				$('.preloader').fadeOut();
-				$('#adddiv').show();				
+				if(data.indexOf('duplicate') > -1){
+					  swal({
+						  type: 'error',
+						  title: 'Duplicate Project Leads',
+						  text: 'You have entered duplicate entries on the list!',
+						  footer: '<a href>'+ data +'</a>'
+						});
+				}else{
+						swal({
+						  type: 'success',
+						  title: 'New Project Leads',
+						  text: 'New Contact has been Created. Thank you!',
+						  footer: '<a href>'+ data +'</a>'
+						});
+						$('#projleadform').trigger("reset");
+						$('#more_info').summernote('code', '');
+					}
+				$('#adddiv').show();	
+				$('.preloader').fadeOut();		
 			});
 				
 	}

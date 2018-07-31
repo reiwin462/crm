@@ -8,7 +8,7 @@ class Crm_controller extends CI_Controller{
 		if($this->amilog() == "OUT"){
 			redirect(base_url('/crm/login'));
 		}else{
-			$data['url'] = "landing";
+			$data['url'] = "dashboard";
 			$this->load->view("main", $data);
 		}
 	}
@@ -66,8 +66,7 @@ class Crm_controller extends CI_Controller{
 				$colhtm .= '<th>Phone</th>';
 				$colhtm .= '<th>Status</th>';
 				$colhtm .= '<th>State</th>';
-				$colhtm .= '<th>Website</th>';
-				$colhtm .= '<th>Action</th>';
+				$colhtm .= '<th style="width: 100px;">Action</th>';
 				
 				/*
 				$cols  = $this->Leadmodel->getleadcol();
@@ -261,9 +260,11 @@ class Crm_controller extends CI_Controller{
 				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'project_leads', 'yes','projleadform');
 				$colhtm = "";
 				$colhtm .= "<th>Project No</th>";
+				$colhtm .= "<th>Bid Date</th>";
 				$colhtm .= "<th>Client Name</th>";
+				$colhtm .= "<th>Address</th>";
 				$colhtm .= "<th>Bid Value</th>";
-				$colhtm .= "<th>Project Status</th>";
+				$colhtm .= "<th>Status</th>";
 				$colhtm .= "<th>Created By</th>";
 				$colhtm .= "<th>Action</th>";
 				
@@ -288,6 +289,9 @@ class Crm_controller extends CI_Controller{
 			elseif($str == "sendemail"){
 				$this->gsend();
 			}
+			elseif($str == "error"){
+				$this->load->view("errorpage");
+			}
 			else{
 				
 				$data['url'] = "landing";
@@ -297,6 +301,8 @@ class Crm_controller extends CI_Controller{
 		
 		}
 	}
+	
+
 	
 	function sendemail(){
 		$this->load->library('email');

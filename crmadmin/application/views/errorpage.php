@@ -6,7 +6,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
 	<meta name="description" content="Admin, Dashboard, Bootstrap" />
-	<link rel="shortcut icon" sizes="196x196" href="<?php echo base_url(); ?>assets/images/logo.png">
+	<link rel="shortcut icon" sizes="196x196" href="<?php echo base_url(); ?>/assets/images/logo.png">
 	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900,300">
 	
@@ -21,27 +21,26 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/app.css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/misc-pages.css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/spinners.css">
+	
 </head>
 <body class="simple-page">
 	<div class="simple-page-wrap">
 		<div class="simple-page-logo animated swing">
 			<a href="#">
-				<span>Geo Grout</span>
+				<h3 class="form-title m-b-xl text-center">404 Page Not Found!</h3>
 			</a>
 		</div><!-- logo -->
+	
 		<div class="simple-page-form animated flipInY" id="login-form">
-		<h4 class="form-title m-b-xl text-center">Sign In With Your Geo Grout Account</h4>
-			<form id="auth" class="form" method="post" action="<?php echo base_url("process/auth"); ?>">
-				<div class="form-group">
-					<input id="sign-in-email" type="email" name="username" class="form-control" placeholder="Email">
-				</div>
-				<div class="form-group">
-					<input id="sign-in-password" type="password" name="password" class="form-control" placeholder="Password">
-				</div>
 
-				<input type="submit" class="btn btn-primary" value="SIGN IN"  >
-			</form>
+			<p class="text-center">Sorry, We cannot Find the Page your are looking!</p>
+			<br>
+			<a href="<?php echo base_url(); ?>"  class="btn btn-primary" >Back to Main!</a>
 		</div>
+		
+		<div class="simple-page-footer">
+		<p><a href="<?php echo base_url(); ?>">GEO GROUT CRM</a></p>
+	</div>
 
 	</div>
 

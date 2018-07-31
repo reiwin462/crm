@@ -17,7 +17,7 @@ class Projectleadmodel extends CI_Model{
 		return $query->result();
 	}
 	public function getprojleads(){
-		$query = $this->db->query("SELECT proj_no, client_name, bid_value, proj_stat, created_by, id as action from project_leads");
+		$query = $this->db->query("SELECT proj_no, bid_date, client_name, address, bid_value, STATUS, created_by, id as action from project_leads");
 		return $query->result_array();
 	}
 	
@@ -38,6 +38,11 @@ class Projectleadmodel extends CI_Model{
 		$this->db->delete('project_leads');
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
+	
+	public function checkprjno($no){
+		$query = $this->db->get_where('project_leads', array('proj_no'=>$no));
+		return $query->num_rows();
+	}  
 	
 	
 	

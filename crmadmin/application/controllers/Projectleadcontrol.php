@@ -9,50 +9,71 @@ class Projectleadcontrol extends CI_Controller{
 	}
 	
 	public function newProjLead(){
+		$this->load->model('Projectleadmodel');
 		$htm = "";
 		$decoded = json_decode($_POST['data'],true);
 		$insert = '';
+		$prjno = '';
 		$newdata = array();
 		foreach ($decoded as $value) {
 			if($value["name"] == "more_info"){
-				$insert .= $value["name"] . "='" . $value["value"]."',";
-			}else{
+				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
+			}
+			elseif($value["name"] == "proj_no"){
+				$prjno = $value["value"];
+				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
+			}
+			elseif($value["name"] == "bid_value"){
+				$insert .= $value["name"] . "='" .preg_replace("/\.+$/i", "", preg_replace("/[^0-9\.]/i", "", $value["value"]))."',";
+			}
+			else{
 				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
 			}
 			$newdata[$value["name"]] = $value["value"];
 		}
 		
-		$htm .= '<h3 style="font-family: Century Gothic; color: green;">New Project Lead</h3>';
-		$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;"> Created By : '.$this->session->userdata('crmuser').'</p>';
-		$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">Date :'. date('Y-m-d H:i:s').'</p>';
-		$htm .= '<hr>';
-		$htm .= '<table border="0" style="font-size: 12px; font-family: Century Gothic">';
-		$htm .= '<tr>
-						<th style="border:0px solid #e2e2e2; background-color: #ffe693; width: 150px;">Field</th>
-						<th style="border:1px solid #e2e2e2; background-color: #ffe693; width: 350px; ">Lead Value</th>
-					</tr>';
-					
-			foreach($newdata as $key=>$val){
-					$htm .= '<tr><td style="border-bottom: 1px solid #e2e2e2;">'. str_replace('_',' ', $key).'</td><td style="border-bottom: 1px solid #e2e2e2;">'.$val.'</td></tr>';
-				}
-		$htm .= '<tr><td></td><td></td></tr>';
-		$htm .= '</table>';
-		$htm .= '<br>';
-		$htm .= '<small style="font-family: Century Gothic">Mail Notification 2018</small>';
-		
-		$insert .= 'created_by' . "='" . $this->session->userdata('crmuser')."',";
-		$insert .= 'created_date' . "='" . date('Y-m-d H:i:s')."',";
-		$this->load->model('Projectleadmodel');
-		$isinsert = $this->Projectleadmodel->insertnewprojleads($insert);
-		
-		if($isinsert > 0){
-			echo "success";
+		$exist =  $this->Projectleadmodel->checkprjno($prjno);
+		if($exist > 0){
+			echo "duplicate : ". $prjno;
 		}else{
-			echo "error";
+			$htm .= '<h3 style="font-family: Century Gothic; color: green;">New Project Lead</h3>';
+			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;"> Created By : '.$this->session->userdata('crmuser').'</p>';
+			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">Date :'. date('Y-m-d H:i:s').'</p>';
+			$htm .= '<hr>';
+			$htm .= '<table border="0" style="font-size: 12px; font-family: Century Gothic">';
+			$htm .= '<tr>
+							<th style="border:0px solid #e2e2e2; background-color: #ffe693; width: 150px;">Field</th>
+							<th style="border:1px solid #e2e2e2; background-color: #ffe693; width: 350px; ">Lead Value</th>
+						</tr>';
+						
+				foreach($newdata as $key=>$val){
+						$htm .= '<tr><td style="border-bottom: 1px solid #e2e2e2;">'. str_replace('_',' ', $key).'</td><td style="border-bottom: 1px solid #e2e2e2;">'.$val.'</td></tr>';
+					}
+			$htm .= '<tr><td></td><td></td></tr>';
+			$htm .= '</table>';
+			$htm .= '<br>';
+			$htm .= '<small style="font-family: Century Gothic">Mail Notification 2018</small>';
+			
+			$insert .= 'created_by' . "='" . $this->session->userdata('crmuser')."',";
+			$insert .= 'created_date' . "='" . date('Y-m-d H:i:s')."',";
+			
+			
+			$check = $this->Projectleadmodel->checkprjno($insert);
+			
+			$isinsert = $this->Projectleadmodel->insertnewprojleads($insert);
+			if($isinsert > 0){
+				echo "success";
+			}else{
+				echo "error";
+			}
+			$this->sendemail('Project Lead Notification', $this->session->userdata('crmuser'), $htm);
 		}
-		$this->sendemail('Project Lead Notification', $this->session->userdata('crmuser'), $htm);
 		
+		
+	
 	}
+	
+	
 	
 	public function showallprojleads(){
 		$this->load->model('Projectleadmodel');	
@@ -74,7 +95,12 @@ class Projectleadcontrol extends CI_Controller{
 					}else{
 						$tdval = $val;
 					}
-					$newinnerarray[] = $tdval;
+					if($key == "bid_value"){
+						$newinnerarray[] = number_format($tdval,2);
+					}else{
+						$newinnerarray[] = $tdval;
+					}
+					
 				}
 				array_push($prjleads['data'], $newinnerarray);			
 				$newinnerarray = array();
@@ -110,8 +136,14 @@ class Projectleadcontrol extends CI_Controller{
 		//$uparray = array();
 		foreach ($decoded as $value) {
 			if($value["name"] != "id"){
-				$update .= $value["name"] . "='" . addslashes($value["value"])."',";
-			}else{
+				if($value["name"] == "bid_value"){
+					$update .= $value["name"] . "='" . preg_replace("/\.+$/i", "", preg_replace("/[^0-9\.]/i", "", $value["value"])) ."',";
+				}else{
+					$update .= $value["name"] . "='" . addslashes($value["value"])."',";
+				}
+			}
+			
+			else{
 				$id = addslashes($value["value"]);
 			}
 			$uparray[$value["name"]] = $value["value"];
@@ -191,7 +223,7 @@ class Projectleadcontrol extends CI_Controller{
 	function sendemail($sbj, $to, $msg){
 		
 		try {
-			$sendgrid = new SendGrid\SendGrid('mynotification007', 'user@123ata');
+			$sendgrid = new SendGrid\SendGrid('send_grid_user', 'send_grid_password');
 			$mail = new SendGrid\Mail();
 
 			$mail->addTo($to)->
@@ -213,7 +245,7 @@ class Projectleadcontrol extends CI_Controller{
 				'_smtp_auth' => TRUE,
 				'smtp_port' => 465,
 				'smtp_user' => 'mynotification007@gmail.com',
-				'smtp_pass' => 'user@123',
+				'smtp_pass' => 'xxxxx',
 				'mailtype'  => 'html',
 				'smtp_timeout' => '60',
 			);

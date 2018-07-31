@@ -40,12 +40,12 @@ class Leadmodel extends CI_Model{
 	}
 	
 	public function getleadcol(){
-		$query = $this->db->query("SELECT lead_owner as owner, first_name as 'first name', lastname as 'last name', title, phone,  lead_status as 'status',  state, website, '' AS action FROM  `crm_leads` ORDER BY id");
+		$query = $this->db->query("SELECT lead_owner as owner, first_name as 'first name', lastname as 'last name', title, phone,  lead_status as 'status',  state, '' AS action FROM  `crm_leads` ORDER BY id");
 		return $query->result();
 	}
 	
 	public function getleads(){
-		$query = $this->db->query("SELECT lead_owner, first_name, lastname, title, phone,  lead_status,  state, website, id AS action FROM  `crm_leads` ORDER BY id");	
+		$query = $this->db->query("SELECT lead_owner, first_name, lastname, title, phone,  lead_status,  state, id AS action FROM  `crm_leads` ORDER BY id");	
 		return $query->result_array();
 	}
 	
