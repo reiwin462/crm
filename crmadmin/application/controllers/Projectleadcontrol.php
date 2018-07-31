@@ -17,11 +17,11 @@ class Projectleadcontrol extends CI_Controller{
 		$newdata = array();
 		foreach ($decoded as $value) {
 			if($value["name"] == "more_info"){
-				$insert .= $value["name"] . "='" . $value["value"]."',";
+				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
 			}
 			elseif($value["name"] == "proj_no"){
 				$prjno = $value["value"];
-				$insert .= $value["name"] . "='" . $value["value"]."',";
+				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
 			}
 			elseif($value["name"] == "bid_value"){
 				$insert .= $value["name"] . "='" .preg_replace("/\.+$/i", "", preg_replace("/[^0-9\.]/i", "", $value["value"]))."',";
