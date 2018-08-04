@@ -17,7 +17,7 @@ class Projectleadmodel extends CI_Model{
 		return $query->result();
 	}
 	public function getprojleads(){
-		$query = $this->db->query("SELECT proj_no, bid_date, client_name, address, bid_value, lead_status, created_by, id as action from project_leads");
+		$query = $this->db->query("SELECT proj_no, bid_date, client_name, address, bid_value, lead_source, created_by, id as action from project_leads order by id desc");
 		return $query->result_array();
 	}
 	

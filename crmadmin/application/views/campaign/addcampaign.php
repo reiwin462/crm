@@ -6,11 +6,10 @@
 		</header>
 		<hr class="widget-separator">
 		<div class="widget-body">
-								
-					<div class="row">
+					<div class="">
 						<?php echo $form; ?>
 					</div>
-					<div class="row">
+					<div class="row actbutt">
 						<button type="button" class="btn mw-md btn-success" onclick="processcampaign();" >Save</button>
 						<button type="button" class="btn mw-md btn-danger" onclick="reset();">Cancel</button>
 					</div>
@@ -46,9 +45,13 @@ function processcampaign(){
 	});
 	
 	if(isNull == "pass"){
+		$('#prevDiv').hide();
+		$('.preloader').fadeIn();
 		$.post("<?php echo base_url("campaigncontrol/campaignInsert"); ?>",
 		{data: JSON.stringify($("#newcampaign").serializeArray()) }) 
 		.success(function(data) {
+			$('#prevDiv').show();
+			$('.preloader').fadeOut();
 			swal({
 				  type: 'success',
 				  title: 'New Campaign',

@@ -77,7 +77,7 @@ class Leadmodel extends CI_Model{
 	}
 
 	public function getdispoleads($dispo){
-		$query = $this->db->query("SELECT lead_owner, first_name, lastname, title, phone,  lead_status,  state, website, id AS action FROM  `crm_leads` where  lead_status='".trim($dispo)."' ORDER BY id");
+		$query = $this->db->query("SELECT lead_owner, first_name, lastname, title, phone,  lead_status,  state, id AS action FROM  `crm_leads` where  lead_status='".trim($dispo)."' ORDER BY id");
 		return $query->result_array();
 	}
 	

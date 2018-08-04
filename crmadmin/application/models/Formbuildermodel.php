@@ -159,7 +159,7 @@ class Formbuildermodel extends CI_Model {
 					  confirmButtonText: "Insert",
 					  showLoaderOnConfirm: true,
 					  preConfirm: (xitem) => {
-						var link = "/crm/index.php/process/newitem/"+ fld + "/" +  $("#newdropdownitem").val();
+						var link = "/crm/process/newitem/"+ fld + "/" +  $("#newdropdownitem").val();
 						newdata = $("#newdropdownitem").val();
 						return fetch(link)
 						  .then(response => {
@@ -203,7 +203,7 @@ class Formbuildermodel extends CI_Model {
 					});
 				}
 				</script>';
-		return $htm;
+		return '<div class="row">'.$htm.'</div>';
 	}
 	
 	public function getfieldvalue($str){

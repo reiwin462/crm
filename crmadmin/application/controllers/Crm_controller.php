@@ -311,8 +311,8 @@ class Crm_controller extends CI_Controller{
 			'smtp_host' => 'ssl://smtp.googlemail.com',
 			'_smtp_auth' => TRUE,
 			'smtp_port' => 465,
-			'smtp_user' => 'mynotification007@gmail.com',
-			'smtp_pass' => 'user@123',
+			'smtp_user' => 'gmailuser@gmail.com',
+			'smtp_pass' => 'xxxx',
 			'mailtype'  => 'html',
 			'smtp_timeout' => '60',
 		);
@@ -340,7 +340,7 @@ class Crm_controller extends CI_Controller{
 	
 	function gsend(){
 		try {
-			$sendgrid = new SendGrid\SendGrid('mynotification007', 'user@123ata');
+			$sendgrid = new SendGrid\SendGrid('sendgriduser', 'sendgridpass');
 			$mail = new SendGrid\Mail();
 			$mail->addTo('reiwin462@gmail')->
 				   setFrom('mynotification007@gmail.com')->
