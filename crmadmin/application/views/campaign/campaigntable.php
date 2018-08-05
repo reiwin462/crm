@@ -6,13 +6,17 @@
     </header>
     <hr class="widget-separator">
 		<div class="widget-body">
-			<div id="campupdate">
-				<div class="row">
+			<div id="campupdate" >
+				<div class="">
 					<?php echo $form; ?>
 				</div>
-				<div class="row">
-					<button type="button" class="btn mw-md btn-success" onclick="updatecampaign();" >Save</button>
-					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();">Cancel</button>
+				<div id="camptask" class="row actbutt">
+					<button type="button" class="btn mw-md btn-success" onclick="unlock();" ><i class="fa fa-pencil"></i> Update</button>
+					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>
+				</div>	
+				<div id="campmain" class="row actbutt">
+					<button type="button" class="btn mw-md btn-success" onclick="updatecampaign();" ><i class="fa fa-check"></i> Save Update</button>
+					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
 				</div>	
 			</div>
         <div id="dtbl">
@@ -41,6 +45,7 @@ var rowindex = "";
 
 document.addEventListener("DOMContentLoaded", function() {
 	datatablereload();
+	lock();
 });
 
 function datatablereload(){
@@ -52,7 +57,7 @@ function datatablereload(){
 		dom: "tpi",
 		ajax: "<?php echo base_url(); ?>campaigncontrol/showallcampaign",
 		searching: true,
-		responsive: true,
+		responsive: false,
 		columns: [
 			null,
 			null,
@@ -70,7 +75,7 @@ function datatablereload(){
 		ajax: "<?php echo base_url(); ?>campaigncontrol/showallcampaign",
 		dom: 'ftlpi',
 		searching: true,
-		responsive: true,
+		responsive: false,
 		} );
 	}
 
@@ -98,15 +103,20 @@ function updatecampaign(){
 	});
 	
 	if(isNull == "pass"){
+		$('#prevDiv').hide();
+		$('.preloader').fadeIn();
 		$.post("<?php echo base_url("campaigncontrol/campaignupdate"); ?>",
 		{data: JSON.stringify($("#campaignupdate").serializeArray()) }) 
 			.success(function(data) {
+				$('#prevDiv').show();
+				$('.preloader').fadeOut();
 				swal({
 				  type: 'success',
 				  title: 'Update',
 				  text: 'You have successfully updated an item!',
 				  footer: '<a href>'+ data +'</a>'
 				});
+			lock();
 			datatablereload();
 		});		
 	}else{
@@ -119,6 +129,7 @@ function updatecampaign(){
 }
 
 function campaignupdate(bt){
+	unlock();
 	var xlink = "<?php echo base_url(); ?>" + 'campaigncontrol/getcampaigndetail/'  + bt;
 	$.get(xlink, function(data, status)
 	 {
@@ -138,13 +149,17 @@ function campaignupdate(bt){
 			});
 		});
 	});
+	lock();
 	$('#campupdate').toggle();
 	$('#dtbl').toggle();
+	
 }
 
 function cancelupdate(){
 	$('#dtbl').toggle();	
 	$('#campupdate').toggle();
+	campaign_reset();
+	lock();
 }
 
 function campaigndelete(id){
@@ -157,9 +172,14 @@ function campaigndelete(id){
 		  cancelButtonText: 'No, keep it'
 		}).then((result) => {
 		  if (result.value) {
+				$('#prevDiv').hide();
+				$('.preloader').fadeIn();
 				var xlink = "<?php echo base_url(); ?>campaigncontrol/campaignremove/" + id;
 				$.post(xlink,) 
 					.success(function(data) {
+					$('#prevDiv').show();
+					$('.preloader').fadeOut();
+
 					if(data == "success"){
 						datatablereload();
 						swal({
@@ -197,5 +217,28 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+function lock(){
+	$("#campaignupdate :input").each(function(){
+		$('#campmain').hide();
+		$(this).css({"border":"none", "background":"#f9f9f9", "border-bottom": "1px solid #e2e2e2"});
+		$(this).attr('readonly',true);
+		$('#camptask').show();		
+	});
+}
+
+function unlock(){
+	$("#campaignupdate :input").each(function(){
+		$('#campmain').show();
+		$(this).css({"border":"1px solid #e2e2e2", "background":"#fffef2", "border-bottom": "1px solid #e2e2e2"});
+		$(this).attr('readonly',false);
+		$('#camptask').hide();		
+	});
+}
+
+function campaign_reset(){
+	$("#campaignupdate :input").each(function(){
+		$(this).val('');
+	});
+}
 
 </script>

@@ -223,7 +223,7 @@ class Projectleadcontrol extends CI_Controller{
 	function sendemail($sbj, $to, $msg){
 		
 		try {
-			$sendgrid = new SendGrid\SendGrid('send_grid_user', 'send_grid_password');
+			$sendgrid = new SendGrid\SendGrid('send_grid_user', 'send_grid_pass');
 			$mail = new SendGrid\Mail();
 
 			$mail->addTo($to)->
@@ -245,7 +245,7 @@ class Projectleadcontrol extends CI_Controller{
 				'_smtp_auth' => TRUE,
 				'smtp_port' => 465,
 				'smtp_user' => 'mynotification007@gmail.com',
-				'smtp_pass' => 'xxxxx',
+				'smtp_pass' => 'user@123',
 				'mailtype'  => 'html',
 				'smtp_timeout' => '60',
 			);

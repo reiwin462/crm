@@ -1,21 +1,25 @@
 
 
-<div id="prevDiv" class="widget">
+<div  class="widget">
     <header class="widget-header info">
         <h4 class="widget-title">Project Leads Details</h4>
     </header>
     <hr class="widget-separator">
 		<div class="widget-body">
-			<div id="campupdate">
-				<div class="row">
+			<div id="prlupdate">
+				<div class="">
 					<?php echo $form; ?>
 				</div>
 				<br>
 				<br>
 				<br>
-				<div class="row">
-					<button type="button" class="btn mw-md btn-success" onclick="updateprojlead();" >Save</button>
-					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();">Cancel</button>
+				<div id="prltask" class="row actbutt">
+					<button type="button" class="btn mw-md btn-success" onclick="prcUpdate();" ><i class="fa fa-pencil"></i> Update</button>
+					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>
+				</div>	
+				<div id="prlmain" class="row actbutt">
+					<button type="button" class="btn mw-md btn-success" onclick="updateprojlead();" ><i class="fa fa-check"></i> Save</button>
+					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
 				</div>	
 			</div>
 					
@@ -57,7 +61,7 @@ function datatablereload(){
 		dom: "tpi",
 		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads",
 		searching: true,
-		responsive: true,
+		responsive: false,
 		columns: [
 			null,
 			null,
@@ -77,7 +81,7 @@ function datatablereload(){
 		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads",
 		dom: 'ftlpi',
 		searching: true,
-		responsive: true,
+		responsive: false,
 		} );
 	}
 
@@ -125,7 +129,7 @@ function updateprojlead(){
 	}
 	
 	$("#dtbl").toggle();
-	$("#campupdate").toggle();
+	$("#prlupdate").toggle();
 	
 }
 
@@ -135,6 +139,7 @@ function projleadupdate(bt){
 	$.get(xlink, function(data, status)
 	 {
 		$('#id').val(bt);
+		unlock();
 		var j = JSON.parse(data);
 		$.each(j[0], function(key, value){
 			$("#projleadform :input").each(function(){
@@ -158,6 +163,7 @@ function projleadupdate(bt){
 								['height', ['height']]
 								],
 							});
+							$('#more_info').summernote('disable');		
 						}else if(name == "bid_value"){
 							//$(this).val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
 							$('#bid_value').val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
@@ -169,14 +175,19 @@ function projleadupdate(bt){
 				}
 			});
 		});
+		lock();
 	});
-	$('#campupdate').toggle();
+	
+	$('#prlupdate').toggle();
 	$('#dtbl').toggle();
+
 }
 
 function cancelupdate(){
 	$('#dtbl').toggle();	
-	$('#campupdate').toggle();
+	$('#prlupdate').toggle();
+	proj_reset();
+	lock();
 }
 
 function projleaddelete(id){
@@ -223,6 +234,36 @@ function formatDate(date) {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');
+}
+
+
+function lock(){
+	$("#projleadform :input").each(function(){
+		$('#prlmain').hide();
+		$(this).css({"border":"none", "background":"#f9f9f9", "border-bottom": "1px solid #e2e2e2"});
+		$(this).attr('readonly',true);
+		$('#prltask').show();
+	});
+}
+
+function unlock(){
+	$("#projleadform :input").each(function(){
+		$('#prlmain').show();
+		$(this).css({"border":"1px solid #e2e2e2", "background":"#fffef2", "border-bottom": "1px solid #e2e2e2"});
+		$(this).attr('readonly',false);
+		$('#prltask').hide();
+	});		
+}
+
+function prcUpdate(){
+	$('#more_info').summernote('enable');
+	unlock();
+}
+
+function proj_reset(){
+	$("#projleadform :input").each(function(){
+		$(this).val('');
+	});		
 }
 
 

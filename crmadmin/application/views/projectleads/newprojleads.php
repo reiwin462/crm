@@ -10,13 +10,12 @@
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane fade active in" id="addprojleadtab">
 				<div class="innerdiv">
-					<div class="row" style="height: auto;">
+					<div >
 						<?php echo $form; ?>
-						
 					</div>
 					<br>
 					<br>
-				<div class="row">
+				<div class="row actbutt">
 					<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewprojlead();" >Save</button>
 					<button type="button" class="btn btn-sm mw-md btn-danger" onclick="reset();">Cancel</button>
 				</div>
@@ -59,6 +58,8 @@ function addnewprojlead(){
 		$.post("<?php echo base_url("Projectleadcontrol/newProjLead"); ?>",
 		{data: JSON.stringify($("#projleadform").serializeArray()) }) 
 			.success(function(data) {
+				$('#adddiv').show();	
+				$('.preloader').fadeOut();	
 				if(data.indexOf('duplicate') > -1){
 					  swal({
 						  type: 'error',
@@ -76,8 +77,7 @@ function addnewprojlead(){
 						$('#projleadform').trigger("reset");
 						$('#more_info').summernote('code', '');
 					}
-				$('#adddiv').show();	
-				$('.preloader').fadeOut();		
+					
 			});
 				
 	}
@@ -104,4 +104,5 @@ function reset(){
 		$(this).val('');
 	});
 }
+
 </script>

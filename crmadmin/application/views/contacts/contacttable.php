@@ -7,12 +7,16 @@
     <hr class="widget-separator">
 		<div class="widget-body">
 			<div id="campupdate">
-				<div class="row">
+				<div class="">
 					<?php echo $form; ?>
 				</div>
-				<div class="row">
-					<button type="button" class="btn mw-md btn-success" onclick="updatecontact();" >Save</button>
-					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();">Cancel</button>
+				<div id="ctctask" class="row actbutt">
+					<button type="button" class="btn mw-md btn-success" onclick="unlock();" ><i class="fa fa-pencil"></i> Update</button>
+					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>
+				</div>	
+				<div id="ctcmain" class="row actbutt">
+					<button type="button" class="btn mw-md btn-success" onclick="updatecontact();" ><i class="fa fa-check"></i> Save Update</button>
+					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
 				</div>	
 			</div>
 					
@@ -42,6 +46,7 @@ var recordid = "";
 var rowindex = "";
 
 document.addEventListener("DOMContentLoaded", function() {
+	lock();
 	datatablereload();
 });
 
@@ -54,7 +59,7 @@ function datatablereload(){
 		dom: "tpi",
 		ajax: "<?php echo base_url(); ?>contactcontrol/showallcontact",
 		searching: true,
-		responsive: true,
+		responsive: false,
 		columns: [
 			null,
 			null,
@@ -101,9 +106,13 @@ function updatecontact(){
 	});
 	
 	if(isNull == "pass"){
+		$('#prevDiv').hide();
+		$('.preloader').fadeIn();
 		$.post("<?php echo base_url("contactcontrol/contactupdate"); ?>",
 		{data: JSON.stringify($("#contactform").serializeArray()) }) 
 			.success(function(data) {
+				$('#prevDiv').show();
+				$('.preloader').fadeOut();
 				swal({
 				  type: 'success',
 				  title: 'Update',
@@ -111,7 +120,8 @@ function updatecontact(){
 				  footer: '<a href>'+ data +'</a>'
 				});
 			datatablereload();
-		});		
+		});
+		lock();
 	}else{
 		console.log('fail method execute');
 	}
@@ -122,9 +132,10 @@ function updatecontact(){
 }
 
 function contactupdate(bt){
+
 	var xlink = "<?php echo base_url(); ?>" + 'contactcontrol/getcontactdetail/'  + bt;
 	$.get(xlink, function(data, status)
-	 {
+	 {	
 		$('#id').val(bt);
 		var j = JSON.parse(data);
 		$.each(j[0], function(key, value){
@@ -148,6 +159,8 @@ function contactupdate(bt){
 function cancelupdate(){
 	$('#dtbl').toggle();	
 	$('#campupdate').toggle();
+	contact_reset();
+	lock();
 }
 
 function contactdelete(id){
@@ -160,10 +173,14 @@ function contactdelete(id){
 		  cancelButtonText: 'No, keep it'
 		}).then((result) => {
 		  if (result.value) {
+				$('#prevDiv').hide();
+				$('.preloader').fadeIn();
 				var xlink = "<?php echo base_url(); ?>contactcontrol/contactremove/" + id;
 				$.post(xlink,) 
 					.success(function(data) {
 					if(data == "success"){
+						$('#prevDiv').show();
+						$('.preloader').fadeOut();
 						datatablereload();
 						swal({
 							  type: 'success',
@@ -182,10 +199,16 @@ function contactdelete(id){
 					}		
 				});
 		  } else if (result.dismiss === Swal.DismissReason.cancel) {
-			
+
 		  }
 		});
 
+}
+
+function contact_reset(){
+	$("#contactform :input").each(function(){
+		$(this).val('');
+	});
 }
 
 function formatDate(date) {
@@ -200,5 +223,22 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+function lock(){
+	$("#contactform :input").each(function(){
+		$('#ctcmain').hide();
+		$(this).css({"border":"none", "background":"#f9f9f9", "border-bottom": "1px solid #e2e2e2"});
+		$(this).attr('readonly',true);
+		$('#ctctask').show();		
+	});
+}
+
+function unlock(){
+	$("#contactform :input").each(function(){
+		$('#ctcmain').show();
+		$(this).css({"border":"1px solid #e2e2e2", "background":"#fffef2", "border-bottom": "1px solid #e2e2e2"});
+		$(this).attr('readonly',false);
+		$('#ctctask').hide();		
+	});
+}
 
 </script>

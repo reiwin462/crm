@@ -13,7 +13,11 @@ class Campaigncontrol extends CI_Controller{
 		$decoded = json_decode($_POST['data'],true);
 		$insert = '';
 		foreach ($decoded as $value) {
-		   $insert .= $value["name"] . "='" . addslashes($value["value"])."',";
+			if($value["name"] == "expected_response" or $value["name"] == "actual_cost" or $value["name"] == "budgeted_cost" or $value["name"] == "expected_revenue"){
+				$insert .= $value["name"] . "='" . preg_replace("/\.+$/i", "", preg_replace("/[^0-9\.]/i", "", $value["value"])) ."',";
+			}else{
+				 $insert .= $value["name"] . "='" . addslashes($value["value"])."',";
+			}
 		}	
 			$insert .= 'created_by' . "='" . $this->session->userdata('crmuser') ."',";
 			$insert .= 'created_datetime' . "='" . date('Y-m-d H:i:s')."',";
@@ -83,6 +87,8 @@ class Campaigncontrol extends CI_Controller{
 		foreach ($decoded as $value) {
 			if($value["name"] != "id"){
 				$update .= $value["name"] . "='" . addslashes($value["value"])."',";
+			}if($value["name"] == "expected_response" or $value["name"] == "actual_cost" or $value["name"] == "budgeted_cost" or $value["name"] == "expected_revenue"){
+				$update .= $value["name"] . "='" . preg_replace("/\.+$/i", "", preg_replace("/[^0-9\.]/i", "", $value["value"])) ."',";
 			}else{
 				$id = addslashes($value["value"]);
 			}
