@@ -49,9 +49,14 @@ function addnewcontact(){
 	});
 	
 	if(isNull == "pass"){
+		$('#prevDiv').hide();
+		$('.preloader').fadeIn();
+		
 		$.post("<?php echo base_url("contactcontrol/contactinsert"); ?>",
 		{data: JSON.stringify($("#contactform").serializeArray()) }) 
 			.success(function(data) {
+				$('#prevDiv').show();
+				$('.preloader').fadeOut();
 				swal({
 					  type: 'success',
 					  title: 'New Contact',

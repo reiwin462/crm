@@ -211,7 +211,7 @@
 </div>
 
 <div class="wrap">
-	<section class="app-content">
+	<section id="prevDiv" class="app-content">
 			<?php 
 				if(isset($otherdata)){
 					$data['param'] = $otherdata;
@@ -222,8 +222,6 @@
 					}
 				}
 			?>
-			
-	
 	</section>
 </div>
 </main>
