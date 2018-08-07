@@ -75,30 +75,53 @@ class Projectleadcontrol extends CI_Controller{
 	
 	
 	
-	public function showallprojleads(){
+	public function showallprojleads($stat = ''){
 		$this->load->model('Projectleadmodel');	
-		$data =  $this->Projectleadmodel->getprojleads();
+		$data =  $this->Projectleadmodel->getprojleads(urldecode($stat));
 		$prjleads = array('data' => array());
 		if(count($data) > 0){			
 			$innerarray =  array();
-			foreach($data as $row){				
+			
+			foreach($data as $row){		
+					$wb = "";			
 				foreach($row as $key=>$val){
 					if(strlen($val) == 0){
 						$tdval = "blank";
+					}elseif($key == "website"){
+						$wb = $val;
+						$tdval = "";
 					}elseif($key == "action"){
-						$tdval = "<button class='btn btn-primary' onclick=\"projleadupdate('".$val."')\">
-									<i class='fa fa-tv' aria-hidden='true' style='font-size:18px' data-toggle='tooltip' title='Preview Item'></i>
+						
+						$tdval .= "<button class='btn btn-primary' onclick=\"projleadupdate('".$val."')\">
+									<i class='fa fa-tv' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Preview Lead'></i>
 								</button> 
-								<button class='btn btn-danger' onclick=\"projleaddelete('".$val."')\">
-									<i class='fa fa-trash-o' aria-hidden='true' style='font-size:18px' data-toggle='tooltip' title='Delete Item'></i>
+								<button class='btn btn-warning' onclick=\"projleadmanage('".$val."')\">
+									<i class='fa fa-bars' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Manage Lead'></i>
 								</button>";
+						if($wb <> ""){
+							if (strrpos($wb, "http") === false) { 
+								$tdval .= " <a href='".'http://'.$wb."' class='btn btn-success' target='_blank'>
+									<i class='fa fa-link' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Link to Lead'></i>
+								</button>";
+							}else{
+								$tdval .= " <a href='".$wb."' class='btn btn-success' target='_blank'>
+									<i class='fa fa-link' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Link to Lead'></i>
+								</button>";
+							}
+						}
+					
 					}else{
 						$tdval = $val;
 					}
 					if($key == "bid_value"){
 						$newinnerarray[] = number_format($tdval,2);
 					}else{
-						$newinnerarray[] = $tdval;
+						if($key === "website"){
+							$tdval = "";
+						}else{
+							$newinnerarray[] = $tdval;
+						}
+						
 					}
 					
 				}
@@ -107,6 +130,10 @@ class Projectleadcontrol extends CI_Controller{
 				$innerarray = array();
 			}
 		}else{
+			$newinnerarray[] = "<td>No Data Available</td>";
+			$newinnerarray[] = "<td>No Data Available</td>";
+			$newinnerarray[] = "<td>No Data Available</td>";
+			$newinnerarray[] = "<td>No Data Available</td>";
 			$newinnerarray[] = "<td>No Data Available</td>";
 			$newinnerarray[] = "<td>No Data Available</td>";
 			$newinnerarray[] = "<td>No Data Available</td>";
@@ -129,11 +156,13 @@ class Projectleadcontrol extends CI_Controller{
 	}
 	
 	public function projleadupdate(){
+
 		$this->load->model('Projectleadmodel');
 		$decoded = json_decode($_POST['data'],true);
 		$update = '';
 		$id = '';
 		//$uparray = array();
+		
 		foreach ($decoded as $value) {
 			if($value["name"] != "id"){
 				if($value["name"] == "bid_value"){
@@ -154,7 +183,7 @@ class Projectleadcontrol extends CI_Controller{
 		$update .= 'modified_date' . "='" . date('Y-m-d H:i:s')."',";
 		$htm = "";
 
-		$isupdate = $this->Projectleadmodel->updateprojlead(rtrim($update,","). "where id = '".trim($id)."'");
+		$isupdate = $this->Projectleadmodel->updateprojlead(rtrim($update,",").  "where id = '".trim($id)."'");
 		if($isupdate > 0){
 			echo "success";
 		}else{
@@ -187,6 +216,52 @@ class Projectleadcontrol extends CI_Controller{
 		}
 		
 
+	}
+	
+	public function statupdate($id){
+		
+		$this->load->model('Projectleadmodel');
+		$update = '';
+		$stts = $_POST['data']['lead_status'];
+
+		$lead = $this->Projectleadmodel->getleaddata($id);
+		
+		$update = "lead_description" . "='" .$stts."',";
+		$update .= 'modified_by' . "='" . $this->session->userdata('crmuser')."',";
+		$update .= 'modified_date' . "='" . date('Y-m-d H:i:s')."',";
+		$htm = "";
+		
+
+		$isupdate = $this->Projectleadmodel->updateprojlead(rtrim($update,","). "where id = '".trim(urldecode($id))."'");
+		if($isupdate > 0){
+			echo "success";
+		}else{
+			echo "error";
+		}
+		
+		/*
+			$htm .= '<h3 style="font-family: Century Gothic;">Field Update</h3>';
+			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;"> Updated By : '.$this->session->userdata('crmuser').'</p>';
+			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">Date :'. date('Y-m-d H:i:s').'</p>';
+			$htm .= '<hr>';
+			$htm .= '<table border="0" style="font-size: 12px; font-family: Century Gothic">';
+			$htm .= '<tr>
+						<th style="border:0px solid #e2e2e2; background-color: #ffe693; width: 150px;">Field</th>
+						<th style="border:1px solid #e2e2e2; background-color: #ffe693; width: 350px; ">Updated Value</th>
+					</tr>';
+					
+			$htm .= '<tr>
+						<td>'."Lead Status".'</td>
+						<td>'.$stts.'</td>
+					</tr>';
+			$htm .= '<tr><td></td><td></td></tr>';
+			$htm .= '</table>';
+			$htm .= '<br>';
+			$htm .= '<small style="font-family: Century Gothic">Mail Notification 2018</small>';
+			//echo $htm;
+			$this->sendemail('Project Lead Notification', $lead[0]['created_by'], $htm);
+		*/
+		
 	}
 	
 	public function projleadremove($id){
@@ -223,7 +298,7 @@ class Projectleadcontrol extends CI_Controller{
 	function sendemail($sbj, $to, $msg){
 		
 		try {
-			$sendgrid = new SendGrid\SendGrid('send_grid_user', 'send_grid_pass');
+			$sendgrid = new SendGrid\SendGrid('send_grid_user', 'send_grid_user');
 			$mail = new SendGrid\Mail();
 
 			$mail->addTo($to)->

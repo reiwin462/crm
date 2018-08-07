@@ -13,11 +13,17 @@ class Projectleadmodel extends CI_Model{
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
 	public function getprojcol(){
-		$query = $this->db->query("SELECT proj_no, client_name, bid_value, proj_stat, created_by, id as action from project_leads");
+		$query = $this->db->query("SELECT project_no, lead_description, bid_date, sales_officer, client_name, type_of_work, address, bid_value, lead_source, created_by, website, id as action from project_leads");
 		return $query->result();
 	}
-	public function getprojleads(){
-		$query = $this->db->query("SELECT proj_no, bid_date, client_name, address, bid_value, lead_source, created_by, id as action from project_leads order by id desc");
+	
+	public function getprojleads($stat = ""){
+		
+		if($stat == "ALL" or $stat == ""){
+			$query = $this->db->query("SELECT project_no, lead_description, bid_date, sales_officer, client_name, type_of_work, address, bid_value, lead_source, created_by, website, id as action from project_leads order by bid_date asc");
+		}else{
+			$query = $this->db->query("SELECT project_no, lead_description, bid_date, sales_officer, client_name, type_of_work, address, bid_value, lead_source, created_by, website, id as action from project_leads where lead_description = '". $stat. "' order by bid_date asc");
+		}
 		return $query->result_array();
 	}
 	
@@ -40,7 +46,7 @@ class Projectleadmodel extends CI_Model{
 	}
 	
 	public function checkprjno($no){
-		$query = $this->db->get_where('project_leads', array('proj_no'=>$no));
+		$query = $this->db->get_where('project_leads', array('project_no'=>$no));
 		return $query->num_rows();
 	}  
 	

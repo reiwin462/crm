@@ -83,12 +83,24 @@ class Formbuildermodel extends CI_Model {
 							 </div>';
 				break;
 			case "TEXTAREA":
+					// initiate close for div row
+					/*
+					$htm .= '</div>
+								<div class="row" style="padding:10px;">
+									<div class="form-group">
+										<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
+										<textarea class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.'>'.$flddefault.'</textarea>
+									</div>
+								</div>
+					<div class="row" >';
+					*/
 					$htm .= '<div class="col-md-12">
 								<div class="form-group">
-									<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
-									<textarea class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.'>'.$flddefault.'</textarea>
-								</div>
+										<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
+										<textarea class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.'>'.$flddefault.'</textarea>
+									</div>
 							 </div>';
+					// initiate close for div reopen
 				break;
 			case "DATE":
 					$htm .= '<div class="col-md-'.trim($colratio).'">
