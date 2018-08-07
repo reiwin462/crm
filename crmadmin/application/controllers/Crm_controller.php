@@ -254,20 +254,25 @@ class Crm_controller extends CI_Controller{
 				$this->load->model('Crmmodel');
 				$this->load->model('Formbuildermodel');
 				$this->load->model('Projectleadmodel');
+				$this->load->model('Leadmodel');
 				
 				$structure = $this->Crmmodel->gettablestructure('project_leads');
 				$data['structure']  = $structure;
 				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'project_leads', 'yes','projleadform');
+				$data['leadstat'] =  $this->Leadmodel->getleadstatus();
 				$colhtm = "";
 				$colhtm .= "<th>Project No</th>";
+				$colhtm .= "<th>Description</th>";
 				$colhtm .= "<th>Bid Date</th>";
+				$colhtm .= "<th>Officer</th>";
 				$colhtm .= "<th>Client Name</th>";
+				$colhtm .= "<th>Work Type</th>";
 				$colhtm .= "<th>Address</th>";
 				$colhtm .= "<th>Bid Value</th>";
 				$colhtm .= "<th>Source</th>";
 				$colhtm .= "<th>Created By</th>";
 				$colhtm .= "<th>Action</th>";
-				
+			
 				/*
 				$col = $this->Projectleadmodel->getprojcol();
 				$colhtm = '';
