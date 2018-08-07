@@ -22,9 +22,19 @@
 					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
 				</div>	
 			</div>
-					
-		
+
         <div id="dtbl" class="table-responsive">
+			<div id="leadsel" class="row">
+				<label class="col-md-1">Status</label>
+				<div class="col-md-3 float-right">
+						<select class="form-control" onchange="datatablereload($(this).val());">
+						   <option value="ALL" >All Leads</option>
+							<?php foreach($leadstat as $field=>$val): ?>
+								<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
+							<?php endforeach; ?>
+						</select>
+				</div>
+			</div>
 			<table id="responsive-datatable" class="table table-striped" cellspacing="0" width="100%">
 				<thead>
 					<tr>
@@ -44,22 +54,52 @@
 	</div>
 </div>
 
+<div id="statmodal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Lead Update</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+			<form id="upform" method="POST">
+				<input type="hidden" id="leaddelete" name="leaddelete" ></input>
+				<label for="leadstatusupdate">Lead Status</label>
+				<select class="form-control" id="leadstatusupdate" id="lead_status">
+					<option value="" disabled selected>Select From Item Below</option>
+						<?php foreach($leadstat as $field=>$val): ?>
+							<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
+						<?php endforeach; ?>
+				</select>
+			</form>
+      </div>
+      <div class="modal-footer">
+		<button type="button" class="btn btn-danger float-left" onclick="projleaddelete();"><i class='fa fa-trash' aria-hidden='true' style='font-size:16px'></i>&nbsp; Delete</button>
+        <button type="button" class="btn btn-primary" onclick="projleadinstaupdate();"><i class='fa fa-save' aria-hidden='true' style='font-size:16px'></i>&nbsp; Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 var recordid = "";
 var rowindex = "";
 
 document.addEventListener("DOMContentLoaded", function() {
-	datatablereload();
+	datatablereload('');
 });
 
-function datatablereload(){
-	
+function datatablereload(sts){
+
 	if(window.location.href.indexOf("showcampaigntable") > -1) {
 		var table = $('#responsive-datatable').DataTable();
 		table.destroy();
 		var table = $('#responsive-datatable').DataTable( {
-		dom: "tpi",
-		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads",
+		dom: "ftpi",
+		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads/" + sts,
 		searching: true,
 		responsive: false,
 		columns: [
@@ -71,17 +111,32 @@ function datatablereload(){
 			null,
 			null,
 			null,
-			{ "width": "15%" },
+			null,
+			null,
+			{ "width": "10%" },
 		]
 		} );
     }else{
 		var table = $('#responsive-datatable').DataTable();
 		table.destroy();
 		var table = $('#responsive-datatable').DataTable( {
-		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads",
-		dom: 'ftlpi',
+		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads/" + sts,
+		dom: 'ftpi',
 		searching: true,
 		responsive: false,
+		columns: [
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			null,
+			{ "width": "10%" },
+		]
 		} );
 	}
 
@@ -120,16 +175,18 @@ function updateprojlead(){
 				  text: 'You have successfully updated a lead!',
 				  footer: '<a href>'+ data +'</a>'
 				});
-			datatablereload();
+			datatablereload('');
 			$('.preloader').fadeOut();
 			$('#prevDiv').show();			
-		});		
+		});
+		
+		$("#dtbl").toggle();
+		$("#prlupdate").toggle();
+			
 	}else{
 		console.log('fail method execute');
 	}
 	
-	$("#dtbl").toggle();
-	$("#prlupdate").toggle();
 	
 }
 
@@ -190,7 +247,8 @@ function cancelupdate(){
 	lock();
 }
 
-function projleaddelete(id){
+function projleaddelete(){
+	var id = $('#leaddelete').val();
 	Swal({
 		  title: 'Are you sure?',
 		  text: 'Item will be permanently be removed from the database',
@@ -200,16 +258,53 @@ function projleaddelete(id){
 		  cancelButtonText: 'No, keep it'
 		}).then((result) => {
 		  if (result.value) {
+			  $('#statmodal').modal('hide');
 			  $('#prevDiv').hide();
 			  $('.preloader').fadeIn();	
 				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/projleadremove/" + id;
 				$.post(xlink,) 
 				.success(function(data) {
-						datatablereload();
+						datatablereload('');
 						swal({
 							  type: 'success',
 							  title: 'Delete',
-							  text: 'You have success deleted an item. Thank you!',
+							  text: 'You have successfully deleted an item. Thank you!',
+							  footer: '<a href>'+ data +'</a>'
+							});
+						$('.preloader').fadeOut();
+						$('#prevDiv').show();		
+				});
+				
+		  } else if (result.dismiss === Swal.DismissReason.cancel) {
+		  }
+		});
+
+}
+
+function projleadinstaupdate(){
+	var id = $('#leaddelete').val();
+	var sts = $('#leadstatusupdate').val();
+	Swal({
+		  title: 'Are you sure?',
+		  text: 'Lead Status will be Updated!',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, Update it!',
+		  cancelButtonText: 'No, keep it'
+		}).then((result) => {
+			$('#statmodal').modal('hide');	
+		  if (result.value) {
+			  $('#statmodal').modal('hide');
+			  $('#prevDiv').hide();
+			  $('.preloader').fadeIn();	
+				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/statupdate/" + id;
+				$.post(xlink,{data: {lead_status: sts, id:id}}) 
+				.success(function(data) {
+						datatablereload('');
+						swal({
+							  type: 'success',
+							  title: 'Update',
+							  text: 'You have successfully updated an item. Thank you!',
 							  footer: '<a href>'+ data +'</a>'
 							});
 						$('.preloader').fadeOut();
@@ -219,9 +314,7 @@ function projleaddelete(id){
 		  } else if (result.dismiss === Swal.DismissReason.cancel) {
 			
 		  }
-			
 		});
-
 }
 
 function formatDate(date) {
@@ -266,5 +359,15 @@ function proj_reset(){
 	});		
 }
 
+function openlink(lnk){
+	 window.open('www.yourdomain.com','_blank');
+	var win = window.open(lnk, '_blank');
+	win.focus();
+}
+
+function projleadmanage($id){
+	$('#leaddelete').val($id);
+	$('#statmodal').modal();
+}
 
 </script>
