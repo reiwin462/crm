@@ -13,6 +13,8 @@
 					<div >
 						<?php echo $form; ?>
 					</div>
+				<br>
+				<br>
 				<div class="row actbutt">
 					<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewprojlead();" >Save</button>
 					<button type="button" class="btn btn-sm mw-md btn-danger" onclick="reset();">Cancel</button>

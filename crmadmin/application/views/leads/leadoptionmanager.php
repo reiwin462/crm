@@ -14,7 +14,8 @@
 						<select class="form-control" id="dropdown" name="dropdown" onchange="showmyoption(this);">
 							<option value="" disabled selected>Select From Item Below</option>
 							<?php foreach($dropdown as $key=>$val): ?>
-								<option value="<?php echo $val->Field; ?>"><?php echo $val->Field; ?></option>
+								<!--<option value="<?php echo $val->Field; ?>"><?php echo $val->Field; ?></option>-->
+								<option value="<?php echo $val->dropdownitem; ?>"><?php echo $val->dropdownitem; ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>

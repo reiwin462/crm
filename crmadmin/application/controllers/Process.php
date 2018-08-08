@@ -12,10 +12,10 @@ class Process extends CI_Controller{
 		
 	}
 	
-	public function newitemx($field, $value){
+	public function newitem($field, $value){
 		if($value != ""){
 			$this->load->model('Crmmodel');
-			echo $lead = $this->Crmmodel->addselectopt($field, urldecode($value));
+			echo $lead = $this->Crmmodel->addselectopt(urldecode($field), urldecode($value));
 		}else{
 			echo  "invalid";
 		}
