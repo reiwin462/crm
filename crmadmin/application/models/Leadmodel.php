@@ -35,7 +35,8 @@ class Leadmodel extends CI_Model{
 	}
 	
 	public function getdropdowns(){
-		$query = $this->db->query("SHOW FULL FIELDS FROM `crm_leads` WHERE COMMENT REGEXP 'DROPDOWN'");
+		//$query = $this->db->query("SHOW FULL FIELDS FROM `crm_leads` WHERE COMMENT REGEXP 'DROPDOWN'");
+		$query = $this->db->query("Select dropdownitem FROM `crm_dropdown`");
 		return $query->result();
 	}
 	

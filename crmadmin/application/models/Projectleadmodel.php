@@ -13,16 +13,16 @@ class Projectleadmodel extends CI_Model{
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
 	public function getprojcol(){
-		$query = $this->db->query("SELECT project_no, lead_description, bid_date, sales_officer, client_name, type_of_work, address, bid_value, lead_source, created_by, website, id as action from project_leads");
+		$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads order by  bid_date asc");
 		return $query->result();
 	}
 	
 	public function getprojleads($stat = ""){
 		
 		if($stat == "ALL" or $stat == ""){
-			$query = $this->db->query("SELECT project_no, lead_description, bid_date, sales_officer, client_name, type_of_work, address, bid_value, lead_source, created_by, website, id as action from project_leads order by bid_date asc");
+			$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads order by  bid_date asc");
 		}else{
-			$query = $this->db->query("SELECT project_no, lead_description, bid_date, sales_officer, client_name, type_of_work, address, bid_value, lead_source, created_by, website, id as action from project_leads where lead_description = '". $stat. "' order by bid_date asc");
+			$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads where lead_source = '". $stat. "' order by bid_date asc");
 		}
 		return $query->result_array();
 	}
