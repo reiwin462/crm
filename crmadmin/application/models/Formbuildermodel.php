@@ -171,7 +171,7 @@ class Formbuildermodel extends CI_Model {
 					  confirmButtonText: "Insert",
 					  showLoaderOnConfirm: true,
 					  preConfirm: (xitem) => {
-						var link = "/crm/process/newitem/"+ fld + "/" +  $("#newdropdownitem").val();
+						var link = "'. base_url() .'process/newitem/"+ fld + "/" +  $("#newdropdownitem").val();
 						newdata = $("#newdropdownitem").val();
 						return fetch(link)
 						  .then(response => {

@@ -19,7 +19,7 @@ class Projectleadcontrol extends CI_Controller{
 			if($value["name"] == "more_info"){
 				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
 			}
-			elseif($value["name"] == "proj_no"){
+			elseif($value["name"] == "project_no"){
 				$prjno = $value["value"];
 				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
 			}
@@ -87,7 +87,7 @@ class Projectleadcontrol extends CI_Controller{
 				foreach($row as $key=>$val){
 					if(strlen($val) == 0){
 						$tdval = "blank";
-					}elseif($key == "website"){
+					}elseif($key == "link"){
 						$wb = $val;
 						$tdval = "";
 					}elseif($key == "action"){
@@ -116,7 +116,7 @@ class Projectleadcontrol extends CI_Controller{
 					if($key == "bid_value"){
 						$newinnerarray[] = number_format($tdval,2);
 					}else{
-						if($key === "website"){
+						if($key === "link"){
 							$tdval = "";
 						}else{
 							$newinnerarray[] = $tdval;
@@ -226,7 +226,7 @@ class Projectleadcontrol extends CI_Controller{
 
 		$lead = $this->Projectleadmodel->getleaddata($id);
 		
-		$update = "lead_description" . "='" .$stts."',";
+		$update = "lead_status" . "='" .$stts."',";
 		$update .= 'modified_by' . "='" . $this->session->userdata('crmuser')."',";
 		$update .= 'modified_date' . "='" . date('Y-m-d H:i:s')."',";
 		$htm = "";
@@ -273,7 +273,7 @@ class Projectleadcontrol extends CI_Controller{
 			$htm .= '<h3 style="font-family: Century Gothic; color:red;">Lead Deletion</h3>';
 			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;"> Removed By : '.$this->session->userdata('crmuser').'</p>';
 			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">Date :'. date('Y-m-d H:i:s').'</p>';
-			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">'.'Project Code : '.$lead[0]['proj_no'].'</p>';
+			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">'.'Project Code : '.$lead[0]['project_no'].'</p>';
 			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">'.'Client : '.$lead[0]['client_name'].'</p>';
 			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">'.'Bid Value : '.$lead[0]['bid_value'].'</p>';
 			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">'.'Created By : '.$lead[0]['created_by'].'</p>';
@@ -298,7 +298,7 @@ class Projectleadcontrol extends CI_Controller{
 	function sendemail($sbj, $to, $msg){
 		
 		try {
-			$sendgrid = new SendGrid\SendGrid('send_grid_user', 'send_grid_user');
+			$sendgrid = new SendGrid\SendGrid('sendmailuser', 'usersendmailpass');
 			$mail = new SendGrid\Mail();
 
 			$mail->addTo($to)->

@@ -262,10 +262,10 @@ class Crm_controller extends CI_Controller{
 				$data['leadstat'] =  $this->Leadmodel->getleadstatus();
 				$colhtm = "";
 				$colhtm .= "<th>Project No</th>";
-				$colhtm .= "<th>Description</th>";
+				$colhtm .= "<th>Lead Status</th>";
 				$colhtm .= "<th>Bid Date</th>";
-				$colhtm .= "<th>Officer</th>";
-				$colhtm .= "<th>Client Name</th>";
+				$colhtm .= "<th>S R</th>";
+				$colhtm .= "<th>Project Name</th>";
 				$colhtm .= "<th>Work Type</th>";
 				$colhtm .= "<th>Address</th>";
 				$colhtm .= "<th>Bid Value</th>";
