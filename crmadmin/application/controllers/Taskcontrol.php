@@ -11,10 +11,13 @@ class Taskcontrol extends CI_Controller{
 	public function newtask(){
 		$decoded = json_decode($_POST['data'],true);
 		$insert = '';
+		
+		die($decoded);
 		foreach ($decoded as $value) {
 		   $insert .= $value["name"] . "='" . addslashes($value["value"])."',";
 		}
 		$insert .= "created_by='"."session user"."', created_datetime=sysdate(),";
+		
 		$this->load->model('Taskmodel');
 		echo $this->Taskmodel->insertnewtask($insert);
 	}
@@ -30,7 +33,6 @@ class Taskcontrol extends CI_Controller{
 									<small class="text-muted">[ '.$val->status.' ] - '. $val->subject. ' </small>
 									<p>'.$val->created_by .' wrote '.$val->description .'</p>
 									<small class="text-muted">'.$val->due_date.'</small>
-									
 							</div>
 						</div>';
 			}

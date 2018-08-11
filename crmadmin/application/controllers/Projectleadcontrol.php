@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+use Google\Cloud\Storage\StorageClient;
 require_once(APPPATH.'third_party/sendgrid/SendGrid_loader.php');
 
 class Projectleadcontrol extends CI_Controller{
@@ -56,21 +57,15 @@ class Projectleadcontrol extends CI_Controller{
 			
 			$insert .= 'created_by' . "='" . $this->session->userdata('crmuser')."',";
 			$insert .= 'created_date' . "='" . date('Y-m-d H:i:s')."',";
-			
-			
 			$check = $this->Projectleadmodel->checkprjno($insert);
 			
 			$isinsert = $this->Projectleadmodel->insertnewprojleads($insert);
 			if($isinsert > 0){
-				echo "success";
+				echo $isinsert;
 			}else{
 				echo "error";
 			}
-			$this->sendemail('Project Lead Notification', $this->session->userdata('crmuser'), $htm);
 		}
-		
-		
-	
 	}
 	
 	
@@ -288,17 +283,181 @@ class Projectleadcontrol extends CI_Controller{
 				echo "error";
 			}
 			
+			
 			$this->sendemail('Project Lead Notification', $lead[0]['created_by'], $htm);			
+		
 		}else{
 			echo  "invalid";
 		}
 	}
 	
 	
+	public function insertdocument(){
+				
+		$docu = array('project_id' => trim($this->input->post('id')),
+				'doc_filename' => trim(addslashes($_POST['data'][0]['value'])),
+				'doc_keywords' =>  trim(addslashes($_POST['data'][1]['value'])),
+				'doc_Content' =>  trim(addslashes($_POST['data'][2]['value'])),
+				'created_by' => $this->session->userdata('crmuser'),
+				'created_date' => date('Y-m-d H:i:s'),
+				);
+		$this->load->model('Projectleadmodel');
+		$isdocuinsert = $this->Projectleadmodel->insertdocu($docu);
+		if($isdocuinsert > 0){
+			echo "success";
+		}else{
+			echo "error";
+		}
+	}
+	
+	public function getdocument($projid){
+		$htm = "";
+		if(!isset($projid)){
+			echo "error";
+		}else{
+			$this->load->model('Projectleadmodel');
+			$doc = $this->Projectleadmodel->getdocudata(urldecode($projid));
+			if(count($doc) > 0 ){
+				foreach ($doc as $key=>$val){
+					
+					$htm .= '<br><div class="widget stats-widget">
+					<footer class="widget-footer bg-primary">
+						<span>'.$this->timeAgo($val['created_date']).'</span>
+						<small class="float-right">     :         '.$val['created_by'].' </small>
+					</footer>
+					<div class="widget-body clearfix">
+						<div class="pull-left">
+							<h4 class="widget-title text-primary"><span class="counter" data-plugin="counterUp">'.$val['doc_filename'].'</span></h4>
+							<small class="text-primary">[ '.$val['doc_keywords'].' ]</small>
+							<small class="text-color">'.$val['doc_Content'].'</small>
+						</div>
+						<span class="pull-right big-icon watermark"><i class="fa fa-phone-square"></i></span>
+					</div>
+				</div>';
+				}				
+			}else{
+				$htm = "<br>". '<footer class="widget-footer bg-primary">No Available Document to Preview</footer>';
+			}
+		}
+		echo $htm;
+	}
+	
+	
+	public function getplan($projid){
+		$htm = "";
+		if(!isset($projid)){
+			echo "error";
+		}else{
+			$this->load->model('Projectleadmodel');
+			$doc = $this->Projectleadmodel->getplandata(urldecode($projid));
+			$i = 1;
+			if(count($doc) > 0 ){
+				foreach ($doc as $key=>$val){
+					
+					$img = substr(trim($val['filename_type']), 0, 5);
+					if($img == "image"){
+						$fav = '<i class="fa fa-image"></i>';
+						//$htm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px'></a>";	
+						$htm .= "<img src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";	
+					}else{
+						$fav = '<i class="fa fa-file-alt"></i>'; 
+						$htm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='../assets/images/pdf.png' width='100px' height='100px'></a>";
+					}
+					
+					$i++;
+				}
+			}else{
+				$htm = "<br>". "No available File to Preview";
+			}
+		}
+		echo $htm;
+	}
+	
+	
+	public function planupload(){
+		$iserror = "";
+		$attachment_filename = "";
+		$attach_type = "";
+	
+		if($_FILES['file']['error'] == 0) {
+			if($_FILES['file']['size'] > 10000000) {
+				$iserror =  "error file size";
+				echo "error " . $iserror;
+				exit();
+			}
+							
+			$acceptable = array(
+				'application/pdf',
+				'image/jpeg',
+				'image/jpg',
+				'image/gif',
+				'image/png',
+				'image/gif'
+				);
+							
+			if(!in_array($_FILES['file']['type'], $acceptable) && !empty($_FILES["file"]["type"])) {
+				$iserror =  "error invalid filename";
+				echo "error " . $iserror;
+				exit();
+			}
+			
+			$uniq = $this->uniqidReal();
+			$name = $_FILES['file']['name'];  
+			$file_tmp =$_FILES['file']['tmp_name'];  
+							
+			/*if(!move_uploaded_file($file_tmp, $original)) {
+				die();
+			}*/
+			$storage = new StorageClient(['projectId' => 'steve-unified','keyFilePath' => './key.json']);
+			$file = fopen($file_tmp, 'r');
+			$bucket = $storage->bucket("steve-unified");
+			$oldobject = $bucket->object($uniq.$name);
+			if($oldobject->exists()) {
+				$iserror =  "error The file already exist in our server";
+				echo "error " . $iserror;
+				exit();
+			}
+			$object = $bucket->upload($file, [
+				'name' => $uniq.$name
+			]);
+							
+			$attachment_filename = $uniq.$name;
+			$attach_type = $_FILES["file"]["type"];
+		}
+		
+		if(!$iserror == ""){
+			echo "error ". $iserror;
+		}else{
+			$data = array(
+				"project_id"	=> $this->input->post('leadid'),
+				"filename"		=> addslashes($name),
+				"filename_path"	=> $attachment_filename,
+				"filename_type"	=> $attach_type,
+				"created_by"	=> $this->session->userdata('crmuser'),
+				"created_date"	=> date('Y-m-d H:i:s'),
+			);
+			$this->load->model('Projectleadmodel');
+			$isplaninsert = $this->Projectleadmodel->insertplan($data);
+			
+			if($isplaninsert > 0){
+				echo "success";
+			}else{
+				echo "error insert";
+			}
+		}
+		
+		/*
+		$html .= "<td><a href='https://storage.googleapis.com/steve-unified/$row->attachment' target='_blank'>DOWNLOAD</a></td>";
+		https://storage.googleapis.com/steve-unified/9a6d4756fcce0geogrout.jpg
+		*/
+
+	}
+	
+	
 	function sendemail($sbj, $to, $msg){
 		
 		try {
-			$sendgrid = new SendGrid\SendGrid('sendmailuser', 'usersendmailpass');
+			$sendgrid = new SendGrid\SendGrid('sendgriduser', 'sendgridpass');
 			$mail = new SendGrid\Mail();
 
 			$mail->addTo($to)->
@@ -306,10 +465,10 @@ class Projectleadcontrol extends CI_Controller{
 				   setSubject($sbj)->
 				   setText(strip_tags($msg))->
 				   setHtml($msg);
-				echo $sendgrid->send($mail);
+				   $sendgrid->send($mail);
 					
 		} catch (InvalidArgumentException $e) {
-			echo 'There was an error'. $e;
+			///echo 'There was an error'. $e;
 		}
 		
 		/* send via codeigniter library
@@ -340,6 +499,87 @@ class Projectleadcontrol extends CI_Controller{
 		*/
 
 	}
+	
+	
+	public function uniqidReal($lenght = 13) {
+		if (function_exists("random_bytes")) {
+			$bytes = random_bytes(ceil($lenght / 2));
+		} elseif (function_exists("openssl_random_pseudo_bytes")) {
+			$bytes = openssl_random_pseudo_bytes(ceil($lenght / 2));
+		} else {
+			throw new Exception("no cryptographically secure random function available");
+		}
+		return substr(bin2hex($bytes), 0, $lenght);
+	}
+	
+	
+	
+	public function timeAgo($time_ago)
+{
+    $time_ago = strtotime($time_ago);
+    $cur_time   = time();
+    $time_elapsed   = $cur_time - $time_ago;
+    $seconds    = $time_elapsed ;
+    $minutes    = round($time_elapsed / 60 );
+    $hours      = round($time_elapsed / 3600);
+    $days       = round($time_elapsed / 86400 );
+    $weeks      = round($time_elapsed / 604800);
+    $months     = round($time_elapsed / 2600640 );
+    $years      = round($time_elapsed / 31207680 );
+    // Seconds
+    if($seconds <= 60){
+        return "just now";
+    }
+    //Minutes
+    else if($minutes <=60){
+        if($minutes==1){
+            return "one minute ago";
+        }
+        else{
+            return "$minutes minutes ago";
+        }
+    }
+    //Hours
+    else if($hours <=24){
+        if($hours==1){
+            return "an hour ago";
+        }else{
+            return "$hours hrs ago";
+        }
+    }
+    //Days
+    else if($days <= 7){
+        if($days==1){
+            return "yesterday";
+        }else{
+            return "$days days ago";
+        }
+    }
+    //Weeks
+    else if($weeks <= 4.3){
+        if($weeks==1){
+            return "a week ago";
+        }else{
+            return "$weeks weeks ago";
+        }
+    }
+    //Months
+    else if($months <=12){
+        if($months==1){
+            return "a month ago";
+        }else{
+            return "$months months ago";
+        }
+    }
+    //Years
+    else{
+        if($years==1){
+            return "one year ago";
+        }else{
+            return "$years years ago";
+        }
+    }
+}
 	
 	
 	

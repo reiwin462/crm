@@ -21,12 +21,17 @@
 	
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/crm.css">
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/spinners.css">
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.fancybox-1.3.4.css">
+
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>libs/bower/summernote/dist/summernote.css">
 	
 	<!-- endbuild
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900,300">
 	 -->
 	<script src="<?php echo base_url(); ?>libs/bower/breakpoints.js/dist/breakpoints.min.js"></script>
+	<!------ fancybox --->
+	
+	
 	<script>
 		Breakpoints();
 	</script>
@@ -222,9 +227,29 @@
 					}
 				}
 			?>
+
 	</section>
 </div>
+
+<div class="wrap p-t-0">
+    <footer class="app-footer">
+      <div class="clearfix">
+        <ul class="footer-menu pull-right">
+          <li><a href="javascript:void(0)">Careers</a></li>
+          <li><a href="javascript:void(0)">Privacy Policy</a></li>
+          <li><a href="javascript:void(0)">Feedback <i class="fa fa-angle-up m-l-md"></i></a></li>
+        </ul>
+        <div class="copyright pull-left">Copyright Geo Grout 2018 &copy;</div>
+      </div>
+    </footer>
+  </div>
+
+
 </main>
+
+	
+	
+
 	
 	<!-- build:js ../assets/js/core.min.js -->
 	<script src="<?php echo base_url(); ?>libs/bower/jquery/dist/jquery.js"></script>
@@ -248,6 +273,7 @@
 	<script src="<?php echo base_url(); ?>assets/js/plugins.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/app.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>
+	
 	
 	<!-- endbuild -->
 	<script src="<?php echo base_url(); ?>libs/bower/moment/moment.js"></script>

@@ -243,8 +243,12 @@ class Crm_controller extends CI_Controller{
 				$this->load->model('Formbuildermodel');
 				
 				$structure = $this->Crmmodel->gettablestructure('project_leads');
-				$data['structure']  = $structure;
+				//$data['structure']  = $structure;
+				$data['formupdate'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'project_leads', 'yes','projleadformupdate');
 				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'project_leads', 'no','projleadform');
+				
+				$docstruc = $this->Crmmodel->gettablestructure('tbldocuments');
+				$data['formdocument'] = $this->Formbuildermodel->createdynamicform($docstruc, '6', 'project_leads', 'no','projleaddocument');
 				
 				$data['url'] = "projectleads/newprojleads";
 				$this->load->view("main",$data);
@@ -260,6 +264,10 @@ class Crm_controller extends CI_Controller{
 				$data['structure']  = $structure;
 				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'project_leads', 'yes','projleadform');
 				$data['leadstat'] =  $this->Leadmodel->getleadstatus();
+				
+				$docstruc = $this->Crmmodel->gettablestructure('tbldocuments');
+				$data['formdocument'] = $this->Formbuildermodel->createdynamicform($docstruc, '6', 'project_leads', 'no','projleaddocument');
+				
 				$colhtm = "";
 				$colhtm .= "<th>Project No</th>";
 				$colhtm .= "<th>Lead Status</th>";
@@ -306,9 +314,6 @@ class Crm_controller extends CI_Controller{
 		
 		}
 	}
-	
-
-	
 	function sendemail(){
 		$this->load->library('email');
 		$config = array(
