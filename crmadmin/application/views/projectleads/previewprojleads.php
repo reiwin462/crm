@@ -1,26 +1,81 @@
 
-
 <div  class="widget">
     <header class="widget-header info">
         <h4 class="widget-title">Project Leads Details</h4>
     </header>
     <hr class="widget-separator">
+	
 		<div class="widget-body">
-			<div id="prlupdate">
-				<div class="">
-					<?php echo $form; ?>
-				</div>
-				<br>
-				<br>
-				<br>
-				<div id="prltask" class="row actbutt">
-					<button type="button" class="btn mw-md btn-success" onclick="prcUpdate();" ><i class="fa fa-pencil"></i> Update</button>
-					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>
-				</div>	
-				<div id="prlmain" class="row actbutt">
-					<button type="button" class="btn mw-md btn-success" onclick="updateprojlead();" ><i class="fa fa-check"></i> Save</button>
-					<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
-				</div>	
+		
+			<div id="prlupdate"  class="nav-tabs-horizontal white m-b-lg">
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" >
+							<a href="#addleadtab" id="leaddetailtab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
+							<i class="fa fa-plus-circle" aria-hidden="true"></i> Project Leads Details</a>
+						</li>
+						<li role="presentation" >
+							<a href="#addleaddocument" id="leaddocu" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloaddocument();">
+							<i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Documents</a>
+						</li>
+						<li role="presentation" >
+							<a href="#addleadplan" id="leadplantab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadplan();">
+							<i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Plans</a>
+						</li>
+					</ul>
+					<div class="tab-content" id="leadtab">
+						<div role="tabpanel" class="tab-pane fade active in" id="addleadtab">
+							<div>
+								<?php echo $form; ?>
+							</div>
+							<br>
+							<br>	
+							<div id="prltask" class="row actbutt">
+								<button type="button" class="btn mw-md btn-success" onclick="prcUpdate();" ><i class="fa fa-pencil"></i> Update</button>
+								<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>
+							</div>	
+							<div id="prlmain" class="row actbutt">
+								<button type="button" class="btn mw-md btn-success" onclick="updateprojlead();" ><i class="fa fa-check"></i> Save</button>
+								<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
+							</div>
+						</div>
+						
+						<div role="tabpanel" class="tab-pane" id="addleaddocument">				
+							<div class="container">
+								<div class="col-md-4">
+									<?php echo $formdocument; ?>
+									<div class="row actbutt">
+										<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewdocument();" >Save</button>
+										<button type="button" class="btn btn-sm mw-md btn-danger" onclick="cancelupdate();">Cancel</button>
+									</div>
+								</div>					
+								<div class="col-md-8">
+									<footer class="widget-footer bg-info">Lead Documents</footer>
+									<br>
+									<div id="doclist" class="widget"></div>
+								</div>
+							</div>
+						</div>
+						
+						<div role="tabpanel" class="tab-pane" id="addleadplan">
+							 <footer class="widget-footer bg-info">Please upload Image and PDF Files Only</footer>
+							 <br>
+							<div class="form-inline">
+								<form id="leadplan" method="post" enctype="multipart/form-data" class="form-horizontal p-t-10">
+									<input type="hidden" id="leadid" name="leadid" ></input>
+									<input type="file" class="form-control" name="file" id="file">
+									<input type="button" value="submit" class="btn-primary btn-sm" onclick="leadplanupload();">
+								</form>				
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-md-12">
+									<table id="planlist" class="table-responsive">
+										
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
 			</div>
 
         <div id="dtbl" class="table-responsive">
@@ -58,15 +113,15 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Lead Update</h5>
+        <h5 class="modal-title">Lead Update</h5>		
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+	 
       <div class="modal-body">
 			<form id="upform" method="POST">
 				<input type="hidden" id="leaddelete" name="leaddelete" ></input>
-				<label for="leadstatusupdate">Lead Status</label>
 				<select class="form-control" id="leadstatusupdate" id="lead_status">
 					<option value="" disabled selected>Select From Item Below</option>
 						<?php foreach($leadstat as $field=>$val): ?>
@@ -82,6 +137,14 @@
       </div>
     </div>
   </div>
+</div>
+
+<div id="imgmodal" class="modal fade" role="dialog">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+	</button>
+  <img class="modal-content" id="imgprev">
+  <div id="imgcaption"></div>
 </div>
 
 <script>
@@ -192,6 +255,7 @@ function updateprojlead(){
 
 function projleadupdate(bt){
 	$('#more_info').summernote('destroy');
+	$('#leadid').val(bt);
 	var xlink = "<?php echo base_url(); ?>" + 'Projectleadcontrol/getleaddetail/'  + bt;
 	$.get(xlink, function(data, status)
 	 {
@@ -368,6 +432,170 @@ function openlink(lnk){
 function projleadmanage($id){
 	$('#leaddelete').val($id);
 	$('#statmodal').modal();
+}
+
+
+
+function reloaddocument(){
+	var idfld = $('#leadid').val();
+	if(idfld == ""){
+		return false;
+	}
+	$('#doclist').html('');
+	var xlink = "<?php echo base_url(); ?>projectleadcontrol/getdocument/" + idfld;
+	$.get(xlink, function(data, status){
+        $('#doclist').html(data);
+    });
+}
+
+function reloadplan(){
+	var idfld = $('#leadid').val();
+	if(idfld == ""){
+		return false;
+	}
+	$('#planlist').html('');
+	var xlink = "<?php echo base_url(); ?>projectleadcontrol/getplan/" + idfld;
+	$.get(xlink, function(data, status){
+        $('#planlist').html(data);
+    });
+}
+
+function resetcancel(){
+	$("#projleadform :input").each(function(){
+		$(this).val('');
+	});
+	$('#updatediv').hide();
+	$('#adddiv').show();	
+}
+
+
+function addnewdocument(){
+	
+	var docfname = $('#doc_filename').val();
+	var docfkeys = $('#doc_keywords').val();
+	var docfdocu =  $('#doc_Content').val();
+	var idfld = $('#leadid').val();
+
+	if(docfname == "" || docfkeys == "" || docfdocu == "" || idfld == ""){
+		swal({
+				type: 'error',
+				title: 'New Project Leads Document',
+				text: 'All Fields Required. Thank you!',
+				footer: '<a href></a>'
+			});
+	}else{
+		
+		$.post("<?php echo base_url("Projectleadcontrol/insertdocument"); ?>",
+		{data: $("#projleaddocument").serializeArray(), id: idfld }) 
+		.success(function(data) {
+				reloaddocument();
+				swal({
+					type: 'success',
+					title: 'New Project Document',
+					text: 'New Project Document has been Posted. Thank you!',
+					footer: '<a href>'+ data +'</a>'
+				});	
+			});
+	}
+	
+}
+
+
+function leadplanupload(){
+	var idfld = $('#leadid').val();
+	var fildata = document.getElementById("file").value;
+	var fd = new FormData($("#leadplan")[0]);
+
+	if(idfld == ""){
+		swal({
+				type:  'error',
+				title: 'Upload',
+				text:  'Linkin ID is missing, Kindly refresh your browser and try again!',
+				footer: '<a href></a>'
+			})
+		return false;
+	}
+	
+	if(fildata == ""){
+		swal({
+				type:  'error',
+				title: 'Upload',
+				text:  'Please select your file',
+				footer: '<a href></a>'
+			})
+		return false;
+	}
+	
+	
+	Swal({
+		  title: 'Lead Plan Upload?',
+		  text: 'Are you sure you want to Upload this File?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, Upload it!',
+		  cancelButtonText: 'No!'
+		}).then((result) => {
+		  if (result.value) {
+				$('#prevDiv').hide();	
+				$('.preloader').fadeIn();
+				fd.append('file', document.getElementById("file").files[0]);
+				var xlink = "<?php echo base_url("Projectleadcontrol/planupload"); ?>";
+				$.ajax({
+				   url: xlink,
+				   method:"POST",
+				   enctype: 'multipart/form-data',
+				   data: fd, id: idfld,
+				   contentType:false,
+				   cache:false,
+				   processData:false,
+				   success:function(response){
+						reloadplan();
+						$('#prevDiv').show();	
+						$('.preloader').fadeOut();
+						if(response == "success"){
+							swal({
+							  type: 'success',
+							  title: 'Upload',
+							  text: 'You have successfully posted your notes',
+							  footer: '<a href>'+ response +'</a>'
+							});
+						}else if (response.indexOf('error') > -1){
+							swal({
+							  type: 'error',
+							  title: 'Upload Error',
+							  text:  response,
+							  footer: '<a href>'+ response +'</a>'
+							});
+						}else{
+							swal({
+							  type: 'error',
+							  title: 'Upload',
+							  text: 'Your file may be corrupted or exceeds the server limit ot 8388608 bytes',
+							  footer: '<a href>'+ response +'</a>'
+							});
+						}
+				   },
+				   error: function (xhr, ajaxOptions, thrownError) {
+						swal({
+						  type: 'error',
+						  title: 'Oops...',
+						  text: 'You have an error in the action you are trying to do. Kindly double check and retry. Thank you!',
+						  footer: '<a href>'+ thrownError +'</a>'
+						});
+					}
+			  });
+			  reloadplan()
+				
+		  } else if (result.dismiss === Swal.DismissReason.cancel) {
+			
+		  }
+	});
+}
+
+function showme(img){
+	$('#imgprev').attr('src', img.attr('src'));
+	$('#imgcaption').attr('src', img.val());
+	$('#imgmodal').modal();
 }
 
 </script>

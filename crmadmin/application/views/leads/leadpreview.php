@@ -9,12 +9,12 @@
 				</ul>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane fade active in" id="addleadtab">
-						<div class="innerdiv">
+						<div class="container">
 							<div class="row">
 								<?php echo $form; ?>
 							</div>
 							<div class="row">
-								<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewlead();" >Save</button>
+								<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewlead();" ><i class="fa fa-check"></i> Save</button>
 								<button type="button" class="btn btn-sm mw-md btn-danger" onclick="reset();">Cancel</button>
 							</div>
 						</div>
@@ -30,17 +30,18 @@
 						</ul>
 						<div class="tab-content">
 							<div role="tabpanel" class="tab-pane fade active in" id="leadinfo">
-								<div id="innerdiv" >
+								<div class="container">
 										<div class="row">
 											<?php echo $updateform; ?>
 										</div>
 										<div class="row">
-											<button type="button" class="btn mw-md btn-success" onclick="updatelead();" >Submit</button>
+											<button type="button" class="btn mw-md btn-success" onclick="updatelead();" > <i class="fa fa-check"></i> Submit</button>
 											<button type="button" class="btn mw-md btn-danger" onclick="cancel();" >Cancel</button>
 										</div>
 								</div>
 							</div>
 							<div role="tabpanel" class="tab-pane" id="leadnotes">
+								<div class="container">
 									<form method="post" id="formnote" enctype="multipart/form-data" action="#">
 											<div class="col-md-6">
 												<div class="form-group">
@@ -85,14 +86,16 @@
 											</div>
 										</div>
 									</div>
+								</div>
 							</div>
-							<div role="tabpanel" class="tab-pane fade active in" id="leadtask">
+							<div role="tabpanel" class="tab-pane" id="leadtask">
+								<div class="container">
 								<div class="row">
 									<?php echo $formtask; ?>
 								</div>
 								<div class="row">
 									<input type="hidden" id="leadid" name="leadid"></input>
-									<button type="button" class="btn mw-md btn-success float-right" onclick="addtask(event);" >Add Lead Task</button>
+									<button type="button" class="btn mw-md btn-success float-right" onclick="addtask(event);" ><i class="fa fa-check"></i> Add Lead Task</button>
 									<button type="button" class="btn mw-md btn-danger" onclick="cancel();">Cancel</button>
 								</div>
 								<br>
@@ -106,6 +109,7 @@
 										</div>
 									</div>
 								</div>
+							</div>
 							</div>
 					</div>
 				
@@ -248,17 +252,27 @@ function addtask(e){
 		$.post("<?php echo base_url("taskcontrol/newtask"); ?>",
 		{data: JSON.stringify($("#taskform").serializeArray()) }) 
 		.success(function(response) {
-			swal({
+			if (response.indexOf('error') > -1){
+				swal({
+				  type: 'error',
+				  title: 'Lead Task Error',
+				  text: response,
+				  footer: '<a href onclick=""> </a>'
+				});
+				
+			}else{
+			reloadtask();
+				swal({
 				  type: 'success',
-				  title: 'New Lead Insert',
-				  text: 'New Lead Record has been Created. Thank you!',
+				  title: 'New Lead Task',
+				  text: 'New Lead Task has been Created. Thank you!',
 				  footer: '<a href onclick=""> '+ response +'</a>'
 				});
-				reloadtask();
 				
-			$("#taskform :input").each(function(){
-				$(this).val('');;
-			});
+				$("#taskform :input").each(function(){
+					$(this).val('');
+				});
+			}
 		});	
 	}
 }

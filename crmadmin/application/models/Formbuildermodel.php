@@ -41,13 +41,15 @@ class Formbuildermodel extends CI_Model {
 			
 			if(strpos($flddatatype,"enum") !== false ){
 				//get enum values
-				$enumopt = explode(',', $this->getfieldvalue($flddatatype));
-			
-				
+				$enumopt = explode(',', $this->getfieldvalue($flddatatype));				
 			}
 			
 			if($fldname == "lead_owner"){
 				$maskname = "owner";
+			}
+			
+			if($fldname == "info"){
+				$maskname = "information";
 			}
 			if($fldrequired == "1"){
 				$fldrequired = 'required';
@@ -97,9 +99,10 @@ class Formbuildermodel extends CI_Model {
 					$htm .= '<div class="col-md-12">
 								<div class="form-group">
 										<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
-										<textarea class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.'>'.$flddefault.'</textarea>
+										<textarea class="form-control '.$maskname.'" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.'>'.$flddefault.'</textarea>
 									</div>
 							 </div>';
+							 
 					// initiate close for div reopen
 				break;
 			case "DATE":
@@ -128,7 +131,11 @@ class Formbuildermodel extends CI_Model {
 				break;
 			
 			case "HIDDEN":
-					$htm .= '<input type="HIDDEN" id="'.$fldname.'" name="'.$fldname.'"  maxlength="'.$fldlimit.'"  value="'.$flddefault.'" '.$fldrequired.'  ></input>';
+					if($fldname == "id"){
+						$htm .= '<input type="HIDDEN" id="'.$fldname.'" name="'.$maskname.'"  maxlength="'.$fldlimit.'"  value="'.$flddefault.'" '.$fldrequired.'  ></input>';
+					}else{
+						$htm .= '<input type="HIDDEN" id="'.$fldname.'" name="'.$fldname.'"  maxlength="'.$fldlimit.'"  value="'.$flddefault.'" '.$fldrequired.'  ></input>';
+					}
 				break;
 			
 			default:
@@ -161,7 +168,7 @@ class Formbuildermodel extends CI_Model {
 					var xlink = window.location.host;
 					var newdata
 					swal({
-					  title: "Please Enter Your Item for " + fld,
+					  title: "Please Enter Your Item for <br>" + fld.replace("_", " "),
 					  input: "text",
 					  inputAttributes: {
 						autocapitalize: "off",

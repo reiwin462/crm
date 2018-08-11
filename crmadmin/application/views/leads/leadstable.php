@@ -112,7 +112,7 @@
 				<?php if(isset($leadstat)): ?>
 					<div class="row">
 						<div class="col-md-3">
-							<label ><b>LEAD STATUS</b></label>
+							<label><b>LEAD STATUS</b></label>
 							<select class="form-control" id="dispo_lead_status" name="dispo_lead_status" onchange="reloadtbl($(this));">
 								<option value="" disabled selected>Select From Item Below</option>
 								<?php foreach($leadstat as $field=>$val): ?>
@@ -124,7 +124,7 @@
 				<?php endif; ?>	
 				
 				<div class="table-responsive">
-					<table id="responsive-datatable" class="table table-striped " cellspacing="1" width="100%">
+					<table id="responsive-datatable" class="table table-striped" cellspacing="1" width="100%">
 						<thead>
 							<tr>
 								<?php 
@@ -483,10 +483,12 @@ function unlock(){
 		$(this).css({"border":"1px solid #e2e2e2", "background":"#fffef2", "border-bottom": "1px solid #e2e2e2"});
 		$(this).attr('readonly',false);
 	});
+	
 	$("#formnote :input").each(function(){
 		$(this).css({"border":"1px solid #e2e2e2", "background":"#fffef2", "border-bottom": "1px solid #e2e2e2"});
 		$(this).attr('readonly',false);
 	});
+	
 	$("#taskform :input").each(function(){
 		$(this).css({"border":"1px solid #e2e2e2", "background":"#fffef2", "border-bottom": "1px solid #e2e2e2"});
 		$(this).attr('readonly',false);
