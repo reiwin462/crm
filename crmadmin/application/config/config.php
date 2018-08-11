@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-//$config['base_url'] = 'https://'.$_SERVER['HTTP_HOST'];
-$config['base_url'] = 'https://steve-crm.appspot.com/';
+$config['base_url'] = 'http://'.$_SERVER['HTTP_HOST'].'/crmadmin';
+//$config['base_url'] = 'https://steve-crm.appspot.com/';
 
 $config['index_page'] = 'index.php';
 
@@ -18,7 +18,7 @@ $config['enable_hooks'] = FALSE;
 
 $config['subclass_prefix'] = 'MY_';
 
-$config['composer_autoload'] = FALSE;
+$config['composer_autoload'] = TRUE;
 
 $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
 

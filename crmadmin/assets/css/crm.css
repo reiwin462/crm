@@ -15,11 +15,52 @@ body{font-family: "Century Gothic";}
 .alert{display:none;}
 .dialog{display:none;   background-color: rgb(0,0,0); background-color: rgba(0,0,0,0.4); }
 .addnew{font-size:10px; padding: 0px; margin-top: 1px;}
+
+/*
 .modal-dialog{border-radius:0px; font-family: "Century Gothic";}
 .modal-header{padding: 10px; border-radius:0px;}
 .modal-body{padding: 20px;}
-
 .modal-dialog input[type=text]{width: 100%; text-align:center;padding: 5px;}
+*/
+
+
+
+
+.modal {
+	text-align: center;
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.10); /* Black w/ opacity */
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.modal-content {
+	width: 60%;
+	height: 70%;
+	padding: 0;
+	margin: 0 auto;
+	border: none;
+	outline: none;
+	line-height: 0;
+	vertical-align: top;
+}
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 50%;
+    }
+}
+
+
 
 #leadsel{height: 1px; padding: 2px;}
 #responsive-datatable{font-size:12px; padding:10px;}
@@ -61,7 +102,7 @@ body{font-family: "Century Gothic";}
 #dispo_lead_status{padding:5px; width:auto; margin-top:5px;}
 #leadalldata ul li a .active{background-color:red; font-weight: bold;}
 
-#updatediv{padding: 10px; display:none;}
+#updatediv{padding: 10px; display:none; height: auto;}
 #adddiv{padding: 10px;}
 .innerdiv{padding: 10px;}
 .tab-pane{padding: 10px;}
@@ -72,16 +113,21 @@ body{font-family: "Century Gothic";}
 #timeline a.accordion-toggle {padding:8px; border: 1px solid #e2e2e2; background-color:#188ae2; }
 #timeline .panel-group{padding: 5px; margin-bottom: 2px;}
 #timeline .panel-title{padding: 5px; line-height: 18px; color:#fff; font-family: Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;}
-#timeline .panel-body{border-bottom: 2px solid #e8e8e8; Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;}
+#timeline .panel-body{border-bottom: 2px solid #e8e8e8; font-family: Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;}
 
-
-
+#doclist {height: auto; width: 98%;}
+#doclist p{font-family: Century Gothic; font-size: 12px; font-weight: italic; margin-top: 2px;}
+#doclist li:nth-child(odd)
+{ 
+	padding-bottom: 2px;
+	padding-left: 2px;
+	padding-left: 10px;
+    background-color: #F7F7F7; 
+}
 /*
 #newleadpreview {display:none;}
 #newleadrender{padding: 10px;}
 #frmlead_reuse{padding: 10px;}
-
-
 
 #leadalldata .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {background-color: #7468f2;color:#fff;}
 */

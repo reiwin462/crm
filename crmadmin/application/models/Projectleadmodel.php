@@ -10,19 +10,21 @@ class Projectleadmodel extends CI_Model{
 	
 	public function insertnewprojleads($postdata){
 		$this->db->query('insert into project_leads set '. rtrim($postdata,","));
-		return ($this->db->affected_rows() != 1) ? false : true;
+		//return ($this->db->affected_rows() != 1) ? false : true;
+		return $this->db->insert_id();
+		
 	}
 	public function getprojcol(){
 		$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads order by  bid_date asc");
 		return $query->result();
 	}
 	
-	public function getprojleads($stat = ""){
+	public function getprojleads($stat){
 		
 		if($stat == "ALL" or $stat == ""){
 			$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads order by  bid_date asc");
 		}else{
-			$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads where lead_source = '". $stat. "' order by bid_date asc");
+			$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads where lead_status = '". $stat. "' order by bid_date asc");
 		}
 		return $query->result_array();
 	}
@@ -48,7 +50,29 @@ class Projectleadmodel extends CI_Model{
 	public function checkprjno($no){
 		$query = $this->db->get_where('project_leads', array('project_no'=>$no));
 		return $query->num_rows();
-	}  
+	}
+
+	public function insertdocu($docuarray){
+		$this->db->insert("tbldocuments", $docuarray);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+	
+	public function insertplan($planarray){
+		$this->db->insert("tblplan", $planarray);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+	
+	public function getdocudata($rw){
+		$query = $this->db->get_where('tbldocuments', array('project_id' => trim($rw)));
+		return $query->result_array();
+	}
+	
+	public function getplandata($rw){
+		$query = $this->db->get_where('tblplan', array('project_id' => trim($rw)));
+		return $query->result_array();
+	}
+
+	
 	
 	
 	
