@@ -72,7 +72,26 @@ class Projectleadmodel extends CI_Model{
 		return $query->result_array();
 	}
 
+	public function insertrfi($rfiarray){
+		$this->db->insert("project_rfi", $rfiarray);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
 	
+	public function updaterfi($rfiarray, $id){
+		$this->db->where('id', $id);
+		$this->db->update("project_rfi", $rfiarray);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+	
+	public function getrfidata($lead){
+		$this->db->select('*');
+		$this->db->from('project_rfi');
+		$this->db->where('project_id',  trim($lead));
+		$this->db->order_by('id','DESC');
+		$this->db->limit(1,0);
+		$query = $this->db->get();
+		return $query->result_array();
+	}
 	
 	
 	

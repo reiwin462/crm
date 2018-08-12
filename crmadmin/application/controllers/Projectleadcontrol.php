@@ -16,21 +16,26 @@ class Projectleadcontrol extends CI_Controller{
 		$insert = '';
 		$prjno = '';
 		$newdata = array();
-		foreach ($decoded as $value) {
-			if($value["name"] == "more_info"){
-				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
+		if(count($decoded) > 0){
+			foreach ($decoded as $value) {
+				if($value["name"] == "more_info"){
+					$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
+				}
+				elseif($value["name"] == "project_no"){
+					$prjno = $value["value"];
+					$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
+				}
+				elseif($value["name"] == "bid_value"){
+					$insert .= $value["name"] . "='" .preg_replace("/\.+$/i", "", preg_replace("/[^0-9\.]/i", "", $value["value"]))."',";
+				}
+				else{
+					$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
+				}
+				$newdata[$value["name"]] = $value["value"];
 			}
-			elseif($value["name"] == "project_no"){
-				$prjno = $value["value"];
-				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
-			}
-			elseif($value["name"] == "bid_value"){
-				$insert .= $value["name"] . "='" .preg_replace("/\.+$/i", "", preg_replace("/[^0-9\.]/i", "", $value["value"]))."',";
-			}
-			else{
-				$insert .= $value["name"] . "='" . addslashes($value["value"])."',";
-			}
-			$newdata[$value["name"]] = $value["value"];
+		}else{
+			echo "error on post data";
+			exit();
 		}
 		
 		$exist =  $this->Projectleadmodel->checkprjno($prjno);
@@ -283,7 +288,6 @@ class Projectleadcontrol extends CI_Controller{
 				echo "error";
 			}
 			
-			
 			$this->sendemail('Project Lead Notification', $lead[0]['created_by'], $htm);			
 		
 		}else{
@@ -327,24 +331,31 @@ class Projectleadcontrol extends CI_Controller{
 					</footer>
 					<div class="widget-body clearfix">
 						<div class="pull-left">
-							<h4 class="widget-title text-primary"><span class="counter" data-plugin="counterUp">'.$val['doc_filename'].'</span></h4>
+							<h4 class="widget-title text-primary">'.$val['doc_filename'].'</h4>
 							<small class="text-primary">[ '.$val['doc_keywords'].' ]</small>
-							<small class="text-color">'.$val['doc_Content'].'</small>
+							<p class="">'.$val['doc_Content'].'</p>
 						</div>
-						<span class="pull-right big-icon watermark"><i class="fa fa-phone-square"></i></span>
+						<span class="pull-right big-icon watermark"><i class="fa fa-briefcase" aria-hidden="true"></i></i></span>
 					</div>
 				</div>';
 				}				
 			}else{
-				$htm = "<br>". '<footer class="widget-footer bg-primary">No Available Document to Preview</footer>';
+				$htm = "<br>". '<h3 class="text-center">No Available Document to Preview</h3>';
 			}
 		}
 		echo $htm;
 	}
 	
+	public function getrfi($leadid){
+		if($leadid != ""){
+			$this->load->model('Projectleadmodel');
+			$lead = $this->Projectleadmodel->getrfidata(trim($leadid));
+			echo json_encode($lead);
+		}
+	}
 	
 	public function getplan($projid){
-		$htm = "";
+		$htm = "<div class='row'>";
 		if(!isset($projid)){
 			echo "error";
 		}else{
@@ -356,23 +367,29 @@ class Projectleadcontrol extends CI_Controller{
 					
 					$img = substr(trim($val['filename_type']), 0, 5);
 					if($img == "image"){
-						$fav = '<i class="fa fa-image"></i>';
+						$fav = '<i class="fa fa-image "></i>';
 						//$htm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px'></a>";	
-						$htm .= "<img src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";	
+						$htm .= "<div class='img-with-text d-inline'>";
+						$htm .= "<img src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";
+						$htm .= "<small class='caption'> ".$val['filename']." </small>";
+						$htm .= "</div>";
 					}else{
 						$fav = '<i class="fa fa-file-alt"></i>'; 
+						$htm .= "<div class='img-with-text d-inline'>";
 						$htm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='../assets/images/pdf.png' width='100px' height='100px'></a>";
+						$htm .= "<small class='caption'> ".$val['filename']." </small>";
+						$htm .= "</div>";
 					}
 					
 					$i++;
 				}
 			}else{
-				$htm = "<br>". "No available File to Preview";
+				$htm = "<br>". "<h3>No available File to Preview</h3>";
 			}
 		}
+		$htm .= "</div>";
 		echo $htm;
 	}
-	
 	
 	public function planupload(){
 		$iserror = "";
@@ -454,6 +471,46 @@ class Projectleadcontrol extends CI_Controller{
 	}
 	
 	
+	public function insertnewrfi(){
+
+		$this->load->model('Projectleadmodel');
+		$htm = "";
+		$decoded = json_decode($_POST['data'],true);
+		$rfiarray = array();
+		$id="";
+		$action = "";
+		if(count($decoded) > 0){
+			foreach ($decoded as $value) {
+				if($value["name"] == "id"){
+					if($value["value"] <> ""){
+						$id=$value["value"];
+						$action = "update";
+					}else{
+						$action = "insert";
+					}
+				}else{
+					$rfiarray[$value["name"]] = addslashes($value["value"]);
+				}
+			}
+			$rfiarray['project_id'] = $this->input->post('id');
+			$rfiarray['created_by'] = $this->session->userdata('crmuser');
+			$rfiarray['created_date'] = date('Y-m-d H:i:s');
+			
+			if($action == "insert"){
+				$insertupdate = $this->Projectleadmodel->insertrfi($rfiarray);
+			}else{
+				$insertupdate = $this->Projectleadmodel->updaterfi($rfiarray, $id);	
+			}
+			if($insertupdate > 0){
+				echo "success";
+			}else{
+				echo "error";
+			}
+		}else{
+			echo "error on post data";
+		}
+	}
+	
 	function sendemail($sbj, $to, $msg){
 		
 		try {
@@ -512,8 +569,7 @@ class Projectleadcontrol extends CI_Controller{
 		return substr(bin2hex($bytes), 0, $lenght);
 	}
 	
-	
-	
+
 	public function timeAgo($time_ago)
 {
     $time_ago = strtotime($time_ago);

@@ -42,9 +42,8 @@ class Crm_controller extends CI_Controller{
 				//$data['url'] = "leads/newlead";
 				$data['url'] = "leads/leadpreview";
 				$this->load->view("main",$data);
-			
-			
 			}
+			
 			elseif($str == "showleadstables"){
 
 				$this->load->model('Leadmodel');
@@ -250,6 +249,9 @@ class Crm_controller extends CI_Controller{
 				$docstruc = $this->Crmmodel->gettablestructure('tbldocuments');
 				$data['formdocument'] = $this->Formbuildermodel->createdynamicform($docstruc, '6', 'project_leads', 'no','projleaddocument');
 				
+				$rfistruc = $this->Crmmodel->gettablestructure('project_rfi');
+				$data['formrfi'] = $this->Formbuildermodel->createdynamicform($rfistruc, '6', '', 'no','projrfi');
+				
 				$data['url'] = "projectleads/newprojleads";
 				$this->load->view("main",$data);
 				
@@ -267,6 +269,10 @@ class Crm_controller extends CI_Controller{
 				
 				$docstruc = $this->Crmmodel->gettablestructure('tbldocuments');
 				$data['formdocument'] = $this->Formbuildermodel->createdynamicform($docstruc, '6', 'project_leads', 'no','projleaddocument');
+				
+				
+				$rfistruc = $this->Crmmodel->gettablestructure('project_rfi');
+				$data['formrfi'] = $this->Formbuildermodel->createdynamicform($rfistruc, '3', '', 'yes','projrfi');
 				
 				$colhtm = "";
 				$colhtm .= "<th>Project No</th>";

@@ -39,6 +39,10 @@
 				<a href="#addleadplan" id="leadplantab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadplan();">
 				<i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Plans</a>
 			</li>
+			<li role="presentation" >
+				<a href="#addrfi" id="leadrfitab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="">
+				<i class="fa fa-plus-circle" aria-hidden="true"></i> Project RFI</a>
+			</li>
 		</ul>
 		<div class="tab-content" id="leadtab">
 			<div role="tabpanel" class="tab-pane fade active in" id="addleadtab">
@@ -55,7 +59,7 @@
 			</div>
 			
 			<div role="tabpanel" class="tab-pane" id="addleaddocument">				
-				<div class="container">
+				<div class="row">
 					<div class="col-md-4">
 						<?php echo $formdocument; ?>
 						<div class="row actbutt">
@@ -63,9 +67,8 @@
 							<button type="button" class="btn btn-sm mw-md btn-danger" onclick="resetcancel();">Cancel</button>
 						</div>
 					</div>					
-					<div class="col-md-8">
-						<footer class="widget-footer bg-info">Lead Documents</footer>
-						<div id="doclist" class="widget"></div>
+					<div class="col-md-7">
+						<div id="doclist" class="widget-body"></div>
 					</div>
 				</div>
 			</div>
@@ -87,6 +90,19 @@
 							
 						</table>
 					</div>
+				</div>
+			</div>
+			
+			<div role="tabpanel" class="tab-pane" id="addrfi">				
+				<div class="row">
+					<div class="container">
+						<?php echo $formrfi; ?>
+						<br>
+						<div class="row actbutt">
+							<button type="button" class="btn btn-sm mw-md btn-success" onclick="addrfi();" > <i class="fa fa-check"></i>Save</button>
+							<button type="button" class="btn btn-sm mw-md btn-danger" onclick="resetcancel();">Cancel</button>
+						</div>
+					</div>					
 				</div>
 			</div>
 		</div>
@@ -163,6 +179,10 @@ function addnewprojlead(){
 								if($(this).attr('id') === item){
 									if($(this).attr('id') == "mote_info"){
 										$(this).val(itmval);
+									}else if($(this).attr('id') == "project_no"){
+										$('#projrfi #project_number').val(itmval);
+									}else if($(this).attr('id') == "project_name"){
+										$('#projrfi #project_name').val(itmval);
 									}else{
 										$(this).val(itmval);
 									}	
@@ -340,7 +360,7 @@ function leadplanupload(){
 						  type: 'error',
 						  title: 'Oops...',
 						  text: 'You have an error in the action you are trying to do. Kindly double check and retry. Thank you!',
-						  footer: '<a href>'+ thrownError +'</a>'
+						  footer: '<a href></a>'
 						});
 					}
 			  });
@@ -351,8 +371,6 @@ function leadplanupload(){
 		  }
 	});
 }
-
-
 
 function updateprojlead(){
 	
@@ -398,4 +416,62 @@ function updateprojlead(){
 	
 }
 
+
+function addrfi(){
+	var idfld = $('#leadid').val();
+	if(idfld == ""){
+		swal({
+				type: 'error',
+				title: 'RFI Prerequired Data Missing',
+				text: 'All Fields Required. Thank you!',
+				footer: '<a href></a>'
+			});
+	}else{	
+		
+		var isNull = "pass";
+		var formElements = new Array();
+		$("#projrfi :input").each(function(){
+			var isRequired = $(this).attr('required');
+			if(isRequired == "required"){
+				if($(this).val() == ""){
+					swal({
+					  type: 'error',
+					  title: 'Validation',
+					  text: $(this).attr('name') + ' is a required field. Thank you!',
+					  footer: '<a href> - </a>'
+					});
+					isNull = "fail";
+					return false;
+				}
+			}
+		});
+	
+		if(isNull == "pass"){
+			
+			$.post("<?php echo base_url("Projectleadcontrol/insertnewrfi"); ?>",
+			{data: JSON.stringify($("#projrfi").serializeArray()), id: idfld }) 
+			.success(function(data) {
+				if(data == "success"){
+					swal({
+						type: 'success',
+						title: 'New Project RFI',
+						text: 'New Project RFI has been Posted. Thank you!',
+						footer: '<a href>'+ data +'</a>'
+					});	
+				}else{
+					swal({
+						type: 'error',
+						title: 'New Project RFI',
+						text: 'Kindly validate the data you are posting and Retry!',
+						footer: '<a href>'+ data +'</a>'
+					});	
+				}
+				
+				});
+				
+		}
+		
+	}
+	
+}
 </script>
