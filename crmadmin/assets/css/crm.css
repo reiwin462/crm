@@ -4,7 +4,7 @@ body{font-family: "Century Gothic";}
 .widget-title h4{color: #fff !important;}
 .form-control{padding: 5px; height: auto; border-radius:1px; font-size: 12px;}
 .form-group {margin-top: 5px; margin-bottom: 5px; }
-.col-md-3{height: 70px;}
+.col-md-3{height: 50px;}
 .col-md-12{height: 150px;}
 .form-group label{width: 150px; font-weight:bold; font-size: 11px; }
 .form-group input[type=text]{ padding: 5px; font-size: 11px; }
@@ -115,7 +115,7 @@ body{font-family: "Century Gothic";}
 #timeline .panel-title{padding: 5px; line-height: 18px; color:#fff; font-family: Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;}
 #timeline .panel-body{border-bottom: 2px solid #e8e8e8; font-family: Raleway, Helvetica Neue, Helvetica, Arial, sans-serif;}
 
-#doclist {height: auto; width: 98%;}
+#doclist {height: auto; width: 98%;border: 0px;}
 #doclist p{font-family: Century Gothic; font-size: 12px; font-weight: italic; margin-top: 2px;}
 #doclist li:nth-child(odd)
 { 
@@ -124,6 +124,23 @@ body{font-family: "Century Gothic";}
 	padding-left: 10px;
     background-color: #F7F7F7; 
 }
+.img-with-text{
+	text-align: justify;
+    width: auto;
+	margin-top: 5px;
+	box-shadow: 10px 10px 5px grey;
+	padding: 5px;
+}
+.img-with-text img {
+    display: block;
+    margin: 0 auto;
+}
+
+.img-with-text .caption {
+    text-align: center;
+	font-size: 10px;
+}
+
 /*
 #newleadpreview {display:none;}
 #newleadrender{padding: 10px;}
