@@ -6,9 +6,10 @@
     <hr class="widget-separator">
 	
 		<div class="widget-body">
-		
 			<div id="prlupdate"  class="nav-tabs-horizontal white m-b-lg">
+					
 					<ul class="nav nav-tabs" role="tablist">
+						<div class="text-right" style="z-index: -1"><i class="fa fa-close" ></i>&nbsp;<a href='#' onclick="cancelupdate();">Close &nbsp;</a></div>
 						<li role="presentation" >
 							<a href="#addleadtab" id="leaddetailtab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i> Project Leads Details</a>
@@ -21,21 +22,33 @@
 							<a href="#addleadplan" id="leadplantab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadplan();">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Plans</a>
 						</li>
+						<li role="presentation" >
+							<a href="#addrfi" id="leadrfitab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadrfi();">
+							<i class="fa fa-plus-circle" aria-hidden="true"></i> Project RFI</a>
+						</li>
 					</ul>
+					
 					<div class="tab-content" id="leadtab">
+						
 						<div role="tabpanel" class="tab-pane fade active in" id="addleadtab">
 							<div>
 								<?php echo $form; ?>
 							</div>
 							<br>
-							<br>	
+							<br>
+							<br>								
 							<div id="prltask" class="row actbutt">
-								<button type="button" class="btn mw-md btn-success" onclick="prcUpdate();" ><i class="fa fa-pencil"></i> Update</button>
-								<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>
+								<div class="col-md-8">
+									<button type="button" class="btn mw-md btn-success" onclick="prcUpdate();" ><i class="fa fa-pencil"></i> Update</button>
+									<button type="button" class="btn mw-md btn-warning" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>	
+								</div>
+								<div class="col-md-4">
+									<button type="button" class="btn mw-md btn-danger float-right" onclick="projleaddelete();"><i class="fa fa-trash"></i> Delete</button>
+								</div>
 							</div>	
 							<div id="prlmain" class="row actbutt">
 								<button type="button" class="btn mw-md btn-success" onclick="updateprojlead();" ><i class="fa fa-check"></i> Save</button>
-								<button type="button" class="btn mw-md btn-danger" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
+								<button type="button" class="btn mw-md btn-warning" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
 							</div>
 						</div>
 						
@@ -45,13 +58,11 @@
 									<?php echo $formdocument; ?>
 									<div class="row actbutt">
 										<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewdocument();" >Save</button>
-										<button type="button" class="btn btn-sm mw-md btn-danger" onclick="cancelupdate();">Cancel</button>
+										<button type="button" class="btn btn-sm mw-md btn-warning" onclick="cancelupdate();">Cancel</button>
 									</div>
 								</div>					
-								<div class="col-md-8">
-									<footer class="widget-footer bg-info">Lead Documents</footer>
-									<br>
-									<div id="doclist" class="widget"></div>
+								<div class="col-md-7">					
+									<div id="doclist" class="widget-body"></div>
 								</div>
 							</div>
 						</div>
@@ -67,12 +78,23 @@
 								</form>				
 							</div>
 							<br>
-							<div class="row">
-								<div class="col-md-12">
-									<table id="planlist" class="table-responsive">
+							<div class="container">
+								<table id="planlist" class="table-responsive">
 										
-									</table>
-								</div>
+								</table>
+							</div>
+						</div>
+						
+						<div role="tabpanel" class="tab-pane" id="addrfi">				
+							<div class="row">
+								<div class="container">
+									<?php echo $formrfi; ?>
+									<br>
+									<div class="row actbutt">
+										<button type="button" class="btn btn-sm mw-md btn-success" onclick="updaterfi();" > <i class="fa fa-check"></i>Save</button>
+										<button type="button" class="btn btn-sm mw-md btn-warning " onclick="cancelupdate();">Cancel</button>
+									</div>
+								</div>					
 							</div>
 						</div>
 					</div>
@@ -99,10 +121,8 @@
 					</tr>
 				</thead>
 				<tbody>
-				
 				</tbody>
 				<tfoot>
-				
 				</tfoot>
 			</table>
 		</div>
@@ -118,7 +138,6 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-	 
       <div class="modal-body">
 			<form id="upform" method="POST">
 				<input type="hidden" id="leaddelete" name="leaddelete" ></input>
@@ -176,7 +195,7 @@ function datatablereload(sts){
 			null,
 			null,
 			null,
-			{ "width": "10%" },
+			{ "width": "14%" },
 		]
 		} );
     }else{
@@ -198,7 +217,7 @@ function datatablereload(sts){
 			null,
 			null,
 			null,
-			{ "width": "10%" },
+			{ "width": "14%" },
 		]
 		} );
 	}
@@ -228,7 +247,8 @@ function updateprojlead(){
 	
 	if(isNull == "pass"){
 		$('#prevDiv').hide();
-		$('.preloader').fadeIn();	
+		$('.preloader').fadeIn();
+
 		$.post("<?php echo base_url("Projectleadcontrol/projleadupdate"); ?>",
 		{data: JSON.stringify($("#projleadform").serializeArray()) }) 
 			.success(function(data) {
@@ -254,8 +274,10 @@ function updateprojlead(){
 }
 
 function projleadupdate(bt){
+
 	$('#more_info').summernote('destroy');
 	$('#leadid').val(bt);
+	 $('#leaddelete').val(bt);
 	var xlink = "<?php echo base_url(); ?>" + 'Projectleadcontrol/getleaddetail/'  + bt;
 	$.get(xlink, function(data, status)
 	 {
@@ -305,8 +327,8 @@ function projleadupdate(bt){
 }
 
 function cancelupdate(){
-	$('#dtbl').toggle();	
-	$('#prlupdate').toggle();
+	$('#dtbl').show();	
+	$('#prlupdate').hide();
 	proj_reset();
 	lock();
 }
@@ -328,6 +350,7 @@ function projleaddelete(){
 				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/projleadremove/" + id;
 				$.post(xlink,) 
 				.success(function(data) {
+						
 						datatablereload('');
 						swal({
 							  type: 'success',
@@ -335,6 +358,7 @@ function projleaddelete(){
 							  text: 'You have successfully deleted an item. Thank you!',
 							  footer: '<a href>'+ data +'</a>'
 							});
+						cancelupdate();
 						$('.preloader').fadeOut();
 						$('#prevDiv').show();		
 				});
@@ -418,9 +442,18 @@ function prcUpdate(){
 }
 
 function proj_reset(){
+	
+	$('#lead_id').val('');
 	$("#projleadform :input").each(function(){
 		$(this).val('');
-	});		
+	});
+	
+	$("#projrfi :input").each(function(){
+			$(this).val('');
+	});
+
+	$('#doclist').html('');
+	$('#leaddetailtab').trigger('click');
 }
 
 function openlink(lnk){
@@ -457,6 +490,33 @@ function reloadplan(){
 	var xlink = "<?php echo base_url(); ?>projectleadcontrol/getplan/" + idfld;
 	$.get(xlink, function(data, status){
         $('#planlist').html(data);
+    });
+}
+
+function reloadrfi(){
+	var idfld = $('#leadid').val();
+	if(idfld == ""){
+		return false;
+	}
+	$('#doclist').html('');
+	var xlink = "<?php echo base_url(); ?>projectleadcontrol/getrfi/" + idfld;
+	$.get(xlink, function(data, status){
+       if(data != ""){
+			var j = JSON.parse(data);
+			$.each(j[0], function(key, value){
+				$("#projrfi :input").each(function(){
+					var name = $(this).attr('name');
+					if(name == key){
+						if(key == "send_date" || key == "date_recieved"){
+							var nd = new Date(value)
+							$(this).val(formatDate(nd.toDateString()));
+						}else{
+							$(this).val(value);
+						}
+					}
+				});
+			});
+	   }
     });
 }
 
@@ -570,8 +630,8 @@ function leadplanupload(){
 							swal({
 							  type: 'error',
 							  title: 'Upload',
-							  text: 'Your file may be corrupted or exceeds the server limit ot 8388608 bytes',
-							  footer: '<a href>'+ response +'</a>'
+							  text: 'Your file may be corrupted or exceeds the server limit of 8388608 bytes',
+							  footer: '<a href></a>'
 							});
 						}
 				   },
@@ -580,7 +640,7 @@ function leadplanupload(){
 						  type: 'error',
 						  title: 'Oops...',
 						  text: 'You have an error in the action you are trying to do. Kindly double check and retry. Thank you!',
-						  footer: '<a href>'+ thrownError +'</a>'
+						  footer: '<a href></a>'
 						});
 					}
 			  });
@@ -596,6 +656,65 @@ function showme(img){
 	$('#imgprev').attr('src', img.attr('src'));
 	$('#imgcaption').attr('src', img.val());
 	$('#imgmodal').modal();
+}
+
+function updaterfi(){
+	
+	var idfld = $('#leadid').val();
+	if(idfld == ""){
+		swal({
+				type: 'error',
+				title: 'RFI Prerequired Data Missing',
+				text: 'All Fields Required. Thank you!',
+				footer: '<a href></a>'
+			});
+	}else{	
+		
+		var isNull = "pass";
+		var formElements = new Array();
+		$("#projleadform :input").each(function(){
+			var isRequired = $(this).attr('required');
+			if(isRequired == "required"){
+				if($(this).val() == ""){
+					swal({
+					  type: 'error',
+					  title: 'Validation',
+					  text: $(this).attr('name') + ' is a required field. Thank you!',
+					  footer: '<a href> - </a>'
+					});
+					isNull = "fail";
+					return false;
+				}
+			}
+		});
+	
+		if(isNull == "pass"){
+			
+			$.post("<?php echo base_url("Projectleadcontrol/insertnewrfi"); ?>",
+			{data: JSON.stringify($("#projrfi").serializeArray()), id: idfld }) 
+			.success(function(data) {
+				if(data == "success"){
+					swal({
+						type: 'success',
+						title: 'New Project RFI',
+						text: 'New Project RFI has been Posted. Thank you!',
+						footer: '<a href>'+ data +'</a>'
+					});	
+				}else{
+					swal({
+						type: 'error',
+						title: 'New Project RFI',
+						text: 'Kindly validate the data you are posting and Retry!',
+						footer: '<a href>'+ data +'</a>'
+					});	
+					}
+				});
+		}
+		
+	}
+	
+	
+	
 }
 
 </script>
