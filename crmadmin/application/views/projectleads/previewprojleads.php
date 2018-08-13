@@ -87,14 +87,12 @@
 						
 						<div role="tabpanel" class="tab-pane" id="addrfi">				
 							<div class="row">
-								<div class="container">
 									<?php echo $formrfi; ?>
 									<br>
 									<div class="row actbutt">
 										<button type="button" class="btn btn-sm mw-md btn-success" onclick="updaterfi();" > <i class="fa fa-check"></i>Save</button>
 										<button type="button" class="btn btn-sm mw-md btn-warning " onclick="cancelupdate();">Cancel</button>
-									</div>
-								</div>					
+									</div>					
 							</div>
 						</div>
 					</div>
@@ -195,7 +193,7 @@ function datatablereload(sts){
 			null,
 			null,
 			null,
-			{ "width": "14%" },
+			{ "width": "20%" },
 		]
 		} );
     }else{
@@ -217,7 +215,7 @@ function datatablereload(sts){
 			null,
 			null,
 			null,
-			{ "width": "14%" },
+			{ "width": "20%" },
 		]
 		} );
 	}
@@ -711,10 +709,33 @@ function updaterfi(){
 				});
 		}
 		
-	}
-	
-	
-	
+	}	
+}
+
+function removeattachment(id){
+	Swal({
+		  title: 'Are you sure?',
+		  text: 'Item will be permanently be removed from the database',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, delete it!',
+		  cancelButtonText: 'No, keep it'
+		}).then((result) => {
+		  if (result.value) {
+				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/planremove";
+				$.post(xlink,{planid: id}) 
+				.success(function(data) {
+					reloadplan();
+					swal({
+						type: 'success',
+						title: 'Delete',
+						text: 'You have successfully deleted an item. Thank you!',
+						footer: '<a href>'+ data +'</a>'
+					});
+				});
+		  } else if (result.dismiss === Swal.DismissReason.cancel) {
+		  }
+		});
 }
 
 </script>
