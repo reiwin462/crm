@@ -107,6 +107,9 @@ class Crm_controller extends CI_Controller{
 				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'crm_leads', 'yes','leadform');
 				$cols  = $this->Leadmodel->getleadcol();
 				
+				$structuretask = $this->Crmmodel->gettablestructure('crm_task');
+				$data['formtask'] = $this->Formbuildermodel->createdynamicform($structuretask, '3', 'crm_task', 'no','taskform');
+				
 				$colhtm = '';
 				$rowthm = '';
 				

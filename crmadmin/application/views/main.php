@@ -262,6 +262,9 @@
 	<script src="<?php echo base_url(); ?>libs/bower/PACE/pace.min.js"></script>
 	<!-- endbuild -->
 	
+	<!-----Global JS ---->
+	<script src="<?php echo base_url(); ?>assets/js/global.js"></script>
+	
 	<script src="<?php echo base_url(); ?>/libs/misc/datatables/datatables.min.js"></script>
 	<link rel="stylesheet" href="<?php echo base_url(); ?>/libs/misc/datatables/datatables.min.css">
 
