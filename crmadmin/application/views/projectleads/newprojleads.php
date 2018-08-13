@@ -110,6 +110,13 @@
 	
 </div>
 
+<div id="imgmodal" class="modal fade" role="dialog">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+	</button>
+  <img class="modal-content" id="imgprev">
+  <div id="imgcaption"></div>
+</div>
 
 <script>
 
@@ -473,5 +480,37 @@ function addrfi(){
 		
 	}
 	
+}
+
+function removeattachment(id){
+	Swal({
+		  title: 'Are you sure?',
+		  text: 'Item will be permanently be removed from the database',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, delete it!',
+		  cancelButtonText: 'No, keep it'
+		}).then((result) => {
+		  if (result.value) {
+				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/planremove/" + id;
+				$.post(xlink,) 
+				.success(function(data) {
+					reloadplan();
+					swal({
+						type: 'success',
+						title: 'Delete',
+						text: 'You have successfully deleted an item. Thank you!',
+						footer: '<a href>'+ data +'</a>'
+					});
+				});
+		  } else if (result.dismiss === Swal.DismissReason.cancel) {
+		  }
+		});
+}
+
+function showme(img){
+	$('#imgprev').attr('src', img.attr('src'));
+	$('#imgcaption').attr('src', img.val());
+	$('#imgmodal').modal();
 }
 </script>

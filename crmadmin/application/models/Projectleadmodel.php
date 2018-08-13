@@ -71,6 +71,13 @@ class Projectleadmodel extends CI_Model{
 		$query = $this->db->get_where('tblplan', array('project_id' => trim($rw)));
 		return $query->result_array();
 	}
+	
+	public function delprojplan($id){
+		$rw = trim($id);
+		$this->db->where('id', $rw);
+		$this->db->delete('tblplan');
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
 
 	public function insertrfi($rfiarray){
 		$this->db->insert("project_rfi", $rfiarray);
