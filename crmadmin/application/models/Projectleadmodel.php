@@ -22,9 +22,23 @@ class Projectleadmodel extends CI_Model{
 	public function getprojleads($stat){
 		
 		if($stat == "ALL" or $stat == ""){
-			$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads order by  bid_date asc");
+			//$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads order by  bid_date asc");
+			$query = $this->db->query("SELECT a.id, project_no, lead_status, bid_date, sales_representative, a.project_name, type_of_work,address, bid_value, 
+					lead_source, a.created_by, link, a.id AS ACTION, b.id AS planid, c.id docuid, d.id AS rfiid
+					FROM project_leads AS a LEFT OUTER JOIN `tblplan` AS b 
+					ON  b.project_id  = a.id LEFT OUTER JOIN `tbldocuments` AS c ON c.project_id = a.id
+					LEFT OUTER JOIN `project_rfi` AS d ON d.project_id = a.id GROUP BY a.id
+					ORDER BY  bid_date ASC
+					 ");
 		}else{
-			$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads where lead_status = '". $stat. "' order by bid_date asc");
+			//$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads where lead_status = '". $stat. "' order by bid_date asc");
+			$query = $this->db->query("SELECT a.id, project_no, lead_status, bid_date, sales_representative, a.project_name, type_of_work,address, bid_value, 
+					lead_source, a.created_by, link, a.id AS ACTION, b.id AS planid, c.id docuid, d.id AS rfiid
+					FROM project_leads AS a LEFT OUTER JOIN `tblplan` AS b 
+					ON  b.project_id  = a.id LEFT OUTER JOIN `tbldocuments` AS c ON c.project_id = a.id
+					LEFT OUTER JOIN `project_rfi` AS d ON d.project_id = a.id where a.lead_status = '".$stat."' GROUP BY a.id 
+					ORDER BY  bid_date ASC
+					 ");
 		}
 		return $query->result_array();
 	}
@@ -76,6 +90,13 @@ class Projectleadmodel extends CI_Model{
 		$rw = trim($id);
 		$this->db->where('id', $rw);
 		$this->db->delete('tblplan');
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+	
+	public function deldocument($id){
+		$rw = trim($id);
+		$this->db->where('id', $rw);
+		$this->db->delete('tbldocuments');
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
 

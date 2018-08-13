@@ -513,4 +513,31 @@ function showme(img){
 	$('#imgcaption').attr('src', img.val());
 	$('#imgmodal').modal();
 }
+
+function removedocu(id){
+	Swal({
+		  title: 'Are you sure?',
+		  text: 'Item will be permanently be removed from the database',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, delete it!',
+		  cancelButtonText: 'No, keep it'
+		}).then((result) => {
+		  if (result.value) {
+				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/docuremove";
+				$.post(xlink,{planid: id}) 
+				.success(function(data) {
+					reloaddocument();
+					swal({
+						type: 'success',
+						title: 'Delete',
+						text: 'You have successfully deleted an item. Thank you!',
+						footer: '<a href>'+ data +'</a>'
+					});
+				});
+		  } else if (result.dismiss === Swal.DismissReason.cancel) {
+		  }
+		});
+}
+
 </script>
