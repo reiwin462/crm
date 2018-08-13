@@ -63,7 +63,7 @@ class Formbuildermodel extends CI_Model {
 					$htm .= '<div class="col-md-'.trim($colratio).'">
 								<div class="form-group">
 									<label for="'.$fldname.'"> '.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
-									<input type="text" class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  onkeypress="'.$jsinputvalidation.'" maxlength="'.$fldlimit.'"  value="'.$flddefault.'" '.$fldrequired.'  ></input>
+									<input type="text" class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  onkeypress="'.$jsinputvalidation.'"  maxlength="'.$fldlimit.'"  value="'.$flddefault.'" '.$fldrequired.'  ></input>
 								</div>
 							 </div>';
 				break;
@@ -99,7 +99,7 @@ class Formbuildermodel extends CI_Model {
 					$htm .= '<div class="col-md-12">
 								<div class="form-group">
 										<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
-										<textarea class="form-control '.$maskname.'" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.'>'.$flddefault.'</textarea>
+										<textarea class="form-control '.$maskname.'" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.' >'.$flddefault.'</textarea>
 									</div>
 							 </div>';
 							 
@@ -109,7 +109,7 @@ class Formbuildermodel extends CI_Model {
 					$htm .= '<div class="col-md-'.trim($colratio).'">
 								<div class="form-group">
 									<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
-									<input type="date" class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'" value="'.date('Y-m-d').'"></input>
+									<input type="date" class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'" value="'.date('Y-m-d').'" ></input>
 								</div>
 							 </div>';
 				break;
@@ -146,82 +146,7 @@ class Formbuildermodel extends CI_Model {
 		if($showtblID == "yes"){
 			$htm .= '<input type="hidden" id="transid" name="id" maxlength="10" ></input>';
 		}
-				
 		$htm .= "</form>";
-		$htm .= '<script>
-				function isNumberKey(evt){
-					var charCode = (evt.which) ? evt.which : event.keyCode
-					if (charCode > 31 && (charCode < 48 || charCode > 57)){
-						swal({
-							type: "error",
-							title: "validation",
-							 text : "Please enter number values only"
-							});
-							return false;
-					}else{
-						return true;
-					}
-					
-				}
-				
-				function newdropdown(fld){
-					var xlink = window.location.host;
-					var newdata
-					swal({
-					  title: "Please Enter Your Item for <br>" + fld.replace("_", " "),
-					  input: "text",
-					  inputAttributes: {
-						autocapitalize: "off",
-						id: "newdropdownitem"
-					  },
-					  showCancelButton: true,
-					  confirmButtonText: "Insert",
-					  showLoaderOnConfirm: true,
-					  preConfirm: (xitem) => {
-						var link = "'. base_url() .'process/newitem/"+ fld + "/" +  $("#newdropdownitem").val();
-						newdata = $("#newdropdownitem").val();
-						return fetch(link)
-						  .then(response => {
-							if (response == "success") {
-								$("#"+ fld).append($("<option>", {
-									value: newdata,
-									text: newdata,
-								}));
-								swal({
-								  type: "success",
-								  title: "success",
-								  text : response
-								})
-							}else{
-								swal({
-								type: "error",
-								  title: "error",
-								  text : response
-								})
-							}
-						  })
-						  .catch(error => {
-							swal.showValidationError(
-							  "Request failed: ${error}"
-							)
-						  })
-					  },
-					  allowOutsideClick: () => !swal.isLoading()
-					}).then((result) => {
-					  if (result.value) {
-						swal({
-						  type: "success",
-						  title: "success",
-						  text : ""
-						})
-						$("#"+ fld).append($("<option>", {
-									value: newdata,
-									text: newdata,
-								}));
-					  }
-					});
-				}
-				</script>';
 		return '<div class="row">'.$htm.'</div>';
 	}
 	

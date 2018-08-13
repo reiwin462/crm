@@ -42,9 +42,12 @@
 									<button type="button" class="btn mw-md btn-success" onclick="prcUpdate();" ><i class="fa fa-pencil"></i> Update</button>
 									<button type="button" class="btn mw-md btn-warning" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>	
 								</div>
+								<!--
 								<div class="col-md-4">
 									<button type="button" class="btn mw-md btn-danger float-right" onclick="projleaddelete();"><i class="fa fa-trash"></i> Delete</button>
 								</div>
+								-->
+								
 							</div>	
 							<div id="prlmain" class="row actbutt">
 								<button type="button" class="btn mw-md btn-success" onclick="updateprojlead();" ><i class="fa fa-check"></i> Save</button>
@@ -118,7 +121,7 @@
 						?>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody id="leadsbody">
 				</tbody>
 				<tfoot>
 				</tfoot>
@@ -173,52 +176,21 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function datatablereload(sts){
-
-	if(window.location.href.indexOf("showcampaigntable") > -1) {
-		var table = $('#responsive-datatable').DataTable();
-		table.destroy();
-		var table = $('#responsive-datatable').DataTable( {
-		dom: "ftpi",
-		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads/" + sts,
-		searching: true,
-		responsive: false,
-		columns: [
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			{ "width": "20%" },
-		]
-		} );
-    }else{
-		var table = $('#responsive-datatable').DataTable();
-		table.destroy();
-		var table = $('#responsive-datatable').DataTable( {
-		ajax: "<?php echo base_url(); ?>Projectleadcontrol/showallprojleads/" + sts,
-		dom: 'ftpi',
-		searching: true,
-		responsive: false,
-		columns: [
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			null,
-			{ "width": "20%" },
-		]
-		} );
-	}
+		//var table = $('#responsive-datatable').DataTable();
+		$('#prevDiv').hide();
+		$('.preloader').fadeIn();	
+		$("#leadsbody").html('');
+		$.post("<?php echo base_url("Projectleadcontrol/showallprojleads/"); ?>",{ stat : sts})
+				.done(function(data) {
+					var table = $('#responsive-datatable').DataTable();
+					table.destroy();
+					$("#leadsbody").html(data);
+					$('#responsive-datatable').DataTable({
+						dom: 'ftpi',
+					});
+			});
+		$('#prevDiv').show();
+		$('.preloader').hide()
 
 }
 
@@ -726,6 +698,32 @@ function removeattachment(id){
 				$.post(xlink,{planid: id}) 
 				.success(function(data) {
 					reloadplan();
+					swal({
+						type: 'success',
+						title: 'Delete',
+						text: 'You have successfully deleted an item. Thank you!',
+						footer: '<a href>'+ data +'</a>'
+					});
+				});
+		  } else if (result.dismiss === Swal.DismissReason.cancel) {
+		  }
+		});
+}
+
+function removedocu(id){
+	Swal({
+		  title: 'Are you sure?',
+		  text: 'Item will be permanently be removed from the database',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, delete it!',
+		  cancelButtonText: 'No, keep it'
+		}).then((result) => {
+		  if (result.value) {
+				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/docuremove";
+				$.post(xlink,{planid: id}) 
+				.success(function(data) {
+					reloaddocument();
 					swal({
 						type: 'success',
 						title: 'Delete',

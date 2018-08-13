@@ -73,79 +73,68 @@ class Projectleadcontrol extends CI_Controller{
 		}
 	}
 	
-	public function showallprojleads($stat = ''){
+	public function showallprojleads(){
+		$stat = $this->input->post('stat');
 		$this->load->model('Projectleadmodel');	
+		$tabeldata = "";
 		$data =  $this->Projectleadmodel->getprojleads(urldecode($stat));
 		$prjleads = array('data' => array());
-		if(count($data) > 0){			
-			$innerarray =  array();
-			
-			foreach($data as $row){		
-					$wb = "";			
-				foreach($row as $key=>$val){
-					if(strlen($val) == 0){
-						$tdval = "blank";
-					}elseif($key == "link"){
-						$wb = $val;
-						$tdval = "";
-					}elseif($key == "action"){
-						
-						$tdval .= "<button class='btn btn-primary' onclick=\"projleadupdate('".$val."')\">
+		if(count($data) > 0){						
+			foreach($data as $key=>$val){
+				$sty = "";
+				
+				if($val['planid'] == "" or $val['docuid'] == ""){
+					$sty = "background-color: #ffb2b2; height: 30px; text-overflow: ellipsis;";
+				}
+				elseif($val['rfiid'] == ""){
+					$sty = "background-color: #fff7b2; height: 30px; text-overflow: ellipsis;";
+				}
+				else{
+					$sty = "background-color: #b2ffb6; height: 30px; text-overflow: ellipsis;";
+				}
+				$tabeldata .= "<tr style='".$sty."'>";
+				$tabeldata .= "<td class='tdrw'>".$val['project_no']."</td>";
+				$tabeldata .= "<td class='tdrw'>".$val['lead_status']."</td>";
+				$tabeldata .= "<td class='tdrw'>".$val['bid_date']."</td>";
+				$tabeldata .= "<td class='tdrw'>".$val['sales_representative']."</td>";
+				$tabeldata .= "<td class='tdrw'>".$val['project_name']."</td>";
+				$tabeldata .= "<td class='tdrw'>".$val['type_of_work']."</td>";
+				$tabeldata .= "<td class='tdrw'>".$val['address']."</td>";
+				$tabeldata .= "<td class='tdrw'>".$val['bid_value']."</td>";
+				$tabeldata .= "<td class='tdrw'>".$val['lead_source']."</td>";
+				$tabeldata .= "<td class='tdrw'>".$val['created_by']."</td>";
+
+				$lk = base_url('projectleadpreview?projectid='.$val['id']);
+				$id = $val['id'];
+				$tdval = "";
+				$tdval .= "<button class='btn btn-primary' onclick=\"projleadupdate('".$id."')\">
 									<i class='fa fa-tv' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Preview Lead'></i>
 								</button> 
-								<button class='btn btn-warning' onclick=\"projleadmanage('".$val."')\">
+								<button class='btn btn-warning' onclick=\"projleadmanage('".$id."')\">
 									<i class='fa fa-bars' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Manage Lead'></i>
 								</button>
-								 <a href='". base_url('projectleadpreview?projectid='.$val)."' class='btn btn-danger' target='_blank'>
+								 <a href='". $lk ."' class='btn btn-danger' target='_blank'>
 									<i class='fa fa-eye' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Preview 2'></i>
 								</a>";
-						if($wb <> ""){
-							if (strrpos($wb, "http") === false) { 
-								$tdval .= " <a href='".'http://'.$wb."' class='btn btn-success' target='_blank'>
+				if($val['link'] <> ""){
+							if (strrpos($val['link'], "http") === false) { 
+								$tdval .= " <a href='".'http://'.$val['link']."' class='btn btn-success' target='_blank'>
 									<i class='fa fa-link' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Link to Lead'></i>
 								</button>";
 							}else{
-								$tdval .= " <a href='".$wb."' class='btn btn-success' target='_blank'>
+								$tdval .= " <a href='".$val['link']."' class='btn btn-success' target='_blank'>
 									<i class='fa fa-link' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Link to Lead'></i>
 								</a>";
 							}
 						}
-					
-					}else{
-						$tdval = $val;
-					}
-					if($key == "bid_value"){
-						$newinnerarray[] = number_format($tdval,2);
-					}else{
-						if($key === "link"){
-							$tdval = "";
-						}else{
-							$newinnerarray[] = $tdval;
-						}
-						
-					}
-					
-				}
-				array_push($prjleads['data'], $newinnerarray);			
-				$newinnerarray = array();
-				$innerarray = array();
+				$tabeldata .= "<td style='width: 130px;'><div class='form-group inline'>".$tdval."</div></td>";
+				$tabeldata .= "</tr>";
 			}
 		}else{
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			$newinnerarray[] = "<td>No Data Available</td>";
-			array_push($prjleads['data'], $newinnerarray);		
+			$tabeldata = "<tr><td colspan=10>No Data Available</td></td>";
 		}
 		
-		echo json_encode($prjleads);
+		echo $tabeldata;
 	}
 	
 	public function getleaddetail($leadid){
@@ -215,8 +204,6 @@ class Projectleadcontrol extends CI_Controller{
 			
 			$this->sendemail('Project Lead Notification', $lead[0]['created_by'], $htm);
 		}
-		
-
 	}
 	
 	public function statupdate($id){
@@ -326,8 +313,11 @@ class Projectleadcontrol extends CI_Controller{
 					
 					$htm .= '<br><div class="widget stats-widget">
 					<footer class="widget-footer bg-primary">
-						<span>'.$this->timeAgo($val['created_date']).'</span>
+						<div>
+						<span class="float-right"><a href="#" class="btnclose" onclick="removedocu('.trim($val['id']).');"><i class="fa fa-close"></i></a></span>
+						<small>'.$this->timeAgo($val['created_date']).'</small>
 						<small class="float-right">     :         '.$val['created_by'].' </small>
+						</div>
 					</footer>
 					<div class="widget-body clearfix">
 						<div class="pull-left">
@@ -480,7 +470,17 @@ class Projectleadcontrol extends CI_Controller{
 		}else{
 			echo "error";
 		}
-		
+	}
+	
+	public function docuremove(){
+		$id = $this->input->post('planid');
+		$this->load->model('Projectleadmodel');
+		$rm = $this->Projectleadmodel->deldocument($id);
+		if($rm > 0){
+			echo "success";
+		}else{
+			echo "error";
+		}
 	}
 	
 	public function insertnewrfi(){
@@ -528,13 +528,25 @@ class Projectleadcontrol extends CI_Controller{
 		try {
 			$sendgrid = new SendGrid\SendGrid('sendgriduser', 'sendgridpass');
 			$mail = new SendGrid\Mail();
-
-			$mail->addTo($to)->
-				   setFrom('mynotification007@gmail.com')->
-				   setSubject($sbj)->
-				   setText(strip_tags($msg))->
-				   setHtml($msg);
-				   $sendgrid->send($mail);
+			
+			
+			if($this->session->userdata('crmuser') == "reiwin462@gmail.com"){
+				$mail->addTo($to)->
+				addCc('reiwin462@gmail.com')->
+				setFrom('mynotification007@gmail.com')->
+				setSubject($sbj)->
+				setText(strip_tags($msg))->
+				setHtml($msg);
+				$sendgrid->send($mail);
+			}else{
+				$mail->addTo($to)->
+				addCc('acceldrilling@gmail.com')->
+				setFrom('mynotification007@gmail.com')->
+				setSubject($sbj)->
+				setText(strip_tags($msg))->
+				setHtml($msg);
+				$sendgrid->send($mail);
+			}
 					
 		} catch (InvalidArgumentException $e) {
 			///echo 'There was an error'. $e;
