@@ -38,22 +38,9 @@ body{font-family: "Century Gothic";}
     background-color: rgba(0,0,0,0.10); /* Black w/ opacity */
 }
 
-.modal-dialog {
-  display: inline-block;
-  text-align: left;
-  vertical-align: middle;
-}
+.modal-dialog { display: inline-block; text-align: left; vertical-align: middle; }
 
-.modal-content {
-	width: 60%;
-	height: 70%;
-	padding: 0;
-	margin: 0 auto;
-	border: none;
-	outline: none;
-	line-height: 0;
-	vertical-align: top;
-}
+.modal-content {width: 60%;height: 70%;padding: 0;margin: 0 auto;border: none;outline: none;line-height: 0;vertical-align: top;}
 @media only screen and (max-width: 700px){
     .modal-content {
         width: 50%;
@@ -67,7 +54,8 @@ body{font-family: "Century Gothic";}
 #responsive-datatable .btn{font-size:12px; padding: 2px; height:30px;}
 #responsive-datatable th{padding: 2px; text-align: left;  font-size:12px;  width: 80px;}
 #responsive-datatable td{padding: 2px; text-align: left; font-size:11px; text-overflow: hidden; height: 10px; width: 80px !important;}
-#responsive-datatable tr{padding: 2px; text-align: left; font-size:11px; text-overflow: hidden; height: 20px; text-overflow:ellipsis; }
+#responsive-datatable tr{padding: 2px; text-align: left; font-size:11px; text-overflow: hidden; height: 30px !important; text-overflow:ellipsis; }
+#responsive-datatable_wrapper td{height: 20px !important; padding: 0px; width: auto; word-wrap: break-word; text-overflow: ellipsis;}
 
 #responsive-datatable_filter{float: right !important; margin-bottom: 5px; margin-left: 10px; font-size: 12px;}
 #responsive-datatable_length {float:left; padding:2px; width:50px !important; margin-top: -10px; }
@@ -124,27 +112,26 @@ body{font-family: "Century Gothic";}
 	padding-left: 10px;
     background-color: #F7F7F7; 
 }
-.img-with-text{
-	text-align: justify;
-    width: auto;
-	margin-top: 5px;
-	box-shadow: 10px 10px 5px grey;
-	padding: 5px;
-}
-.img-with-text img {
-    display: block;
-    margin: 0 auto;
-}
 
-.img-with-text .caption {
-    text-align: center;
-	font-size: 10px;
-}
+.img-with-text{text-align: justify; width: auto;margin-top: 5px;box-shadow: 10px 10px 5px grey; padding: 5px;}
+.img-with-text img { display: block;margin: 0 auto;}
+.img-with-text .caption { margin-top:2px; text-align: center; font-size: 8px; text-overflow: ellipsis;}
+.btnclose{text-align: left;font-size: 14px; border-radius:2px; margin-top: 2px; color: #ff946d; }
+
+#previewpane {}
+.prevrow{height: auto; padding: 1px; margin-top: 2px; border-bottom: 1px solid #e2e2e2;}
+.previewfield {height: auto; padding: 5px; margin:0px; overflow: hidden; text-overflow: ellipsis;  background-color: #fffaf4; font-size:11px;}
+.previewitm {height: auto; padding: 5px; margin:0px; overflow: hidden; text-overflow: ellipsis; font-size:11px;}
+#docupreview {height: 200px; overflow-y:scroll; overflow-x:hidden; width: auto; text-overflow: hidden;}
+#docucontent {padding: 2px; text-overflow: hidden; font: 11px;	border-radius: 2px; font-size: 12px; background-color: #b2cfff; word-wrap: break-word; border:1px solid #e2e2e2;}
+#doccontent { padding: 2px; word-wrap: break-word; background-color: #fff; font-family: "Century Gothic";}
+#doccontent p{ word-wrap: break-word; margin-top:2px; margin-bottom: 2px;}
+
+#planpreview {height: 200px; overflow-y:scroll; overflow-x:hidden; width: auto; font-size: 10px;}
 
 /*
 #newleadpreview {display:none;}
 #newleadrender{padding: 10px;}
 #frmlead_reuse{padding: 10px;}
-
 #leadalldata .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {background-color: #7468f2;color:#fff;}
 */

@@ -73,8 +73,6 @@ class Projectleadcontrol extends CI_Controller{
 		}
 	}
 	
-	
-	
 	public function showallprojleads($stat = ''){
 		$this->load->model('Projectleadmodel');	
 		$data =  $this->Projectleadmodel->getprojleads(urldecode($stat));
@@ -97,7 +95,10 @@ class Projectleadcontrol extends CI_Controller{
 								</button> 
 								<button class='btn btn-warning' onclick=\"projleadmanage('".$val."')\">
 									<i class='fa fa-bars' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Manage Lead'></i>
-								</button>";
+								</button>
+								 <a href='". base_url('projectleadpreview?projectid='.$val)."' class='btn btn-danger' target='_blank'>
+									<i class='fa fa-eye' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Preview 2'></i>
+								</a>";
 						if($wb <> ""){
 							if (strrpos($wb, "http") === false) { 
 								$tdval .= " <a href='".'http://'.$wb."' class='btn btn-success' target='_blank'>
@@ -106,7 +107,7 @@ class Projectleadcontrol extends CI_Controller{
 							}else{
 								$tdval .= " <a href='".$wb."' class='btn btn-success' target='_blank'>
 									<i class='fa fa-link' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Link to Lead'></i>
-								</button>";
+								</a>";
 							}
 						}
 					
@@ -295,7 +296,6 @@ class Projectleadcontrol extends CI_Controller{
 		}
 	}
 	
-	
 	public function insertdocument(){
 				
 		$docu = array('project_id' => trim($this->input->post('id')),
@@ -370,17 +370,18 @@ class Projectleadcontrol extends CI_Controller{
 						$fav = '<i class="fa fa-image "></i>';
 						//$htm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px'></a>";	
 						$htm .= "<div class='img-with-text d-inline'>";
+						$htm .= "<a href='#' class='btnclose' onclick='removeattachment(".trim($val['id']).");'><i class='fa fa-close'></i></a>";
 						$htm .= "<img src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";
-						$htm .= "<small class='caption'> ".$val['filename']." </small>";
+						$htm .= "<small class='caption text-center'> ".$val['filename']." </small>";
 						$htm .= "</div>";
 					}else{
 						$fav = '<i class="fa fa-file-alt"></i>'; 
 						$htm .= "<div class='img-with-text d-inline'>";
+						$htm .= "<a href='#' class='btnclose' onclick='removeattachment(".trim($val['id']).");'><i class='fa fa-close'></i></a>";
 						$htm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='../assets/images/pdf.png' width='100px' height='100px'></a>";
-						$htm .= "<small class='caption'> ".$val['filename']." </small>";
+						$htm .= "<small class='caption  text-center'> ".$val['filename']." </small>";
 						$htm .= "</div>";
 					}
-					
 					$i++;
 				}
 			}else{
@@ -470,6 +471,17 @@ class Projectleadcontrol extends CI_Controller{
 
 	}
 	
+	public function planremove(){
+		$id = $this->input->post('planid');
+		$this->load->model('Projectleadmodel');
+		$rm = $this->Projectleadmodel->delprojplan($id);
+		if($rm > 0){
+			echo "success";
+		}else{
+			echo "error";
+		}
+		
+	}
 	
 	public function insertnewrfi(){
 
@@ -557,7 +569,6 @@ class Projectleadcontrol extends CI_Controller{
 
 	}
 	
-	
 	public function uniqidReal($lenght = 13) {
 		if (function_exists("random_bytes")) {
 			$bytes = random_bytes(ceil($lenght / 2));
@@ -569,9 +580,8 @@ class Projectleadcontrol extends CI_Controller{
 		return substr(bin2hex($bytes), 0, $lenght);
 	}
 	
-
-	public function timeAgo($time_ago)
-{
+	public function timeAgo($time_ago){
+		
     $time_ago = strtotime($time_ago);
     $cur_time   = time();
     $time_elapsed   = $cur_time - $time_ago;
