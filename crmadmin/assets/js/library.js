@@ -1,16 +1,13 @@
 var LIBS = {
 	// Chart libraries
-	
-	
-	
 	plot: [
-		"../libs/misc/flot/jquery.flot.min.js",
-		"../libs/misc/flot/jquery.flot.pie.min.js",
-		"../libs/misc/flot/jquery.flot.stack.min.js",
-		"../libs/misc/flot/jquery.flot.resize.min.js",
-		"../libs/misc/flot/jquery.flot.curvedLines.js",
-		"../libs/misc/flot/jquery.flot.tooltip.min.js",
-		"../libs/misc/flot/jquery.flot.categories.min.js"
+		"/libs/misc/flot/jquery.flot.min.js",
+		"/libs/misc/flot/jquery.flot.pie.min.js",
+		"/libs/misc/flot/jquery.flot.stack.min.js",
+		"/libs/misc/flot/jquery.flot.resize.min.js",
+		"/libs/misc/flot/jquery.flot.curvedLines.js",
+		"/libs/misc/flot/jquery.flot.tooltip.min.js",
+		"/libs/misc/flot/jquery.flot.categories.min.js"
 	],
 	chart: [
 		'../libs/misc/echarts/build/dist/echarts-all.js',
@@ -81,8 +78,8 @@ var LIBS = {
 		"../libs/bower/dropzone/dist/min/dropzone.min.js"
 	],
 	counterUp: [
-		"../libs/bower/waypoints/lib/jquery.waypoints.min.js",
-		"../libs/bower/counterup/jquery.counterup.min.js"
+		//"../libs/bower/waypoints/lib/jquery.waypoints.min.js",
+		//"../libs/bower/counterup/jquery.counterup.min.js"
 	],
 	others: [
 	

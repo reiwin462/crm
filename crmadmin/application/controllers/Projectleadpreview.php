@@ -58,12 +58,17 @@ class Projectleadpreview extends CI_Controller{
 						$planhtm .= "<div class='d-inline'>";
 						$planhtm .= "<img src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";
 						$planhtm .= "<span class='caption'> ".$val['filename']." </span>";
+						$planhtm .= "<br>";
+						$planhtm .= "<small> ".$val['detail']." </small>";
 						$planhtm .= "</div>";
 					}else{
-						$planhtm = '<i class="fa fa-file-alt"></i>'; 
+						$link = base_url()."/assets/images/pdf.png";
+						$planhtm .= '<i class="fa fa-file-alt"></i>'; 
 						$planhtm .= "<div class='img-with-text d-inline'>";
-						$planhtm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='../assets/images/pdf.png' width='100px' height='100px'></a>";
+						$planhtm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='$link' width='100px' height='100px'></a>";
 						$planhtm .= "<span class='caption'> ".$val['filename']." </span>";
+						$planhtm .= "<br>";
+						$planhtm .= "<small> ".$val['detail']." </small>";
 						$planhtm .= "</div>";
 					}
 			}

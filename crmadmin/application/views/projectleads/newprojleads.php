@@ -78,6 +78,12 @@
 				 <br>
 				<div class="form-inline">
 					<form id="leadplan" method="post" enctype="multipart/form-data" class="form-horizontal p-t-10">
+						<div class="col-md-6">
+							<div class="form-group">
+								<label for="detail">Detail.</label>
+								<input type="text" class="form-control" id="detail" name="detail" aria-describedby="categoryHelp" placeholder="Enter Detail" required ></input>
+							</div>
+						</div>
 						<input type="hidden" id="leadid" name="leadid" ></input>
 						<input type="file" class="form-control" name="file" id="file">
 						<input type="button" value="submit" class="btn-primary btn-sm" onclick="leadplanupload();">
@@ -85,7 +91,7 @@
 				</div>
 				<br>
 				<div class="row">
-					<div class="col-md-12">
+					<div class="container">
 						<table id="planlist" class="table-responsive">
 							
 						</table>
@@ -95,7 +101,7 @@
 			
 			<div role="tabpanel" class="tab-pane" id="addrfi">				
 				<div class="row">
-					<div class="container">
+					<div >
 						<?php echo $formrfi; ?>
 						<br>
 						<div class="row actbutt">
@@ -122,8 +128,8 @@
 
 document.addEventListener("DOMContentLoaded", function(){
 	
-	$('#more_info').summernote({
-		height: 100,
+	$('#more_info, #project_scope').summernote({
+		height: 80,
 		 toolbar: [
 		// [groupName, [list of button]]
 		['style', ['bold', 'italic', 'underline', 'clear']],
@@ -134,6 +140,34 @@ document.addEventListener("DOMContentLoaded", function(){
 		['height', ['height']]
 		],
 	});
+	
+	$('#more_info #project_scope').summernote({
+		height: 80,
+		 toolbar: [
+		// [groupName, [list of button]]
+		['style', ['bold', 'italic', 'underline', 'clear']],
+		['font', ['strikethrough', 'superscript', 'subscript']],
+		['fontsize', ['fontsize']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['height', ['height']]
+		],
+	});
+	
+	$('#doc_Content').summernote({
+		height: 40,
+		toolbar: [
+		// [groupName, [list of button]]
+		['style', ['bold', 'italic', 'underline', 'clear']],
+		['font', ['strikethrough', 'superscript', 'subscript']],
+		['fontsize', ['fontsize']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['height', ['height']]
+		],
+	});
+	
+	
 });
 
 
@@ -179,6 +213,9 @@ function addnewprojlead(){
 				}else{
 						$('#updatediv').show();
 						$('#adddiv').hide();
+						$('#projleadformupdate .more_info').summernote('destroy');
+						$('#projleadformupdate .project_scope').summernote('destroy');
+
 						$("#projleadform :input").each(function(){
 							var itmval = $(this).val();
 							var item = $(this).attr('id');
@@ -202,8 +239,8 @@ function addnewprojlead(){
 						  text: 'New Contact has been Created. Thank you!',
 						  footer: '<a href>'+ data +'</a>'
 						});
-							$('#projleadformupdate #more_info').summernote({
-									height: 100,
+							$('#more_info, #project_scope').summernote({
+									height: 80,
 									toolbar: [
 											// [groupName, [list of button]]
 									['style', ['bold', 'italic', 'underline', 'clear']],
@@ -267,7 +304,11 @@ function resetcancel(){
 		$(this).val('');
 	});
 	$('#updatediv').hide();
-	$('#adddiv').show();	
+	$('#adddiv').show();
+	
+	$('#more_info').summernote(code, '');
+	$('#project_scope').summernote(code, '');
+	
 }
 
 function reloaddocument(){
@@ -299,12 +340,12 @@ function leadplanupload(){
 	var idfld = $('#leadid').val();
 	var fildata = document.getElementById("file").value;
 	var fd = new FormData($("#leadplan")[0]);
-
-	if(idfld == ""){
+	var dt = $('#detail').val();
+	if(idfld == "" || dt == "" ){
 		swal({
 				type:  'error',
 				title: 'Upload',
-				text:  'Linkin ID is missing, Kindly refresh your browser and try again!',
+				text:  'All Fields Required!',
 				footer: '<a href></a>'
 			})
 		return false;
@@ -338,7 +379,7 @@ function leadplanupload(){
 				   url: xlink,
 				   method:"POST",
 				   enctype: 'multipart/form-data',
-				   data: fd, id: idfld,
+				   data: fd, id: idfld, detail: dt,
 				   contentType:false,
 				   cache:false,
 				   processData:false,
@@ -455,7 +496,7 @@ function addrfi(){
 	
 		if(isNull == "pass"){
 			
-			$.post("<?php echo base_url("Projectleadcontrol/insertnewrfi"); ?>",
+			$.post("<?php echo base_url("Projectleadcontrol/newrfi"); ?>",
 			{data: JSON.stringify($("#projrfi").serializeArray()), id: idfld }) 
 			.success(function(data) {
 				if(data == "success"){
