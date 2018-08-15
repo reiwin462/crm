@@ -77,16 +77,16 @@ class Projectleadcontrol extends CI_Controller{
 		$stat = $this->input->post('stat');
 		$this->load->model('Projectleadmodel');	
 		$tabeldata = "";
-		$data =  $this->Projectleadmodel->getprojleads(urldecode($stat));
+		$data =  $this->Projectleadmodel->getprojleads($stat);
 		$prjleads = array('data' => array());
 		if(count($data) > 0){						
 			foreach($data as $key=>$val){
 				$sty = "";
 				
-				if($val['planid'] == "" or $val['docuid'] == ""){
+				if($val['planid'] == "0" or $val['docuid'] == "0"){
 					$sty = "background-color: #ffb2b2; height: 30px; text-overflow: ellipsis;";
 				}
-				elseif($val['rfiid'] == ""){
+				elseif($val['rfiid'] == "0"){
 					$sty = "background-color: #fff7b2; height: 30px; text-overflow: ellipsis;";
 				}
 				else{
@@ -131,7 +131,19 @@ class Projectleadcontrol extends CI_Controller{
 				$tabeldata .= "</tr>";
 			}
 		}else{
-			$tabeldata = "<tr><td colspan=10>No Data Available</td></td>";
+			$tabeldata = "<tr>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+						 </tr>";
 		}
 		
 		echo $tabeldata;
@@ -288,7 +300,7 @@ class Projectleadcontrol extends CI_Controller{
 		$docu = array('project_id' => trim($this->input->post('id')),
 				'doc_filename' => trim(addslashes($_POST['data'][0]['value'])),
 				'doc_keywords' =>  trim(addslashes($_POST['data'][1]['value'])),
-				'doc_Content' =>  trim(addslashes($_POST['data'][2]['value'])),
+				'doc_Content' =>  trim($_POST['data'][2]['value']),
 				'created_by' => $this->session->userdata('crmuser'),
 				'created_date' => date('Y-m-d H:i:s'),
 				);
@@ -363,6 +375,8 @@ class Projectleadcontrol extends CI_Controller{
 						$htm .= "<a href='#' class='btnclose' onclick='removeattachment(".trim($val['id']).");'><i class='fa fa-close'></i></a>";
 						$htm .= "<img src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";
 						$htm .= "<small class='caption text-center'> ".$val['filename']." </small>";
+						$htm .= "<br>";
+						$htm .= "<small> ".$val['detail']." </small>";
 						$htm .= "</div>";
 					}else{
 						$fav = '<i class="fa fa-file-alt"></i>'; 
@@ -370,6 +384,8 @@ class Projectleadcontrol extends CI_Controller{
 						$htm .= "<a href='#' class='btnclose' onclick='removeattachment(".trim($val['id']).");'><i class='fa fa-close'></i></a>";
 						$htm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='../assets/images/pdf.png' width='100px' height='100px'></a>";
 						$htm .= "<small class='caption  text-center'> ".$val['filename']." </small>";
+						$htm .= "<br>";
+						$htm .= "<small> ".$val['detail']." </small>";
 						$htm .= "</div>";
 					}
 					$i++;
@@ -438,6 +454,7 @@ class Projectleadcontrol extends CI_Controller{
 		}else{
 			$data = array(
 				"project_id"	=> $this->input->post('leadid'),
+				"detail"		=> $this->input->post('detail'),
 				"filename"		=> addslashes($name),
 				"filename_path"	=> $attachment_filename,
 				"filename_type"	=> $attach_type,
@@ -453,7 +470,7 @@ class Projectleadcontrol extends CI_Controller{
 				echo "error insert";
 			}
 		}
-		
+
 		/*
 		$html .= "<td><a href='https://storage.googleapis.com/steve-unified/$row->attachment' target='_blank'>DOWNLOAD</a></td>";
 		https://storage.googleapis.com/steve-unified/9a6d4756fcce0geogrout.jpg
@@ -495,8 +512,9 @@ class Projectleadcontrol extends CI_Controller{
 			foreach ($decoded as $value) {
 				if($value["name"] == "id"){
 					if($value["value"] <> ""){
-						$id=$value["value"];
+						$id = $value["value"];
 						$action = "update";
+						
 					}else{
 						$action = "insert";
 					}
@@ -507,19 +525,52 @@ class Projectleadcontrol extends CI_Controller{
 			$rfiarray['project_id'] = $this->input->post('id');
 			$rfiarray['created_by'] = $this->session->userdata('crmuser');
 			$rfiarray['created_date'] = date('Y-m-d H:i:s');
-			
-			if($action == "insert"){
+			$insertupdate ="";
+			if($action === "insert"){
 				$insertupdate = $this->Projectleadmodel->insertrfi($rfiarray);
+				echo "success";
 			}else{
 				$insertupdate = $this->Projectleadmodel->updaterfi($rfiarray, $id);	
+				if($insertupdate > 0){
+					echo "success";
+				}else{
+					echo "error " . $action;
+				}
 			}
+			
+		}else{
+			echo "error on post data";
+		}
+	}
+	
+	public function newrfi(){
+		$this->load->model('Projectleadmodel');
+		$decoded = json_decode($_POST['data'],true);
+		if(count($decoded) > 0){
+			foreach ($decoded as $value) {
+				if($value["name"] == "id"){
+					if($value["value"] <> ""){
+						$id = $value["value"];
+						$action = "update";
+						die('here');
+					}else{
+						$action = "insert";
+					}
+				}else{
+					$rfiarray[$value["name"]] = addslashes($value["value"]);
+				}
+			}
+			$rfiarray['project_id'] = $this->input->post('id');
+			$rfiarray['created_by'] = $this->session->userdata('crmuser');
+			$rfiarray['created_date'] = date('Y-m-d H:i:s');
+			$insertupdate ="";
+			$insertupdate = $this->Projectleadmodel->insertrfi($rfiarray);
 			if($insertupdate > 0){
 				echo "success";
 			}else{
-				echo "error";
+				echo "error". $insertupdate;
 			}
-		}else{
-			echo "error on post data";
+			
 		}
 	}
 	

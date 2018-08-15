@@ -75,7 +75,7 @@ function newitem(){
 		return false;
 	}
 	
-	var xlink = "<?php echo base_url(); ?>process/newitemx/" + optfield + "/" + newitem;
+	var xlink = "<?php echo base_url(); ?>process/newitem/" + optfield + "/" + newitem;
 		 $.post(xlink,) 
 			.success(function(data) {
 				if(data == "success"){

@@ -99,7 +99,7 @@ class Formbuildermodel extends CI_Model {
 					$htm .= '<div class="col-md-12">
 								<div class="form-group">
 										<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
-										<textarea class="form-control '.$maskname.'" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.' >'.$flddefault.'</textarea>
+										<textarea class="form-control '.$fldname.'" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.' >'.$flddefault.'</textarea>
 									</div>
 							 </div>';
 							 

@@ -127,7 +127,7 @@
                                             <div class="widget-body">
                                                 <h4> No Plan Data Available! </h4>
                                             </div>
-                                            <?php endif?>
+                                         <?php endif; ?>
                                 </div>
                             </div>
                             <div class="widget-body">

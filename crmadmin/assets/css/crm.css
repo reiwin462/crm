@@ -134,5 +134,13 @@ body{font-family: "Century Gothic";}
 .ispass{background-color: #e0fcb5 !important; border: 1px solid #e2e2e2;}
 .hot {background-color: #ff9696 !important; border: 1px solid #e2e2e2;}
 .sun {background-color: #fffbb7 !important; border: 1px solid #e2e2e2;}
+.sea{background-color: #59ABE3 !important; border: 1px solid #e2e2e2;}
 
 .tdrw{height: 20px; width: 40px; overflow: hidden;}
+#dashbidding{height: 300px; padding: 2px;}
+#biddingtable th{width: 50px !important;}
+#biddingtable tr{font-family: "Century Gothic"; font-size:11px !important; padding: 2px !important;}
+#biddingtable td{padding: 2px !important; text-overflow: ellipsis !important; width: 50px; word-wrap: break-word;}
+
+#engineer .list-group-item{padding: 10px; border-radius: 0px; font-size: 12px;}
+	

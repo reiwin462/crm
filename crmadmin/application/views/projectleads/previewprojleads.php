@@ -7,7 +7,6 @@
 	
 		<div class="widget-body">
 			<div id="prlupdate"  class="nav-tabs-horizontal white m-b-lg">
-					
 					<ul class="nav nav-tabs" role="tablist">
 						<div class="text-right" style="z-index: -1"><i class="fa fa-close" ></i>&nbsp;<a href='#' onclick="cancelupdate();">Close &nbsp;</a></div>
 						<li role="presentation" >
@@ -75,6 +74,7 @@
 							 <br>
 							<div class="form-inline">
 								<form id="leadplan" method="post" enctype="multipart/form-data" class="form-horizontal p-t-10">
+									<input type="text" id="detail" name="detail"></input>
 									<input type="hidden" id="leadid" name="leadid" ></input>
 									<input type="file" class="form-control" name="file" id="file">
 									<input type="button" value="submit" class="btn-primary btn-sm" onclick="leadplanupload();">
@@ -100,32 +100,86 @@
 						</div>
 					</div>
 			</div>
-
+		
         <div id="dtbl" class="table-responsive">
-			<div id="leadsel" class="row">
-				<label class="col-md-1">Status</label>
-				<div class="col-md-3 float-right">
-						<select class="form-control" onchange="datatablereload($(this).val());">
-						   <option value="ALL" >All Leads</option>
-							<?php foreach($leadstat as $field=>$val): ?>
+			<div class="nav-tabs-horizontal white m-b-lg">
+				<ul class="nav nav-tabs" role="tablist">
+					<li role="presentation" >
+						<a href="#leadall" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true">
+						<i class="fa fa-bank" aria-hidden="true"></i> Project Leads </a>
+					</li>
+					<li role="presentation" >
+						<a href="#clientwon" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadwon();">
+						<i class="fa fa-bullseye" aria-hidden="true"></i> Won Client </a>
+					</li>
+					<li role="presentation" >
+						<a href="#leaddead" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloaddead();">
+						<i class="fa fa-eraser" aria-hidden="true"></i> Dead Leads </a>
+					</li>
+				</ul>
+			</div>
+			<div class="tab-content" id="showleadall">
+				<div role="tabpanel" class="tab-pane fade active in" id="leadall">
+					<div class="row">
+						<div class="text-center">
+						<small><i class="fa fa-circle-o sun" aria-hidden="true"></i> Waiting for RFI</small>
+						<small><i class="fa fa-circle-o hot" aria-hidden="true"></i> Incomplete</small>
+						<small><i class="fa fa-circle-o success" aria-hidden="true"></i> Success</small>
+						</div>
+					</div>
+					<div id="leadsel" class="row">
+						<label class="col-md-1">Status</label>
+						<div class="col-md-3 float-right">
+							<select class="form-control" onchange="datatablereload($(this).val());">
+								<option value="ALL" >All Leads</option>
+									<?php foreach($leadstat as $field=>$val): ?>
 								<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
-							<?php endforeach; ?>
-						</select>
+									<?php endforeach; ?>
+							</select>
+						</div>
+					</div>
+					<table id="responsive-datatable" class="table table-striped" cellspacing="0" width="100%">
+						<thead>
+							<tr>
+								<?php 
+									echo $columns;
+								?>
+							</tr>
+						</thead>
+						<tbody id="leadsbody">
+						</tbody>
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="clientwon">
+					<small>Client Won Leads List</small>
+					<table id="won-datatable" class="table table-striped" cellspacing="0" width="100%">
+						<thead>
+							<tr>
+								<?php 
+									echo $columns;
+								?>
+							</tr>
+						</thead>
+						<tbody id="wonleadsbody">
+						</tbody>
+					</table>
+				</div>
+				<div role="tabpanel" class="tab-pane" id="leaddead">
+					<small>Dead Leads List</small>
+					<table id="dead-datatable" class="table table-striped" cellspacing="0" width="100%">
+						<thead>
+							<tr>
+								<?php 
+									echo $columns;
+								?>
+							</tr>
+						</thead>
+						<tbody id="deadleadsbody">
+						</tbody>
+					</table>
 				</div>
 			</div>
-			<table id="responsive-datatable" class="table table-striped" cellspacing="0" width="100%">
-				<thead>
-					<tr>
-						<?php 
-							echo $columns;
-						?>
-					</tr>
-				</thead>
-				<tbody id="leadsbody">
-				</tbody>
-				<tfoot>
-				</tfoot>
-			</table>
+
 		</div>
 	</div>
 </div>
@@ -173,6 +227,18 @@ var rowindex = "";
 
 document.addEventListener("DOMContentLoaded", function() {
 	datatablereload('');
+	
+	$('#doc_Content').summernote({
+		toolbar: [
+		// [groupName, [list of button]]
+		['style', ['bold', 'italic', 'underline', 'clear']],
+		['font', ['strikethrough', 'superscript', 'subscript']],
+		['fontsize', ['fontsize']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['height', ['height']]
+		],
+	});
 });
 
 function datatablereload(sts){
@@ -192,6 +258,30 @@ function datatablereload(sts){
 		$('#prevDiv').show();
 		$('.preloader').hide()
 
+}
+
+function reloaddead(){
+	$.post("<?php echo base_url("Projectleadcontrol/showallprojleads/"); ?>",{ stat : "DEAD"})
+		.done(function(data) {
+		var table = $('#dead-datatable').DataTable();
+		table.destroy();
+		$("#deadleadsbody").html(data);
+		$('#dead-datatable').DataTable({
+			dom: 'ftpi',
+		});
+	});
+}
+
+function reloadwon(){
+	$.post("<?php echo base_url("Projectleadcontrol/showallprojleads/"); ?>",{ stat : "WON"})
+		.done(function(data) {
+		var table = $('#won-datatable').DataTable();
+		table.destroy();
+		$("#wonleadsbody").html(data);
+		$('#won-datatable').DataTable({
+			dom: 'ftpi',
+		});
+	});
 }
 
 function updateprojlead(){
@@ -218,7 +308,6 @@ function updateprojlead(){
 	if(isNull == "pass"){
 		$('#prevDiv').hide();
 		$('.preloader').fadeIn();
-
 		$.post("<?php echo base_url("Projectleadcontrol/projleadupdate"); ?>",
 		{data: JSON.stringify($("#projleadform").serializeArray()) }) 
 			.success(function(data) {
@@ -228,20 +317,19 @@ function updateprojlead(){
 				  text: 'You have successfully updated a lead!',
 				  footer: '<a href>'+ data +'</a>'
 				});
-			datatablereload('');
+			datatablereload('');			
 			$('.preloader').fadeOut();
 			$('#prevDiv').show();			
 		});
-		
 		$("#dtbl").toggle();
 		$("#prlupdate").toggle();
-			
 	}else{
 		console.log('fail method execute');
 	}
-	
-	
+
 }
+
+
 
 function projleadupdate(bt){
 
@@ -265,7 +353,7 @@ function projleadupdate(bt){
 						if(name == "more_info"){
 							$(this).val(value);
 							$('#more_info').summernote({
-								height: 120,
+								height: 80,
 								toolbar: [
 								// [groupName, [list of button]]
 								['style', ['bold', 'italic', 'underline', 'clear']],
@@ -276,7 +364,22 @@ function projleadupdate(bt){
 								['height', ['height']]
 								],
 							});
-							$('#more_info').summernote('disable');		
+							$('#more_info').summernote('disable');
+						}else if(name == "project_scope"){
+							$(this).val(value);
+							$('#project_scope').summernote({
+								height: 80,
+								toolbar: [
+								// [groupName, [list of button]]
+								['style', ['bold', 'italic', 'underline', 'clear']],
+								['font', ['strikethrough', 'superscript', 'subscript']],
+								['fontsize', ['fontsize']],
+								['color', ['color']],
+								['para', ['ul', 'ol', 'paragraph']],
+								['height', ['height']]
+								],
+							});
+							$('#project_scope').summernote('disable');
 						}else if(name == "bid_value"){
 							//$(this).val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
 							$('#bid_value').val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
@@ -408,6 +511,7 @@ function unlock(){
 
 function prcUpdate(){
 	$('#more_info').summernote('enable');
+	$('#project_scope').summernote('enable');
 	unlock();
 }
 
