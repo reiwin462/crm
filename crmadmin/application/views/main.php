@@ -25,9 +25,9 @@
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>libs/bower/summernote/dist/summernote.css">
 	
-	<!-- endbuild
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900,300">
-	 -->
+	<!-- endbuild -->
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/raleway.css">
+	
 	<script src="<?php echo base_url(); ?>libs/bower/breakpoints.js/dist/breakpoints.min.js"></script>
 	<!------ fancybox --->
 	
@@ -248,7 +248,6 @@
 </main>
 
 	
-	
 
 	
 	<!-- build:js ../assets/js/core.min.js -->
@@ -259,18 +258,22 @@
 	
 	<script src="<?php echo base_url(); ?>libs/bower/jquery-slimscroll/jquery.slimscroll.js"></script>
 	<script src="<?php echo base_url(); ?>libs/bower/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
+	
+	<script src="<?php echo base_url(); ?>libs/bower/waypoints/lib/jquery.waypoints.min.js"></script>
+	<script src="<?php echo base_url(); ?>libs/bower/counterup/jquery.counterup.min.js"></script>
+	
 	<script src="<?php echo base_url(); ?>libs/bower/PACE/pace.min.js"></script>
 	<!-- endbuild -->
 	
 	<!-----Global JS ---->
 	<script src="<?php echo base_url(); ?>assets/js/global.js"></script>
+
 	
 	<script src="<?php echo base_url(); ?>/libs/misc/datatables/datatables.min.js"></script>
 	<link rel="stylesheet" href="<?php echo base_url(); ?>/libs/misc/datatables/datatables.min.css">
 
 	<!-- build:js ../assets/js/app.min.js -->
 	<script src="<?php echo base_url(); ?>assets/js/library.js"></script>
-	
 	<script src="<?php echo base_url(); ?>/libs/bower/summernote/dist/summernote.min.js"></script>
 	
 	<script src="<?php echo base_url(); ?>assets/js/plugins.js"></script>
@@ -283,12 +286,26 @@
 	<script src="<?php echo base_url(); ?>libs/bower/fullcalendar/dist/fullcalendar.min.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/fullcalendar.js"></script>
 	
+		
+	<script src="<?php echo base_url(); ?>libs/misc/echarts/build/dist/echarts-all.js"></script>
+	<script src="<?php echo base_url(); ?>libs/misc/echarts/build/dist/theme.js"></script>
+	<script src="<?php echo base_url(); ?>libs/misc/echarts/build/dist/jquery.echarts.js"></script>
+	
+	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.min.js"></script>
+	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.pie.min.js"></script>
+	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.stack.min.js"></script>
+	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.resize.min.js"></script>
+	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.curvedLines.js"></script>
+	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.tooltip.min.js"></script>
+	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.categories.min.js"></script>
+	
+	
 	<script>
 		document.addEventListener("DOMContentLoaded", function(){
 			$('.preloader').hide();
 		});
 	</script>
-	
+		<!-- build:js ../assets/js/app.min.js -->
 
 	
 </body>
