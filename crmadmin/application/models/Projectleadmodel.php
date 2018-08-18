@@ -37,7 +37,7 @@ class Projectleadmodel extends CI_Model{
 										(SELECT COUNT(id) FROM tblplan WHERE project_id = a.id) AS planid, 
 										(SELECT COUNT(id) FROM tbldocuments WHERE project_id = a.id) AS docuid, 
 										(SELECT COUNT(id) FROM project_rfi WHERE project_id = a.id) AS rfiid
-										FROM project_leads AS a ORDER BY  bid_date ASC");
+										FROM project_leads AS a where a.lead_status not in ('WON', 'DEAD')   ORDER BY  bid_date ASC");
 			
 		}else{
 			//$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads where lead_status = '". $stat. "' order by bid_date asc");
@@ -138,6 +138,41 @@ class Projectleadmodel extends CI_Model{
 		$query = $this->db->get();
 		return $query->result_array();
 	}
+	
+	
+	public function is_project_exist($tbl, $id){
+		$query = $this->db->get_where($tbl, array('project_id' => $id));
+		if($query->num_rows() > 0){
+			return "exist";
+		}else{
+			return "missing";
+		}
+	}
+	
+	public function updatemytable($tbl, $arr, $id){
+		
+		if($tbl === trim("project_leads")){
+			$this->db->where('id', $id);
+		}else{
+			$this->db->where('project_id', $id);
+		}
+		$this->db->update($tbl, $arr);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+	
+	public function inserttotable($tbl, $arr){
+		$this->db->insert($tbl, $arr);
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
+	
+	public function gethtmltable($tbl, $id){
+		$query = $this->db->query("select list from ". trim($tbl) . " where project_id = '".trim($id)."' order by id desc limit 1");
+		return $query->result();
+	}
+	
+	
+	
+
 	
 	
 	

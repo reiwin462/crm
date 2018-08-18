@@ -4,7 +4,6 @@
         <h4 class="widget-title">Project Leads Details</h4>
     </header>
     <hr class="widget-separator">
-	
 		<div class="widget-body">
 			<div id="prlupdate"  class="nav-tabs-horizontal white m-b-lg">
 					<ul class="nav nav-tabs" role="tablist">
@@ -13,173 +12,270 @@
 							<a href="#addleadtab" id="leaddetailtab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i> Project Leads Details</a>
 						</li>
-						<li role="presentation" >
-							<a href="#addleaddocument" id="leaddocu" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloaddocument();">
-							<i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Documents</a>
-						</li>
-						<li role="presentation" >
-							<a href="#addleadplan" id="leadplantab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadplan();">
-							<i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Plans</a>
-						</li>
-						<li role="presentation" >
-							<a href="#addrfi" id="leadrfitab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadrfi();">
-							<i class="fa fa-plus-circle" aria-hidden="true"></i> Project RFI</a>
-						</li>
 					</ul>
 					
 					<div class="tab-content" id="leadtab">
-						
 						<div role="tabpanel" class="tab-pane fade active in" id="addleadtab">
-							<div>
-								<?php echo $form; ?>
-							</div>
-							<br>
-							<br>
-							<br>								
-							<div id="prltask" class="row actbutt">
-								<div class="col-md-8">
-									<button type="button" class="btn mw-md btn-success" onclick="prcUpdate();" ><i class="fa fa-pencil"></i> Update</button>
-									<button type="button" class="btn mw-md btn-warning" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>	
-								</div>
-								<!--
-								<div class="col-md-4">
-									<button type="button" class="btn mw-md btn-danger float-right" onclick="projleaddelete();"><i class="fa fa-trash"></i> Delete</button>
-								</div>
-								-->
-								
-							</div>	
-							<div id="prlmain" class="row actbutt">
-								<button type="button" class="btn mw-md btn-success" onclick="updateprojlead();" ><i class="fa fa-check"></i> Save</button>
-								<button type="button" class="btn mw-md btn-warning" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
-							</div>
-						</div>
-						
-						<div role="tabpanel" class="tab-pane" id="addleaddocument">				
-							<div class="container">
-								<div class="col-md-4">
-									<?php echo $formdocument; ?>
-									<div class="row actbutt">
-										<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewdocument();" >Save</button>
-										<button type="button" class="btn btn-sm mw-md btn-warning" onclick="cancelupdate();">Cancel</button>
-									</div>
-								</div>					
-								<div class="col-md-7">					
-									<div id="doclist" class="widget-body"></div>
-								</div>
-							</div>
-						</div>
-						
-						<div role="tabpanel" class="tab-pane" id="addleadplan">
-							 <footer class="widget-footer bg-info">Please upload Image and PDF Files Only</footer>
-							 <br>
-							<div class="form-inline">
-								<form id="leadplan" method="post" enctype="multipart/form-data" class="form-horizontal p-t-10">
-									<input type="text" id="detail" name="detail"></input>
-									<input type="hidden" id="leadid" name="leadid" ></input>
-									<input type="file" class="form-control" name="file" id="file">
-									<input type="button" value="submit" class="btn-primary btn-sm" onclick="leadplanupload();">
-								</form>				
-							</div>
-							<br>
-							<div class="container">
-								<table id="planlist" class="table-responsive">
-										
-								</table>
-							</div>
-						</div>
-						
-						<div role="tabpanel" class="tab-pane" id="addrfi">				
 							<div class="row">
-									<?php echo $formrfi; ?>
-									<br>
-									<div class="row actbutt">
-										<button type="button" class="btn btn-sm mw-md btn-success" onclick="updaterfi();" > <i class="fa fa-check"></i>Save</button>
-										<button type="button" class="btn btn-sm mw-md btn-warning " onclick="cancelupdate();">Cancel</button>
-									</div>					
+								<div class="col-md-8">
+									<?php echo $form; ?>
+								</div>
+								
+								<div class="col-md-4">
+									<h5 class="text-center">Maps are based on Address Supplied</h5>
+									<iframe id="geomaps"
+									  width="100%"
+									  height="200"
+									  frameborder="0" style="border:1px solid #e2e2e2;"
+									  src="" allowfullscreen>
+									</iframe>
+								</div>
+							</div>
+							<br>								
+							<div class="row actbutt prlmain">
+									<button type="button" class="btn mw-md btn-success" onclick="updateprojlead();" ><i class="fa fa-check"></i> Save Update</button>
+									<button type="button" class="btn mw-md btn-warning" onclick="cancelupdate();"><i class="fa fa-ban"></i> Cancel</button>
+							</div>
+							
+							<div id="" class="row actbutt prltask">
+								<br>
+									<button type="button" class="btn mw-md btn-success" onclick="prcUpdate();" ><i class="fa fa-pencil"></i> Edit</button>
+									<button type="button" class="btn mw-md btn-warning" onclick="cancelupdate();"><i class="fa fa-close"></i> Cancel</button>	
+							</div>	
+						<hr>
+						<div class="nav-tabs-horizontal white m-b-lg">
+							<ul id="crmtabs" class="nav nav-tabs" role="tablist">
+								<li role="presentation" >
+									<a href="#addleadspec" class="tablink" id="leadspec" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
+									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Specification and Details</h5></a>
+								</li>
+								<li role="presentation" >
+									<a href="#addengineer" class="tablink" id="leadengineer" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
+									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Engineers</h5></a>
+								</li>
+								<li role="presentation" >
+									<a href="#addplanholder" class="tablink" id="leadplan" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" >
+									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Plan Holders</h5></a>
+								</li>
+								<li role="presentation" >
+									<a href="#addbidders" class="tablink" id="leadbid" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" >
+									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Bidders</h5></a>
+								</li>
+								<li role="presentation" >
+									<a href="#addleaddocument" class="tablink" id="leaddocu" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloaddocument();">
+									 <h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Documents</h5></a>
+								</li>
+								<li role="presentation" >
+									<a href="#addleadplan" class="tablink" id="leadplantab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadplan();">
+									 <h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Plans</h5></a>
+								</li>
+								<li role="presentation" >
+									<a href="#addrfi" class="tablink" id="leadrfitab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="">
+									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Project RFI</h5></a>
+								</li>
+							</ul>
+							<div class="tab-content" id="leadtab">
+								<div role="tabpanel" class="tab-pane  fade active in" id="addleadspec">		
+									<div class="row">
+										<footer class="widget-footer bg-info"><h5>Please fillup necessary fields below</h5></footer>
+										<div class="form-group">
+											<div class="col-md-12">
+												<label>Project Description</label>
+												<textarea id="project_scope" width="100%" rows="5"></textarea>
+											</div>
+										</div>
+										<div class="form-group">
+												<div class="col-md-12">
+													<label>Notes</label>
+													<textarea id="more_info" width="100%" rows="5"></textarea>
+												</div>
+												<div class="col-md-12 prlmain">
+													<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewleadspecs();" > <i class="fa fa-check"></i>Save</button>
+												</div>
+										</div>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="addengineer">		
+									<div class="row">		
+										<footer class="widget-footer bg-info"><h5>Please copy the table from the Weblink and Paste it to the Field Below</h5></footer>
+										<div id="engineers" class="table-responsive contentholder" contenteditable="true" preloader="Engineers List">Engineers List!</div>
+										<div class="col-md-12 prlmain">
+											<br>
+											<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewengineer();" > <i class="fa fa-check"></i>Save Engineers List</button>
+										</div>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="addplanholder">		
+									<div class="row">		
+										<footer class="widget-footer bg-info"><h5>Please copy the table from the Weblink and Paste it to the Field Below</h5></footer>
+										<div id="planholder" class="table-responsive contentholder" contenteditable="true" preloader="Plan Holder List">PLan Holders List!</div>
+										<div class="col-md-12 prlmain">
+											<br>
+											<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewplanholder();" > <i class="fa fa-check"></i>Save Plan Holders List</button>
+										</div>
+									</div>	
+								</div>
+								<div role="tabpanel" class="tab-pane" id="addbidders">
+									<div class="row">
+										<footer class="widget-footer bg-info"><h5>Please copy the table from the Weblink and Paste it to the Field Below</h5></footer>
+										<div id="bidders" class="table-responsive contentholder" contenteditable="true" preloader="Bidders List">Bidders List!</div>
+										<div class="col-md-12 prlmain">
+											<br>
+											<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewbidders();" > <i class="fa fa-check"></i>Save Bidders List</button>
+										</div>
+									</div>	
+								</div>
+								<div role="tabpanel" class="tab-pane" id="addleaddocument">				
+									<div class="row">
+										<footer class="widget-footer bg-info"<h5>Please supply all Fields</h5></footer>
+										<div class="col-md-4">
+											<?php echo $formdocument; ?>
+											<br>
+											<div class="col-md-12">
+												<br>
+												<button type="button" class="btn btn-sm mw-md btn-success prlmain" onclick="addnewdocument();" > <i class="fa fa-check"></i>Save Document</button>
+											</div>
+										</div>				
+										<div class="col-md-7">
+											<div id="doclist" class="widget-body"></div>
+										</div>
+									</div>
+								</div>
+								<div role="tabpanel" class="tab-pane" id="addleadplan">
+									<div class="row">
+												 <footer class="widget-footer bg-info">Please upload Image and PDF Files Only</footer>
+												<form id="leadplan" method="post" enctype="multipart/form-data" class="form-horizontal p-t-10">
+													<div class="form-group">
+														<div class="col-md-6">
+															<label for="detail">Detail.</label>
+															<input type="text" class="form-control" id="detail" name="detail" aria-describedby="categoryHelp" placeholder="Enter Detail" required ></input>
+														</div>
+													</div>
+													<div class="form-group">
+														<div class="col-md-6">
+															<input type="file" class="form-control" name="file" id="file">
+														</div>
+														<input type="button" value="submit" class="btn-primary btn-sm prlmain" onclick="leadplanupload();"></input>
+													</div>
+													
+													<input type="hidden" id="leadid" name="leadid" ></input>
+													
+												</form>
+											</div>
+
+									<div class="row">
+										<div class="container table-responsive">
+											<table id="planlist" class="">
+												
+											</table>
+										</div>
+									</div>
+								</div>
+								
+								<div role="tabpanel" class="tab-pane" id="addrfi">				
+									<div class="row">
+										<div class="col-md-12">
+											<?php echo $formrfi; ?>
+											<div class="col-md-12">
+											
+												<button type="button" class="btn btn-sm mw-md btn-success prlmain" onclick="addrfi();" > <i class="fa fa-check"></i>Save</button>										
+											</div>
+										</div>					
+									</div>
+								</div>
 							</div>
 						</div>
+						
+						</div>
+						
 					</div>
 			</div>
 		
-        <div id="dtbl" class="table-responsive">
-			<div class="nav-tabs-horizontal white m-b-lg">
-				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" >
-						<a href="#leadall" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true">
-						<i class="fa fa-bank" aria-hidden="true"></i> Project Leads </a>
-					</li>
-					<li role="presentation" >
-						<a href="#clientwon" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadwon();">
-						<i class="fa fa-bullseye" aria-hidden="true"></i> Won Client </a>
-					</li>
-					<li role="presentation" >
-						<a href="#leaddead" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloaddead();">
-						<i class="fa fa-eraser" aria-hidden="true"></i> Dead Leads </a>
-					</li>
-				</ul>
-			</div>
-			<div class="tab-content" id="showleadall">
-				<div role="tabpanel" class="tab-pane fade active in" id="leadall">
-					<div class="row">
-						<div class="text-center">
-						<small><i class="fa fa-circle-o sun" aria-hidden="true"></i> Waiting for RFI</small>
-						<small><i class="fa fa-circle-o hot" aria-hidden="true"></i> Incomplete</small>
-						<small><i class="fa fa-circle-o success" aria-hidden="true"></i> Success</small>
-						</div>
-					</div>
-					<div id="leadsel" class="row">
-						<label class="col-md-1">Status</label>
-						<div class="col-md-3 float-right">
-							<select class="form-control" onchange="datatablereload($(this).val());">
-								<option value="ALL" >All Leads</option>
-									<?php foreach($leadstat as $field=>$val): ?>
-								<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
-									<?php endforeach; ?>
-							</select>
-						</div>
-					</div>
-					<table id="responsive-datatable" class="table table-striped" cellspacing="0" width="100%">
-						<thead>
-							<tr>
-								<?php 
-									echo $columns;
-								?>
-							</tr>
-						</thead>
-						<tbody id="leadsbody">
-						</tbody>
-					</table>
-				</div>
-				<div role="tabpanel" class="tab-pane" id="clientwon">
-					<small>Client Won Leads List</small>
-					<table id="won-datatable" class="table table-striped" cellspacing="0" width="100%">
-						<thead>
-							<tr>
-								<?php 
-									echo $columns;
-								?>
-							</tr>
-						</thead>
-						<tbody id="wonleadsbody">
-						</tbody>
-					</table>
-				</div>
-				<div role="tabpanel" class="tab-pane" id="leaddead">
-					<small>Dead Leads List</small>
-					<table id="dead-datatable" class="table table-striped" cellspacing="0" width="100%">
-						<thead>
-							<tr>
-								<?php 
-									echo $columns;
-								?>
-							</tr>
-						</thead>
-						<tbody id="deadleadsbody">
-						</tbody>
-					</table>
-				</div>
-			</div>
 
+        <div id="dtbl"  class="widget">
+			<div class="widget-body">
+				<div class="nav-tabs-horizontal white m-b-lg">
+					<ul class="nav nav-tabs" role="tablist">
+						<li role="presentation" >
+							<a href="#leadall" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true">
+							<i class="fa fa-bank" aria-hidden="true"></i> Project Leads </a>
+						</li>
+						<li role="presentation" >
+							<a href="#clientwon" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadwon();">
+							<i class="fa fa-bullseye" aria-hidden="true"></i> Won Client </a>
+						</li>
+						<li role="presentation" >
+							<a href="#leaddead" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloaddead();">
+							<i class="fa fa-eraser" aria-hidden="true"></i> Dead Leads </a>
+						</li>
+					</ul>
+				</div>
+				<div class="tab-content" id="showleadall">
+					<div role="tabpanel" class="tab-pane fade active in" id="leadall">
+
+						<div id="leadsel" class="row">
+							<div class="col-md-12">
+								<label class="col-md-1">Status</label>
+								<div class="col-md-2">
+									<select class="form-control" onchange="datatablereload($(this).val());">
+										<option value="ALL" >All Leads</option>
+											<?php foreach($leadstat as $field=>$val): ?>
+												
+												<?php if($val->description != "WON" or $val->description != "DEAD"): ?>
+												<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
+												<?php endif; ?>
+											<?php endforeach; ?>
+									</select>
+								</div>
+								<div class="col text-right">
+										<small><i class="fa fa-circle-o sun" aria-hidden="true"></i> Waiting for RFI</small>
+										<small><i class="fa fa-circle-o hot" aria-hidden="true"></i> Incomplete</small>
+										<small><i class="fa fa-circle-o success" aria-hidden="true"></i> Success</small>
+								</div>
+							</div>
+						</div>
+							<table id="responsive-datatable" class="table table-striped" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<?php 
+											echo $columns;
+										?>
+									</tr>
+								</thead>
+								<tbody id="leadsbody">
+								</tbody>
+							</table>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="clientwon">
+						<small>Client Won Leads List</small>
+						<table id="won-datatable" class="table table-striped" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<?php 
+										echo $columns;
+									?>
+								</tr>
+							</thead>
+							<tbody id="wonleadsbody">
+							</tbody>
+						</table>
+					</div>
+					<div role="tabpanel" class="tab-pane" id="leaddead">
+						<small>Dead Leads List</small>
+						<table id="dead-datatable" class="table table-striped" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<?php 
+										echo $columns;
+									?>
+								</tr>
+							</thead>
+							<tbody id="deadleadsbody">
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -187,7 +283,7 @@
 <div id="statmodal" class="modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-info">
         <h5 class="modal-title">Lead Update</h5>		
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -226,9 +322,54 @@ var recordid = "";
 var rowindex = "";
 
 document.addEventListener("DOMContentLoaded", function() {
+	$('#more_info').summernote({
+		height: 80,
+		 toolbar: [
+		// [groupName, [list of button]]
+		['style', ['bold', 'italic', 'underline', 'clear']],
+		['font', ['strikethrough', 'superscript', 'subscript']],
+		['fontsize', ['fontsize']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['height', ['height']]
+		],
+	});
+	
+	$('#project_scope').summernote({
+		height: 80,
+		 toolbar: [
+		// [groupName, [list of button]]
+		['style', ['bold', 'italic', 'underline', 'clear']],
+		['font', ['strikethrough', 'superscript', 'subscript']],
+		['fontsize', ['fontsize']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['height', ['height']]
+		],
+	});
+	
 	datatablereload('');
+	$('.tablink').click(function(){
+		var idfld = $('#leadid').val();
+		if(idfld == ""){
+			swal({
+				  type: 'info',
+				  title: 'validation',
+				  text: 'Kindly fill up the above form first!',
+				  footer: '<a href> - </a>'
+				});
+		}
+	});
+	
+	$('#address').change(function(){
+		if($(this).val() != ""){
+			$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + $(this).val());
+		}
+	});
+	
 	
 	$('#doc_Content').summernote({
+		height: 120,
 		toolbar: [
 		// [groupName, [list of button]]
 		['style', ['bold', 'italic', 'underline', 'clear']],
@@ -239,10 +380,12 @@ document.addEventListener("DOMContentLoaded", function() {
 		['height', ['height']]
 		],
 	});
+
 });
 
 function datatablereload(sts){
 		//var table = $('#responsive-datatable').DataTable();
+
 		$('#prevDiv').hide();
 		$('.preloader').fadeIn();	
 		$("#leadsbody").html('');
@@ -253,6 +396,12 @@ function datatablereload(sts){
 					$("#leadsbody").html(data);
 					$('#responsive-datatable').DataTable({
 						dom: 'ftpi',
+						bStateSave: true,
+						scrollX:        true,
+						scrollCollapse: true,
+						autoWidth:   false,  
+						paging:         true,       
+						
 					});
 			});
 		$('#prevDiv').show();
@@ -333,9 +482,10 @@ function updateprojlead(){
 
 function projleadupdate(bt){
 
-	$('#more_info').summernote('destroy');
+	//$('#more_info').summernote('destroy');
+	//$('#project_scope').summernote('destroy');
 	$('#leadid').val(bt);
-	 $('#leaddelete').val(bt);
+	$('#leaddelete').val(bt);
 	var xlink = "<?php echo base_url(); ?>" + 'Projectleadcontrol/getleaddetail/'  + bt;
 	$.get(xlink, function(data, status)
 	 {
@@ -343,6 +493,13 @@ function projleadupdate(bt){
 		unlock();
 		var j = JSON.parse(data);
 		$.each(j[0], function(key, value){
+			if(key == "more_info"){
+				$('#more_info').summernote('code', value);
+				$('#more_info').summernote('disable');
+			}else if(key == "project_scope"){				
+				$('#project_scope').summernote('code', value);
+				$('#project_scope').summernote('disable');
+			}
 			$("#projleadform :input").each(function(){
 				var name = $(this).attr('name');
 				if(name == key){
@@ -350,44 +507,55 @@ function projleadupdate(bt){
 						var nd = new Date(value)
 						$(this).val(formatDate(nd.toDateString()));
 					}else{
-						if(name == "more_info"){
-							$(this).val(value);
-							$('#more_info').summernote({
-								height: 80,
-								toolbar: [
-								// [groupName, [list of button]]
-								['style', ['bold', 'italic', 'underline', 'clear']],
-								['font', ['strikethrough', 'superscript', 'subscript']],
-								['fontsize', ['fontsize']],
-								['color', ['color']],
-								['para', ['ul', 'ol', 'paragraph']],
-								['height', ['height']]
-								],
-							});
-							$('#more_info').summernote('disable');
-						}else if(name == "project_scope"){
-							$(this).val(value);
-							$('#project_scope').summernote({
-								height: 80,
-								toolbar: [
-								// [groupName, [list of button]]
-								['style', ['bold', 'italic', 'underline', 'clear']],
-								['font', ['strikethrough', 'superscript', 'subscript']],
-								['fontsize', ['fontsize']],
-								['color', ['color']],
-								['para', ['ul', 'ol', 'paragraph']],
-								['height', ['height']]
-								],
-							});
-							$('#project_scope').summernote('disable');
-						}else if(name == "bid_value"){
+						if(name == "bid_value"){
 							//$(this).val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
 							$('#bid_value').val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
+						}else if(name == "address"){
+							$(this).val(value);
+							if(value != ""){
+								$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + value);
+							}
 						}else{
 							$(this).val(value);
 						}
 						
 					}
+					
+					$('#engineers').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_engineers/' + bt);
+					$('#bidders').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_bidders/' + bt);
+					$('#planholder').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_planholders/' + bt);
+					
+					/*
+					$('#more_info').summernote({
+								height: 80,
+								toolbar: [
+								// [groupName, [list of button]]
+								['style', ['bold', 'italic', 'underline', 'clear']],
+								['font', ['strikethrough', 'superscript', 'subscript']],
+								['fontsize', ['fontsize']],
+								['color', ['color']],
+								['para', ['ul', 'ol', 'paragraph']],
+								['height', ['height']]
+								],
+							});
+							//$('#more_info').summernote('code', value);
+							//$('#more_info').summernote('disable');
+					$('#project_scope').summernote({
+								height: 80,
+								toolbar: [
+								// [groupName, [list of button]]
+								['style', ['bold', 'italic', 'underline', 'clear']],
+								['font', ['strikethrough', 'superscript', 'subscript']],
+								['fontsize', ['fontsize']],
+								['color', ['color']],
+								['para', ['ul', 'ol', 'paragraph']],
+								['height', ['height']]
+								],
+							});
+						*/
+							
+							//$('#project_scope').summernote('code', value);
+							//$('#project_scope').summernote('disable');
 				}
 			});
 		});
@@ -493,19 +661,19 @@ function formatDate(date) {
 
 function lock(){
 	$("#projleadform :input").each(function(){
-		$('#prlmain').hide();
+		$('.prlmain').hide();
 		$(this).css({"border":"none", "background":"#f9f9f9", "border-bottom": "1px solid #e2e2e2"});
 		$(this).attr('readonly',true);
-		$('#prltask').show();
+		$('.prltask').show();
 	});
 }
 
 function unlock(){
 	$("#projleadform :input").each(function(){
-		$('#prlmain').show();
+		$('.prlmain').show();
 		$(this).css({"border":"1px solid #e2e2e2", "background":"#fffef2", "border-bottom": "1px solid #e2e2e2"});
 		$(this).attr('readonly',false);
-		$('#prltask').hide();
+		$('.prltask').hide();
 	});		
 }
 
@@ -526,8 +694,13 @@ function proj_reset(){
 			$(this).val('');
 	});
 
+	$('#engineer').html('');
+	$('#planholder').html('');
+	$('#bidder').html('');
 	$('#doclist').html('');
+	
 	$('#leaddetailtab').trigger('click');
+	$('#leadspec').trigger('click');
 }
 
 function openlink(lnk){
@@ -540,8 +713,6 @@ function projleadmanage($id){
 	$('#leaddelete').val($id);
 	$('#statmodal').modal();
 }
-
-
 
 function reloaddocument(){
 	var idfld = $('#leadid').val();
@@ -838,6 +1009,88 @@ function removedocu(id){
 		  } else if (result.dismiss === Swal.DismissReason.cancel) {
 		  }
 		});
+}
+
+
+function addnewleadspecs(){
+		$('#prevDiv').hide();	
+		$('.preloader').fadeIn();
+		var idfld = $('#leadid').val();
+		var projspec = $('#more_info').summernote('code');
+		var projnotes = $('#project_scope').summernote('code');
+		
+		$.post("<?php echo base_url("Projectleadcontrol/new_module_item"); ?>",
+		{action: "leadspec", specification : projspec, notes : projnotes, id: idfld }) 
+		.success(function(data) {
+				swal({
+				  type: 'success',
+				  title: 'Update',
+				  text: 'You have successfully updated a lead!',
+				  footer: '<a href>'+ data +'</a>'
+				});		
+			});
+		$('#prevDiv').show();	
+		$('.preloader').fadeOut();	
+}
+
+function addnewengineer(){
+		$('#prevDiv').hide();	
+		$('.preloader').fadeIn();
+		var idfld = $('#leadid').val();
+		var list = $('#engineers').html();
+		
+		$.post("<?php echo base_url("Projectleadcontrol/new_module_item"); ?>",
+		{action: "engineer", engineerlist: list, id: idfld }) 
+		.success(function(data) {
+				swal({
+				  type: 'success',
+				  title: 'Update',
+				  text: 'You have successfully updated a lead!',
+				  footer: '<a href>'+ data +'</a>'
+				});		
+			});
+		$('#prevDiv').show();	
+		$('.preloader').fadeOut();	
+}
+
+function addnewbidders(){
+		$('#prevDiv').hide();	
+		$('.preloader').fadeIn();
+		var idfld = $('#leadid').val();
+		var list = $('#bidders').html();
+		
+		$.post("<?php echo base_url("Projectleadcontrol/new_module_item"); ?>",
+		{action: "bidders", bidderslist: list, id: idfld }) 
+		.success(function(data) {
+				swal({
+				  type: 'success',
+				  title: 'Update',
+				  text: 'You have successfully updated a lead!',
+				  footer: '<a href>'+ data +'</a>'
+				});		
+			});
+		$('#prevDiv').show();	
+		$('.preloader').fadeOut();	
+}
+
+function addnewplanholder(){
+		$('#prevDiv').hide();	
+		$('.preloader').fadeIn();
+		var idfld = $('#leadid').val();
+		var list = $('#planholder').html();
+		
+		$.post("<?php echo base_url("Projectleadcontrol/new_module_item"); ?>",
+		{action: "planholders", planholderslist: list, id: idfld }) 
+		.success(function(data) {
+				swal({
+				  type: 'success',
+				  title: 'Update',
+				  text: 'You have successfully updated a lead!',
+				  footer: '<a href>'+ data +'</a>'
+				});		
+			});
+		$('#prevDiv').show();	
+		$('.preloader').fadeOut();	
 }
 
 </script>

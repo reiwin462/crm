@@ -48,7 +48,11 @@ class Projectleadpreview extends CI_Controller{
 			}
 		}
 		$data['document'] = $dochtm; 
-		
+
+		//$data['bidders'] = $this->showhtmltable('project_bidders', urldecode($leadid)); 
+		//$data['engineers'] = $this->showhtmltable('project_engineers', urldecode($leadid)); 
+		//$data['planholder'] = $this->showhtmltable('project_planholders', urldecode($leadid)); 
+	
 		$planhtm = "";
 		$plan = $this->prmodel->getplandata(urldecode($leadid));
 		if(count($plan) > 0){
@@ -74,13 +78,21 @@ class Projectleadpreview extends CI_Controller{
 			}
 		}
 		$data['plan'] = $planhtm; 
-		
 		$data['datarfi'] = $this->prmodel->getrfidata(trim(urldecode($leadid)));
 		
 		$this->load->view('other/otherpageheader', $data);
 	}
+
+public function showhtmltable($tbl, $id){
+	$list = $this->prmodel->gethtmltable(trim($tbl), $id);
+	if(count($list) > 0){
+		echo $list[0]->list;
+	}else{
+		echo "<h5>No Data Submmited</h5>";
+	}
+}
 	
-		public function timeAgo($time_ago){
+public function timeAgo($time_ago){
 		
 		$time_ago = strtotime($time_ago);
 		$cur_time   = time();
