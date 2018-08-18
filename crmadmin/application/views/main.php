@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+	
 	<meta name="description" content="Admin, Dashboard, Bootstrap" />
 	<link rel="shortcut icon" sizes="196x196" href="<?php echo base_url(); ?>assets/images/logo.png">
 	<title>Geo Grout CRM</title>
@@ -269,9 +270,12 @@
 	<script src="<?php echo base_url(); ?>assets/js/global.js"></script>
 
 	
-	<script src="<?php echo base_url(); ?>/libs/misc/datatables/datatables.min.js"></script>
-	<link rel="stylesheet" href="<?php echo base_url(); ?>/libs/misc/datatables/datatables.min.css">
+	<script src="<?php echo base_url(); ?>libs/misc/datatables/datatables.min.js"></script>
+	<link rel="stylesheet" href="<?php echo base_url(); ?>libs/misc/datatables/datatables.min.css">
 
+	<script src="<?php echo base_url(); ?>libs/bower/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+	<link rel="stylesheet" href="<?php echo base_url(); ?>libs/bower/bootstrap-select/dist/css/bootstrap-select.min.css">
+	
 	<!-- build:js ../assets/js/app.min.js -->
 	<script src="<?php echo base_url(); ?>assets/js/library.js"></script>
 	<script src="<?php echo base_url(); ?>/libs/bower/summernote/dist/summernote.min.js"></script>
@@ -291,6 +295,9 @@
 	<script src="<?php echo base_url(); ?>libs/misc/echarts/build/dist/theme.js"></script>
 	<script src="<?php echo base_url(); ?>libs/misc/echarts/build/dist/jquery.echarts.js"></script>
 	
+	<script src="<?php echo base_url(); ?>libs/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+	<link rel="stylesheet" href="<?php echo base_url(); ?>/libs/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css">
+	
 	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.min.js"></script>
 	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.pie.min.js"></script>
 	<script src="<?php echo base_url(); ?>libs/misc/flot/jquery.flot.stack.min.js"></script>
@@ -303,7 +310,13 @@
 	<script>
 		document.addEventListener("DOMContentLoaded", function(){
 			$('.preloader').hide();
+			$('.dtp').datetimepicker({
+				format: 'YYYY-M-D'
+			});
+			$('.selectpicker').selectpicker();
+			
 		});
+		
 	</script>
 		<!-- build:js ../assets/js/app.min.js -->
 

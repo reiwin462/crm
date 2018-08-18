@@ -83,14 +83,26 @@ class Projectleadcontrol extends CI_Controller{
 			foreach($data as $key=>$val){
 				$sty = "";
 				
-				if($val['planid'] == "0" or $val['docuid'] == "0"){
-					$sty = "background-color: #ffb2b2; height: 30px; text-overflow: ellipsis;";
+				if($val['lead_status'] == "DEAD"){
+					$sty = "background-color: #ffdec6; height: 20px; text-overflow: ellipsis; color: #66656; text-align: center;  vertical-align: middle;";
 				}
-				elseif($val['rfiid'] == "0"){
-					$sty = "background-color: #fff7b2; height: 30px; text-overflow: ellipsis;";
+				
+				elseif($val['lead_status'] == "WON"){
+					$sty = "background-color: #f7f26a; height: 20px; text-overflow: ellipsis; color: #666564; text-align: center;  vertical-align: middle;";
 				}
 				else{
-					$sty = "background-color: #b2ffb6; height: 30px; text-overflow: ellipsis;";
+					if($val['bid_date'] === date('Y-m-d')){
+						$sty = "background-color: red; height: 20px; text-overflow: ellipsis; color: #fff; text-align: center;  vertical-align: middle;";
+					}else if($val['planid'] == "0" or $val['docuid'] == "0"){
+						$sty = "background-color: #ffc9a8; height: 20px; text-overflow: ellipsis; color: #666564; text-align: center;  vertical-align: middle;";
+					}
+					elseif($val['planid'] > "0" && $val['docuid'] > "0"){
+						$sty = "background-color: #b2ffb6; height: 20px; text-overflow: ellipsis; color: #666564; text-align: center;  vertical-align: middle;";
+					}
+					
+					else{
+						
+					}
 				}
 				$tabeldata .= "<tr style='".$sty."'>";
 				$tabeldata .= "<td class='tdrw'>".$val['project_no']."</td>";
@@ -106,7 +118,7 @@ class Projectleadcontrol extends CI_Controller{
 
 				$lk = base_url('projectleadpreview?projectid='.$val['id']);
 				$id = $val['id'];
-				$tdval = "";
+				$tdval = "<div class='row'>";
 				$tdval .= "<button class='btn btn-primary' onclick=\"projleadupdate('".$id."')\">
 									<i class='fa fa-tv' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Preview Lead'></i>
 								</button> 
@@ -127,6 +139,7 @@ class Projectleadcontrol extends CI_Controller{
 								</a>";
 							}
 						}
+				$tdval .= "</div>";
 				$tabeldata .= "<td style='width: 130px;'><div class='form-group inline'>".$tdval."</div></td>";
 				$tabeldata .= "</tr>";
 			}
@@ -158,7 +171,7 @@ class Projectleadcontrol extends CI_Controller{
 	}
 	
 	public function projleadupdate(){
-
+		
 		$this->load->model('Projectleadmodel');
 		$decoded = json_decode($_POST['data'],true);
 		$update = '';
@@ -552,7 +565,6 @@ class Projectleadcontrol extends CI_Controller{
 					if($value["value"] <> ""){
 						$id = $value["value"];
 						$action = "update";
-						die('here');
 					}else{
 						$action = "insert";
 					}
@@ -574,10 +586,106 @@ class Projectleadcontrol extends CI_Controller{
 		}
 	}
 	
+	public function new_module_item(){
+
+		$this->load->model('Projectleadmodel');
+		$id = $this->input->post('id');
+		$action = $this->input->post('action');
+		switch ($action){
+			case "leadspec":
+				$dataarr = array('project_scope' => $this->input->post('specification'),
+									'more_info' => $this->input->post('notes'),
+									'modified_by' => $this->session->userdata('crmuser'),
+									'modified_date' => date('Y-m-d'),
+								);
+				$update = $this->Projectleadmodel->updatemytable('project_leads', $dataarr, $id);
+				echo $update;
+				break;
+				
+			case "engineer":
+				$isExist = $this->Projectleadmodel->is_project_exist('project_engineers',$id);
+				if($isExist == "exist"){
+					$action = "update";
+					$dataarr = array('list' => $this->input->post('engineerlist'),
+							'created_by' => $this->session->userdata('crmuser'),
+							'created_date' => date('Y-m-d'),
+							);
+					$issuccess = $this->Projectleadmodel->updatemytable('project_engineers', $dataarr, $id);
+				}else{
+					$action = "insert";
+					$dataarr = array('project_id' => $this->input->post('id'),
+							'list' => $this->input->post('engineerlist'),
+							'created_by' => $this->session->userdata('crmuser'),
+							'created_date' => date('Y-m-d'),
+							);
+					$issuccess = $this->Projectleadmodel->inserttotable('project_engineers', $dataarr);	
+				}
+				if($issuccess > 0){
+					echo "success";
+				}else{
+					echo "fail";
+				}
+				break;	
+
+			case "bidders":
+				$isExist = $this->Projectleadmodel->is_project_exist('project_bidders',$id);
+				if($isExist == "exist"){
+					$action = "update";
+					$dataarr = array('list' => $this->input->post('bidderslist'),
+							'created_by' => $this->session->userdata('crmuser'),
+							'created_date' => date('Y-m-d'),
+							);
+					$issuccess = $this->Projectleadmodel->updatemytable('project_bidders', $dataarr, $id);
+				}else{
+					$action = "insert";
+					$dataarr = array('project_id' => $this->input->post('id'),
+							'list' => $this->input->post('bidderslist'),
+							'created_by' => $this->session->userdata('crmuser'),
+							'created_date' => date('Y-m-d'),
+							);
+					$issuccess = $this->Projectleadmodel->inserttotable('project_bidders', $dataarr);	
+				}
+				if($issuccess > 0){
+					echo "success";
+				}else{
+					echo "fail";
+				}
+				break;
+				
+			case "planholders":
+				$isExist = $this->Projectleadmodel->is_project_exist('project_planholders',$id);
+				if($isExist == "exist"){
+					$action = "update";
+					$dataarr = array(
+							'list' => $this->input->post('planholderslist'),
+							'created_by' => $this->session->userdata('crmuser'),
+							'created_date' => date('Y-m-d'),
+							);
+					$issuccess = $this->Projectleadmodel->updatemytable('project_planholders', $dataarr, $id);
+				}else{
+					$action = "insert";
+					$dataarr = array('project_id' => $this->input->post('id'),
+							'list' => $this->input->post('planholderslist'),
+							'created_by' => $this->session->userdata('crmuser'),
+							'created_date' => date('Y-m-d'),
+							);
+					$issuccess = $this->Projectleadmodel->inserttotable('project_planholders', $dataarr);	
+				}
+				if($issuccess > 0){
+					echo "success";
+				}else{
+					echo "fail";
+				}
+				break;
+		}
+		
+	}
+	
+	
 	function sendemail($sbj, $to, $msg){
 		
 		try {
-			$sendgrid = new SendGrid\SendGrid('sendgriduser', 'sendgridpass');
+			$sendgrid = new SendGrid\SendGrid('user', 'pass');
 			$mail = new SendGrid\Mail();
 			
 			
