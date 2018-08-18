@@ -32,8 +32,8 @@ var LIBS = {
 		"../libs/bower/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"
 	],
 	selectpicker: [
-		"../libs/bower/bootstrap-select/dist/css/bootstrap-select.min.css",
-		"../libs/bower/bootstrap-select/dist/js/bootstrap-select.min.js"
+		//"../libs/bower/bootstrap-select/dist/css/bootstrap-select.min.css",
+		//"../libs/bower/bootstrap-select/dist/js/bootstrap-select.min.js"
 	],
 	filestyle: [
 		"../libs/bower/bootstrap-filestyle/src/bootstrap-filestyle.min.js"
@@ -42,9 +42,9 @@ var LIBS = {
 		"../libs/bower/bootstrap-timepicker/js/bootstrap-timepicker.js"
 	],
 	datetimepicker: [
-		"../libs/bower/moment/moment.js",
-		"../libs/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
-		"../libs/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"
+		//"/libs/bower/moment/moment.js",
+		//"/libs/bower/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css",
+		//"/libs/bower/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"
 	],
 	select2: [
 		"../libs/bower/select2/dist/css/select2.min.css",

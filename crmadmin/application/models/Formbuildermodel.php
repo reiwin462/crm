@@ -10,7 +10,7 @@ class Formbuildermodel extends CI_Model {
 	public function createdynamicform($structure, $colratio, $tblname, $showtblID, $formname){
 		//structure, nameofform, bootrstrapcolratio, $tblname, $showtbleid, $formname
 		$htm ="";
-		$htm = '<form id="'.$formname.'" method="POST" action="#">';
+		$htm .= '<form id="'.$formname.'" method="POST" action="#">';
 		foreach($structure as $key=>$val){
 			$enumopt = "";
 			$fldlimit = "";
@@ -51,6 +51,11 @@ class Formbuildermodel extends CI_Model {
 			if($fldname == "info"){
 				$maskname = "information";
 			}
+			
+			if($fldname == "sales_representative"){
+				$maskname = "estimator";
+			}
+			
 			if($fldrequired == "1"){
 				$fldrequired = 'required';
 				$fldasterisk = '<i class="fa fa-asterisk" aria-hidden="true"  style="font-size: 6px; color:red;"></i>';
@@ -60,8 +65,8 @@ class Formbuildermodel extends CI_Model {
 			}
 			switch ($fldtype) {
 			case "TEXT":
-					$htm .= '<div class="col-md-'.trim($colratio).'">
-								<div class="form-group">
+					$htm .= '<div class="form-group">
+								<div class="col-md-'.trim($colratio).' col-'.trim($colratio).'">
 									<label for="'.$fldname.'"> '.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
 									<input type="text" class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  onkeypress="'.$jsinputvalidation.'"  maxlength="'.$fldlimit.'"  value="'.$flddefault.'" '.$fldrequired.'  ></input>
 								</div>
@@ -72,44 +77,41 @@ class Formbuildermodel extends CI_Model {
 					foreach($flditems as $itm){
 						$opt .= '<option value="'.$itm['description'].'">'.$itm['description'].'</option>';
 					}
-					$htm .= '<div class="col-md-'.trim($colratio).'">
-								<div class="form-group">
-									<label for="'.$fldname.'"> '.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
-									<select class="form-control" id="'.$fldname.'" name="'.$fldname.'" >
+					$htm .= '<div class="form-group">
+								<div class="col-md-'.trim($colratio).' col-'.trim($colratio).' ">
+									<label for="'.$fldname.'"> '.ucwords($maskname).'&nbsp;'.$fldasterisk.'
+									<span class="pull-right ">
+										<i class="fa fa-plus" aria-hidden="true"></i><a href="#" onclick="newdropdown(\''.$fldname.'\');" > Add Item!</a>
+									</span>
+									</label>
+									
+									<select class="form-control" id="'.$fldname.'" name="'.$fldname.'"  '.$fldrequired.' >
+										<option value="" disabled selected></option>
 										'.$opt.'
 									</select>
 								</div>
-								<div class="text-right addnew">
-									<i class="fa fa-plus" aria-hidden="true"></i><a href="#" onclick="newdropdown(\''.$fldname.'\');" > Add Item!</a>
-								</div>
 							 </div>';
+						/*
+							<select class="form-control selectpicker" id="'.$fldname.'" name="'.$fldname.'"  '.$fldrequired.'  data-live-search="true">
+										<option value="" disabled selected></option>
+										'.$opt.'
+									</select>
+						*/
 				break;
 			case "TEXTAREA":
-					// initiate close for div row
-					/*
-					$htm .= '</div>
-								<div class="row" style="padding:10px;">
-									<div class="form-group">
-										<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
-										<textarea class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.'>'.$flddefault.'</textarea>
-									</div>
-								</div>
-					<div class="row" >';
-					*/
-					$htm .= '<div class="col-md-12">
-								<div class="form-group">
+					$htm .= '<div class="form-group">
+									<div class="col-md-12 col-12">
 										<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
 										<textarea class="form-control '.$fldname.'" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'"  '.$fldrequired.' >'.$flddefault.'</textarea>
 									</div>
 							 </div>';
 							 
-					// initiate close for div reopen
 				break;
 			case "DATE":
-					$htm .= '<div class="col-md-'.trim($colratio).'">
-								<div class="form-group">
+					$htm .= '<div class="form-group">
+								<div class="col-md-'.trim($colratio).' col-'.trim($colratio).'">
 									<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
-									<input type="date" class="form-control" id="'.$fldname.'" placeholder="'.$maskname.'" name="'.$fldname.'" value="'.date('Y-m-d').'" ></input>
+									<input type="text" class="form-control dtp"  id="'.$fldname.'"  name="'.$fldname.'" ></input>
 								</div>
 							 </div>';
 				break;
@@ -120,8 +122,8 @@ class Formbuildermodel extends CI_Model {
 						$itm = str_replace("'","",$itm);
 						$opt .= '<option value="'.$itm.'">'.$itm.'</option>';
 					}
-					$htm .= 	'<div class="col-md-'.trim($colratio).'">
-								<div class="form-group">
+					$htm .= '<div class="form-group">
+								<div class="col-md-'.trim($colratio).' col-'.trim($colratio).'">
 									<label for="'.$fldname.'"> '.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
 									<select class="form-control" id="'.$fldname.'" name="'.$fldname.'" >
 										'.$opt.'
@@ -148,6 +150,7 @@ class Formbuildermodel extends CI_Model {
 		}
 		$htm .= "</form>";
 		return '<div class="row">'.$htm.'</div>';
+
 	}
 	
 	public function getfieldvalue($str){

@@ -79,3 +79,4 @@ function colorvalidate(obj){
 	}
 	console.log(obj.val());
 }
+

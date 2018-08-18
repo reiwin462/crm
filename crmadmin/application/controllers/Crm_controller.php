@@ -246,8 +246,8 @@ class Crm_controller extends CI_Controller{
 				
 				$structure = $this->Crmmodel->gettablestructure('project_leads');
 				//$data['structure']  = $structure;
-				$data['formupdate'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'project_leads', 'yes','projleadformupdate');
-				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'project_leads', 'no','projleadform');
+				$data['formupdate'] = $this->Formbuildermodel->createdynamicform($structure, '6', 'project_leads', 'yes','projleadformupdate');
+				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '4', 'project_leads', 'no','projleadform');
 				
 				$docstruc = $this->Crmmodel->gettablestructure('tbldocuments');
 				$data['formdocument'] = $this->Formbuildermodel->createdynamicform($docstruc, '6', 'project_leads', 'no','projleaddocument');
@@ -281,7 +281,7 @@ class Crm_controller extends CI_Controller{
 				$colhtm .= "<th>Project No</th>";
 				$colhtm .= "<th>Lead Status</th>";
 				$colhtm .= "<th>Bid Date</th>";
-				$colhtm .= "<th>S R</th>";
+				$colhtm .= "<th>Estimator</th>";
 				$colhtm .= "<th>Project Name</th>";
 				$colhtm .= "<th>Work Type</th>";
 				$colhtm .= "<th>Address</th>";
@@ -307,6 +307,11 @@ class Crm_controller extends CI_Controller{
 				$data['url'] = "projectleads/previewprojleads";
 				$this->load->view("main",$data);
 				
+			}
+			
+			elseif($str == "testpreview"){
+				$data['url'] = "projectleads/leadpreview";
+				$this->load->view("main",$data);
 			}
 			elseif($str == "sendemail"){
 				$this->gsend();
