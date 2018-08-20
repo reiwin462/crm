@@ -171,6 +171,7 @@
           <ul class="submenu">
 			<li><a href="<?php echo base_url(); ?>crm/createprojleads"><span class="menu-text">Add A Lead</span></a></li>
 			<li><a href="<?php echo base_url(); ?>crm/previewprojleads"><span class="menu-text">Preview Leads</span></a></li>
+			<li><a href="<?php echo base_url(); ?>crm/futureleads"><span class="menu-text">Future Leads</span></a></li>
           </ul>
         </li>
 		
