@@ -9,7 +9,7 @@
 				</ul>
 				<div class="tab-content">
 					<div role="tabpanel" class="tab-pane fade active in" id="addleadtab">
-						<div class="container">
+						<div class="">
 							<div class="row">
 								<?php echo $form; ?>
 							</div>

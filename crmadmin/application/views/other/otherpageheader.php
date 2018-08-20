@@ -281,7 +281,7 @@
 				$('#engineers').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_engineers/' + id);
 				$('#bidders').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_bidders/' + id);
 				$('#planholder').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_planholders/' + id);
-				$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + $('#address').val().trim());
+				$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + $('#job_address').val().trim());
 				
 				$('#specification, #project_scope, #more_info').summernote({
 					height: 80,

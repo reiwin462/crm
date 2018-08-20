@@ -15,7 +15,7 @@ class Projectleadmodel extends CI_Model{
 		
 	}
 	public function getprojcol(){
-		$query = $this->db->query("SELECT project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads order by  bid_date asc");
+		$query = $this->db->query("SELECT help, project_no, lead_status, bid_date, sales_representative, project_name, type_of_work, address, bid_value, lead_source, created_by, link, id as action from project_leads order by  bid_date asc");
 		return $query->result();
 	}
 	
@@ -32,7 +32,7 @@ class Projectleadmodel extends CI_Model{
 					ORDER BY  bid_date ASC
 					 ");
 			*/
-			$query = $this->db->query("SELECT a.id, a.project_no, a.lead_status, a.bid_date, a.sales_representative, a.project_name, 
+			$query = $this->db->query("SELECT a.help, a.id, a.project_no, a.lead_status, a.bid_date, a.sales_representative, a.project_name, 
 										a.type_of_work,address, a.bid_value, a.lead_source, a.created_by, a.link, a.id AS ACTION,
 										(SELECT COUNT(id) FROM tblplan WHERE project_id = a.id) AS planid, 
 										(SELECT COUNT(id) FROM tbldocuments WHERE project_id = a.id) AS docuid, 
@@ -50,7 +50,7 @@ class Projectleadmodel extends CI_Model{
 					ORDER BY  bid_date ASC
 					 ");
 			*/
-			$query = $this->db->query("SELECT a.id, a.project_no, a.lead_status, a.bid_date, a.sales_representative, a.project_name, 
+			$query = $this->db->query("SELECT a.help, a.id, a.project_no, a.lead_status, a.bid_date, a.sales_representative, a.project_name, 
 										a.type_of_work,address, a.bid_value, a.lead_source, a.created_by, a.link, a.id AS ACTION,
 										(SELECT COUNT(id) FROM tblplan WHERE project_id = a.id) AS planid, 
 										(SELECT COUNT(id) FROM tbldocuments WHERE project_id = a.id) AS docuid, 

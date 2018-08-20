@@ -74,6 +74,9 @@ class Formbuildermodel extends CI_Model {
 				break;
 			case "DROPDOWN":
 					$opt = '';
+					if($fldname == "help"){
+						$opt .= '<option value="YES">Need help!!</option>';
+					}
 					foreach($flditems as $itm){
 						$opt .= '<option value="'.$itm['description'].'">'.$itm['description'].'</option>';
 					}

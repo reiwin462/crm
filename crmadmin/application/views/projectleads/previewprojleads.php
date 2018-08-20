@@ -31,7 +31,7 @@
 								</div>
 								
 								<div class="col-md-4">
-									<h5 class="text-center">Maps are based on Address Supplied</h5>
+									<h5 class="text-center">Maps are based on Job Address Supplied</h5>
 									<iframe id="geomaps"
 									  width="100%"
 									  height="200"
@@ -324,6 +324,35 @@
   </div>
 </div>
 
+
+<div id="estimatormodal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-info">
+        <h5 class="modal-title">Provide Assistance</h5>		
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+			<form id="form" method="POST">
+				<input type="hidden" id="leadhelpid" name="leadhelpid" ></input>
+				<select class="form-control" id="leadhelpestimator" >
+					<option value="" disabled selected>Select From Estimator List Item Below</option>
+						<?php foreach($estimator as $field=>$val): ?>
+							<option value="<?php echo $val->description; ?>"><?php echo $val->description; ?></option>
+						<?php endforeach; ?>
+				</select>
+			</form>
+      </div>
+      <div class="modal-footer">
+		 <button type="button" class="btn btn-primary" onclick="helpme();"><i class='fa fa-save' aria-hidden='true' style='font-size:16px'></i>&nbsp; Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="imgmodal" class="modal fade" role="dialog">
   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -376,7 +405,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 	});
 	
-	$('#address').change(function(){
+	$('#job_address').change(function(){
 		if($(this).val() != ""){
 			$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + $(this).val());
 		}
@@ -532,7 +561,7 @@ function projleadupdate(bt){
 						if(name == "bid_value"){
 							//$(this).val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
 							$('#bid_value').val((value).toLocaleString('en-US', {style: 'currency',currency: 'USD',}));
-						}else if(name == "address"){
+						}else if(name == "job_address"){
 							$(this).val(value);
 							if(value != ""){
 								$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + value);
@@ -1116,6 +1145,49 @@ function addnewplanholder(){
 			});
 		$('#prevDiv').show();	
 		$('.preloader').fadeOut();	
+}
+
+function showhelpme(id){
+	$('#leadhelpid').val(id);
+	$('#estimatormodal').modal('show');	
+}
+
+
+function helpme(){
+	
+	var id = $('#leadhelpid').val();
+	var estimator = $('#leadhelpestimator').val();
+	Swal({
+		  title: 'Are you sure?',
+		  text: 'Lead Status will be Updated!',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, Update it!',
+		  cancelButtonText: 'No, keep it'
+		}).then((result) => {
+			$('#estimatormodal').modal('hide');	
+		  if (result.value) {
+			  $('#estimatormodal').modal('hide');
+			  $('#prevDiv').hide();
+			  $('.preloader').fadeIn();	
+				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/helpestimator";
+				$.post(xlink,{data: {estimatorname: estimator, helpid:id}}) 
+				.success(function(data) {
+						datatablereload();
+						swal({
+							  type: 'success',
+							  title: 'Update',
+							  text: 'You have successfully updated an item. Thank you!',
+							  footer: '<a href>'+ data +'</a>'
+							});
+						$('.preloader').fadeOut();
+						$('#prevDiv').show();		
+				});
+				
+		  } else if (result.dismiss === Swal.DismissReason.cancel) {
+			
+		  }
+		});
 }
 
 </script>
