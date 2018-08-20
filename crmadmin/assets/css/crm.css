@@ -6,9 +6,15 @@ body{font-family: "Century Gothic";}
 .form-group {margin-top: 5px; margin-bottom: 10px;}
 
 .form-group label{width: 100%; font-weight:bold; font-size: 11px; }
-.form-group input[type=text]{ padding: 2px; font-size: 11px;  border: 1px solid #e2e2e2; background-color: #fffcc9;}
-.form-group input[type=date]{ padding: 2px;  line-height: 10px; font-size: 11px;  border: 1px solid #e2e2e2;  background-color:#fffcc9;}
-.form-group select{padding: 2px; font-size: 11px;  border: 1px solid #e2e2e2;  background-color:#fffcc9;}
+/* Adjusted 08202018
+.form-group input[type=text]{ padding: 2px; font-size: 11px;  border: 1px solid #e2e2e2; background-color: #fffcc9;} */
+.form-group input[type=text]{ height:28px !important;padding: 5px; font-size: 11px;  border: 1px solid #e2e2e2; background-color: #fffcc9;}
+/* Adjusted 08202018
+.form-group input[type=date]{ padding: 2px;  line-height: 10px; font-size: 11px;  border: 1px solid #e2e2e2;  background-color:#fffcc9;} */
+.form-group input[type=date]{ height:28px !important;padding: 5px; line-height: 10px; font-size: 11px;  border: 1px solid #e2e2e2;  background-color:#fffcc9;}
+/* Adjusted 08202018
+.form-group select{padding: 2px; font-size: 11px;  border: 1px solid #e2e2e2;  background-color:#fffcc9;} */
+.form-group select{ height:28px !important;padding: 5px; font-size: 11px;  border: 1px solid #e2e2e2;  background-color:#fffcc9;}
 .form-group textarea{ padding: 2px; font-size: 11px; margin-bottom: 2px; border: 1px solid #e2e2e2;  background-color:#fffcc9;}
 
 .additem { padding: 5px; margin-top: 5px; margin-right:30px; font-size:8px !important;}
@@ -119,13 +125,12 @@ body{font-family: "Century Gothic";}
 .prevrow{height: auto; padding: 1px; margin-top: 2px; border-bottom: 1px solid #e2e2e2;}
 .previewfield {height: auto; padding: 5px; margin:0px; overflow: hidden; text-overflow: ellipsis;  background-color: #fffaf4; font-size:11px;}
 .previewitm {height: auto; padding: 5px; margin:0px; overflow: hidden; text-overflow: ellipsis; font-size:11px;}
-#docupreview {height: 300px; overflow-y:scroll; overflow-x:hidden; width: auto; text-overflow: hidden;}
+/* remove 08202018 #docupreview {height: 300px; overflow-y:scroll; overflow-x:hidden; width: auto; text-overflow: hidden;} */
 #docucontent {padding: 2px; text-overflow: hidden; font: 11px;	border-radius: 2px; font-size: 12px; background-color: #b2cfff; word-wrap: break-word; border:1px solid #e2e2e2;}
 #doccontent { padding: 2px; word-wrap: break-word; background-color: #fff; font-family: "Century Gothic";}
 #doccontent p{ word-wrap: break-word; margin-top:2px; margin-bottom: 2px;}
 
-#planpreview {height: 200px; overflow-y:scroll; overflow-x:hidden; width: auto; font-size: 10px;}
-
+/* removed 08202018 #planpreview {height: 200px; overflow-y:scroll; overflow-x:hidden; width: auto; font-size: 10px;} */
 /*
 #newleadpreview {display:none;}
 #newleadrender{padding: 10px;}
@@ -147,3 +152,9 @@ body{font-family: "Century Gothic";}
 #biddingtable td{padding: 2px !important; text-overflow: ellipsis !important; width: 50px; word-wrap: break-word;}
 
 .contentholder{padding: 10px; border-radius: 0px; font-size: 12px; border: 1px solid #a3c6ff; background-color:	#f7faff; min-height: 100px !important; margint-top:5px;}
+
+/* Adjust 08202018 */
+
+.nav-tabs-horizontal .nav-tabs > li > a, .nav-tabs > li > a { padding:10px !important; }
+select.form-control { height:28px !important; }
+#won-datatable .btn, #dead-datatable .btn { padding:5px !important;height:28px; }

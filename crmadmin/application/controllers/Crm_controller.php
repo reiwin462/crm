@@ -288,7 +288,7 @@ class Crm_controller extends CI_Controller{
 				$colhtm .= "<th>Bid Value</th>";
 				$colhtm .= "<th>Source</th>";
 				$colhtm .= "<th>Created By</th>";
-				$colhtm .= "<th>Action</th>";
+				$colhtm .= "<th id='nub'>Actions</th>";
 			
 				/*
 				$col = $this->Projectleadmodel->getprojcol();

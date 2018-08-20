@@ -1,10 +1,19 @@
 
-<div  class="widget">
+<div  class="widget" style="padding-bottom:10px;">
     <header class="widget-header info">
-        <h4 class="widget-title">Project Leads Details</h4>
+        <h4 class="widget-title"><span class="pull-left">Project Leads Details</span>
+		
+								<span class="pull-right">
+								
+										<small><i class="fa fa-circle-o sun" aria-hidden="true"></i> <span style="color:#fff !important;">Waiting for RFI</span> &nbsp;</small>
+										<small><i class="fa fa-circle-o hot" aria-hidden="true"></i> <span style="color:#fff !important;">Incomplete</span> &nbsp;</small>
+										<small><i class="fa fa-circle-o success" aria-hidden="true"></i> <span style="color:#fff !important;">Success</span></small>
+								</span>
+		</h4>
     </header>
-    <hr class="widget-separator">
-		<div class="widget-body">
+    <!-- Adjusted Removed 08202018
+	<hr class="widget-separator">
+		<div class="widget-body">-->
 			<div id="prlupdate"  class="nav-tabs-horizontal white m-b-lg">
 					<ul class="nav nav-tabs" role="tablist">
 						<div class="text-right" style="z-index: -1"><i class="fa fa-close" ></i>&nbsp;<a href='#' onclick="cancelupdate();">Close &nbsp;</a></div>
@@ -30,7 +39,16 @@
 									  src="" allowfullscreen>
 									</iframe>
 								</div>
+								<div id="amazing_project_scope" class="col-md-6" style="padding-bottom:0 !important;margin-bottom:0 !important;">
+									<label>Project Description</label>
+									<textarea id="project_scope" name="project_scope" width="100%" rows="5"></textarea>
+								</div>
+								<div id="amazing_more_info" class="col-md-6" style="padding-bottom:0 !important;margin-bottom:0 !important;">
+									<label>Notes</label>
+									<textarea id="more_info" name="more_info" width="100%" rows="5"></textarea>
+								</div>
 							</div>
+							
 							<br>								
 							<div class="row actbutt prlmain">
 									<button type="button" class="btn mw-md btn-success" onclick="updateprojlead();" ><i class="fa fa-check"></i> Save Update</button>
@@ -45,29 +63,30 @@
 						<hr>
 						<div class="nav-tabs-horizontal white m-b-lg">
 							<ul id="crmtabs" class="nav nav-tabs" role="tablist">
+								<li role="presentation" class="active">
+									<a href="#addleadplan" class="tablink active" id="leadplantab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadplan();">
+									 <h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Plans</h5></a>
+								</li>
+								<!-- adjusted removed 08202018 
 								<li role="presentation" >
 									<a href="#addleadspec" class="tablink" id="leadspec" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
 									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Specification and Details</h5></a>
-								</li>
+								</li>-->
 								<li role="presentation" >
 									<a href="#addengineer" class="tablink" id="leadengineer" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
-									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Engineers</h5></a>
+									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Engineers List</h5></a>
 								</li>
 								<li role="presentation" >
 									<a href="#addplanholder" class="tablink" id="leadplan" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" >
-									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Plan Holders</h5></a>
+									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Plan Holders List</h5></a>
 								</li>
 								<li role="presentation" >
 									<a href="#addbidders" class="tablink" id="leadbid" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" >
-									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Bidders</h5></a>
+									<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Bidders List</h5></a>
 								</li>
 								<li role="presentation" >
 									<a href="#addleaddocument" class="tablink" id="leaddocu" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloaddocument();">
 									 <h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Documents</h5></a>
-								</li>
-								<li role="presentation" >
-									<a href="#addleadplan" class="tablink" id="leadplantab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadplan();">
-									 <h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Plans</h5></a>
 								</li>
 								<li role="presentation" >
 									<a href="#addrfi" class="tablink" id="leadrfitab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="">
@@ -75,7 +94,7 @@
 								</li>
 							</ul>
 							<div class="tab-content" id="leadtab">
-								<div role="tabpanel" class="tab-pane  fade active in" id="addleadspec">		
+								<div role="tabpanel" class="tab-pane" id="addleadspec">		
 									<div class="row">
 										<footer class="widget-footer bg-info"><h5>Please fillup necessary fields below</h5></footer>
 										<div class="form-group">
@@ -141,7 +160,7 @@
 										</div>
 									</div>
 								</div>
-								<div role="tabpanel" class="tab-pane" id="addleadplan">
+								<div role="tabpanel" class="tab-pane fade active in" id="addleadplan">
 									<div class="row">
 												 <footer class="widget-footer bg-info">Please upload Image and PDF Files Only</footer>
 												<form id="leadplan" method="post" enctype="multipart/form-data" class="form-horizontal p-t-10">
@@ -192,9 +211,10 @@
 			</div>
 		
 
-        <div id="dtbl"  class="widget">
-			<div class="widget-body">
-				<div class="nav-tabs-horizontal white m-b-lg">
+       <!--<div id="dtbl"  class="widget">
+			<div class="widget-body">-->
+				<div id="dtbl">
+				<div class="nav-tabs-horizontal white" style="padding:5px 10px;">
 					<ul class="nav nav-tabs" role="tablist">
 						<li role="presentation" >
 							<a href="#leadall" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true">
@@ -202,7 +222,7 @@
 						</li>
 						<li role="presentation" >
 							<a href="#clientwon" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadwon();">
-							<i class="fa fa-bullseye" aria-hidden="true"></i> Won Client </a>
+							<i class="fa fa-bullseye" aria-hidden="true"></i> Client Won Leads List </a>
 						</li>
 						<li role="presentation" >
 							<a href="#leaddead" id="leaddetailtab" aria-controls="showleadall" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloaddead();">
@@ -214,8 +234,8 @@
 					<div role="tabpanel" class="tab-pane fade active in" id="leadall">
 
 						<div id="leadsel" class="row">
-							<div class="col-md-12">
-								<label class="col-md-1">Status</label>
+							<!--<div class="col-md-12">-->
+								<label class="col-md-1" style="padding-top:5px;">Status:</label>
 								<div class="col-md-2">
 									<select class="form-control" onchange="datatablereload($(this).val());">
 										<option value="ALL" >All Leads</option>
@@ -227,12 +247,7 @@
 											<?php endforeach; ?>
 									</select>
 								</div>
-								<div class="col text-right">
-										<small><i class="fa fa-circle-o sun" aria-hidden="true"></i> Waiting for RFI</small>
-										<small><i class="fa fa-circle-o hot" aria-hidden="true"></i> Incomplete</small>
-										<small><i class="fa fa-circle-o success" aria-hidden="true"></i> Success</small>
-								</div>
-							</div>
+							<!--</div>-->
 						</div>
 							<table id="responsive-datatable" class="table table-striped" cellspacing="0" width="100%">
 								<thead>
@@ -248,7 +263,7 @@
 					</div>
 					<div role="tabpanel" class="tab-pane" id="clientwon">
 						<small>Client Won Leads List</small>
-						<table id="won-datatable" class="table table-striped" cellspacing="0" width="100%">
+						<table id="won-datatable" class="table table-striped" cellspacing="0" width="100%" style="font-size:11px !important;">
 							<thead>
 								<tr>
 									<?php 
@@ -262,7 +277,7 @@
 					</div>
 					<div role="tabpanel" class="tab-pane" id="leaddead">
 						<small>Dead Leads List</small>
-						<table id="dead-datatable" class="table table-striped" cellspacing="0" width="100%">
+						<table id="dead-datatable" class="table table-striped" cellspacing="0" width="100%" style="font-size:11px !important;">
 							<thead>
 								<tr>
 									<?php 
@@ -276,8 +291,8 @@
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
+		<!--</div>-->
+	<!--</div> -->
 </div>
 
 <div id="statmodal" class="modal" tabindex="-1" role="dialog">
@@ -335,7 +350,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		],
 	});
 	
-	$('#project_scope').summernote({
+	$('#project_scope, #specification').summernote({
 		height: 80,
 		 toolbar: [
 		// [groupName, [list of button]]
@@ -415,9 +430,9 @@ function reloaddead(){
 		var table = $('#dead-datatable').DataTable();
 		table.destroy();
 		$("#deadleadsbody").html(data);
-		$('#dead-datatable').DataTable({
-			dom: 'ftpi',
-		});
+		$('#dead-datatable').DataTable();
+		$('#dead-datatable th#nub').removeAttr('style');
+		$('#dead-datatable #nub').attr("style","width:700px;padding:10px;");
 	});
 }
 
@@ -427,14 +442,15 @@ function reloadwon(){
 		var table = $('#won-datatable').DataTable();
 		table.destroy();
 		$("#wonleadsbody").html(data);
-		$('#won-datatable').DataTable({
-			dom: 'ftpi',
-		});
+		$('#won-datatable').DataTable();
+		$('#won-datatable th#nub').removeAttr('style');
+		$('#won-datatable #nub').attr("style","width:600px;padding:10px;");
 	});
 }
 
 function updateprojlead(){
-	
+	$("#amazing_project_scope").appendTo("#projleadform");
+	$("#amazing_more_info").appendTo("#projleadform");
 	var isNull = "pass";
 	var formElements = new Array();
 	$("#projleadform :input").each(function(){
@@ -475,7 +491,8 @@ function updateprojlead(){
 	}else{
 		console.log('fail method execute');
 	}
-
+	$("#amazing_project_scope").appendTo("#addprojleadtab");
+	$("#amazing_more_info").appendTo("#addprojleadtab");
 }
 
 
@@ -484,6 +501,8 @@ function projleadupdate(bt){
 
 	//$('#more_info').summernote('destroy');
 	//$('#project_scope').summernote('destroy');
+	$("#amazing_project_scope").appendTo("#addprojleadtab");
+	$("#amazing_more_info").appendTo("#addprojleadtab");
 	$('#leadid').val(bt);
 	$('#leaddelete').val(bt);
 	var xlink = "<?php echo base_url(); ?>" + 'Projectleadcontrol/getleaddetail/'  + bt;
@@ -499,6 +518,9 @@ function projleadupdate(bt){
 			}else if(key == "project_scope"){				
 				$('#project_scope').summernote('code', value);
 				$('#project_scope').summernote('disable');
+			}else if(key == "specification") {
+				$('#specification').summernote('code',value);
+				$('#specification').summernote('disable');
 			}
 			$("#projleadform :input").each(function(){
 				var name = $(this).attr('name');
@@ -559,12 +581,14 @@ function projleadupdate(bt){
 				}
 			});
 		});
+		
 		lock();
+		
 	});
 	
 	$('#prlupdate').toggle();
 	$('#dtbl').toggle();
-
+	window.scrollTo(0, 0);
 }
 
 function cancelupdate(){
@@ -680,6 +704,7 @@ function unlock(){
 function prcUpdate(){
 	$('#more_info').summernote('enable');
 	$('#project_scope').summernote('enable');
+	$('#specification').summernote('enable');
 	unlock();
 }
 

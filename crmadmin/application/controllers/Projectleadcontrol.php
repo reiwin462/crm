@@ -84,7 +84,7 @@ class Projectleadcontrol extends CI_Controller{
 				$sty = "";
 				
 				if($val['lead_status'] == "DEAD"){
-					$sty = "background-color: #ffdec6; height: 20px; text-overflow: ellipsis; color: #66656; text-align: center;  vertical-align: middle;";
+					$sty = "background-color: #DADFE1; height: 20px; text-overflow: ellipsis; color: #000; text-align: center;  vertical-align: middle;";
 				}
 				
 				elseif($val['lead_status'] == "WON"){
@@ -140,7 +140,7 @@ class Projectleadcontrol extends CI_Controller{
 							}
 						}
 				$tdval .= "</div>";
-				$tabeldata .= "<td style='width: 130px;'><div class='form-group inline'>".$tdval."</div></td>";
+				$tabeldata .= "<td><div class='form-group inline'>".$tdval."</div></td>";
 				$tabeldata .= "</tr>";
 			}
 		}else{
