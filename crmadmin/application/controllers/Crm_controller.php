@@ -270,6 +270,8 @@ class Crm_controller extends CI_Controller{
 				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'project_leads', 'yes','projleadform');
 				$data['leadstat'] =  $this->Leadmodel->getleadstatus();
 				
+				$data['estimator'] =  $this->Crmmodel->getitems('crm_sales_representative');
+				
 				$docstruc = $this->Crmmodel->gettablestructure('tbldocuments');
 				$data['formdocument'] = $this->Formbuildermodel->createdynamicform($docstruc, '6', 'project_leads', 'no','projleaddocument');
 				
@@ -278,6 +280,7 @@ class Crm_controller extends CI_Controller{
 				$data['formrfi'] = $this->Formbuildermodel->createdynamicform($rfistruc, '3', '', 'yes','projrfi');
 				
 				$colhtm = "";
+				$colhtm .= "<th>Need Help</th>";
 				$colhtm .= "<th>Project No</th>";
 				$colhtm .= "<th>Lead Status</th>";
 				$colhtm .= "<th>Bid Date</th>";

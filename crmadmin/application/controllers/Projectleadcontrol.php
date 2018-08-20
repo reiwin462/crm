@@ -74,6 +74,7 @@ class Projectleadcontrol extends CI_Controller{
 	}
 	
 	public function showallprojleads(){
+		$helphtm = "";
 		$stat = $this->input->post('stat');
 		$this->load->model('Projectleadmodel');	
 		$tabeldata = "";
@@ -104,7 +105,15 @@ class Projectleadcontrol extends CI_Controller{
 						
 					}
 				}
+				
+				if($val['help'] == "YES"){
+					$helphtm = "<br><button onclick=\"showhelpme('".$val['id']."')\"><img src='../assets/images/help.png' width='30px' height='30px'  ></img></button>";
+				}else{
+					$helphtm = $val['help'];
+				}
+				
 				$tabeldata .= "<tr style='".$sty."'>";
+				$tabeldata .= "<td class='tdrw'>".$helphtm."</td>";
 				$tabeldata .= "<td class='tdrw'>".$val['project_no']."</td>";
 				$tabeldata .= "<td class='tdrw'>".$val['lead_status']."</td>";
 				$tabeldata .= "<td class='tdrw'>".$val['bid_date']."</td>";
@@ -145,6 +154,7 @@ class Projectleadcontrol extends CI_Controller{
 			}
 		}else{
 			$tabeldata = "<tr>
+							<td>No Data Available</td>
 							<td>No Data Available</td>
 							<td>No Data Available</td>
 							<td>No Data Available</td>
@@ -275,6 +285,29 @@ class Projectleadcontrol extends CI_Controller{
 			$this->sendemail('Project Lead Notification', $lead[0]['created_by'], $htm);
 		*/
 		
+	}
+	
+	public function helpestimator(){
+		
+		$this->load->model('Projectleadmodel');
+		
+		$helpestimator = trim($_POST['data']['estimatorname']);
+		$id = trim($_POST['data']['helpid']);
+		
+		$update = '';
+		
+		$update = " help" . "='" .$helpestimator."',";
+		$update .= 'modified_by' . "='" . $this->session->userdata('crmuser')."',";
+		$update .= 'modified_date' . "='" . date('Y-m-d H:i:s')."',";
+
+		$isupdate = $this->Projectleadmodel->updateprojlead(rtrim($update,","). "where id = '".trim(urldecode($id))."'");
+		if($isupdate > 0){
+			echo "success";
+		}else{
+			echo "error";
+		}
+	
+	
 	}
 	
 	public function projleadremove($id){

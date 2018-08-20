@@ -145,6 +145,11 @@ class Crmmodel extends CI_Model {
 		}
 	}
 	
+	public function getitems($table){
+		$query = $this->db->query('SELECT description FROM '. $table);
+		return $query->result();
+	}
+	
 	public function apiauthenticate($usracct){
 		$query = $this->db->query("SELECT * FROM `auth_accounts` WHERE MD5(username) = '".$usracct."' ORDER BY id DESC LIMIT 1");
 		if($query->num_rows() > 0){
@@ -153,6 +158,8 @@ class Crmmodel extends CI_Model {
 			return "error";
 		}
 	}
+	
+	
 	
 	
 	

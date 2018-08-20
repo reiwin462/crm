@@ -18,7 +18,7 @@
 							<?php echo $form; ?>
 						</div>
 						<div class="col-md-4">
-							<h5 class="text-center">Maps are based on Address Supplied</h5>
+							<h5 class="text-center">Maps are based on Job Address Supplied</h5>
 							<iframe id="geomaps"
 							  width="100%"
 							  height="200"
@@ -224,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function(){
 		}
 	});
 	
-	$('#address').change(function(){
+	$('#job_address').change(function(){
 		if($(this).val() != ""){
 			$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + $(this).val());
 		}
