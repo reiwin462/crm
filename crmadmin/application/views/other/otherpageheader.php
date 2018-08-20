@@ -21,6 +21,7 @@
 
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/crm.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/spinners.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>libs/bower/summernote/dist/summernote.css">
 
 </head>
 
@@ -49,48 +50,98 @@
                                 </li>
                             </ul>
                             <div class="tab-content" id="leadtab">
-                                <div role="tabpanel" class="tab-pane fade active in" id="leaddetail">
-                                    <div class="widget">
-                                        <header class="widget-header bg-primary">
-                                            <h5 class="widget-title pull-left">Project Lead Details</h5>
-                                        </header>
-                                        <hr class="widget-separator">
-                                        <div id="previewpane" class="widget-body">
-                                            <?php if(count($leadinfo) > 0): ?>
-                                                <?php foreach($leadinfo as $key=>$val): ?>
-                                                    <?php foreach($val as $name=>$value): ?>
+							
+							   <div role="tabpanel" class="tab-pane fade active in" id="leaddetail">
+                                  <div id="previewpane" class="widget-body">
+										<?php if(count($leadinfo) > 0): ?>
+											<?php foreach($leadinfo as $key=>$val): ?>
+													<div class="row">
+																<div class="form-group">
+																<style>
+																	input[type="text"] {
+																		border:none !important;
+																		background-color:#f9f9f9 !important;
+																		border-bottom:2px solid #59ABE3 !important;
+																	}
+																</style>
+													<?php foreach($val as $name=>$value): ?>
                                                         <?php if(!in_array($name, $exemptioarray)): ?>
-																	<div class="row prevrow">
-																		<div class="col-md-3 previewfield">
-																			<?php echo ucwords(str_replace('_', ' ', $name)); ?>
-																		</div>
-																		<div id="<?php echo $name; ?>" class="col-md-9 previewitm">
-																			<?php echo $value; ?>
-																		</div>
+																<?php /* removed <div class="row prevrow">
+																	<div class="col-md-3 previewfield">
+																		<?php echo ucwords(str_replace('_', ' ', $name)); ?>
 																	</div>
-                                                            <?php endif; ?>
-                                                                <?php endforeach;?>
-                                                                    <?php endforeach; ?>
-                                                                        <?php else: ?>
-                                                                            <h4> No Lead Detail Available! </h4>
-                                                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-									
-									
-									<div class="nav-tabs-horizontal white m-b-lg">
+																	<div id="<?php echo $name; ?>" class="col-md-9 previewitm">
+																		<?php echo $value; ?>
+																	</div>
+																</div> */?>
+																	<?php if($name == "job_address" OR $name == "specification" ): ?>
+																	<div class="col-md-12 col-lg-12">
+																	<?php elseif($name == "project_scope" OR $name == "more_info"): ?>
+																	<div class="col-md-6 col-lg-6">
+																	<?php else: ?>
+																	<div class="col-md-4 col-lg-4">
+																	<?php endif; ?>
+																		<label><?php 
+																			if($name == "project_scope") {
+																				echo "Project Description";
+																			} elseif($name == "more_info") {
+																				echo "Notes";
+																			} else {
+																				echo ucwords(str_replace('_', ' ', $name)); 
+																			}
+																		?></label>
+																		<?php if($name != "project_scope" && $name != "more_info" && $name != "specification"): ?>
+																		<input type="text" class="form-control" type="text" readonly id="<?php echo $name; ?>" value="<?php echo $value; ?>" />
+																		<?php else: ?>
+																		<textarea class="form-control" type="text" readonly id="<?php echo $name; ?>"><?php echo $value; ?></textarea>
+																		<?php endif; ?>
+																	</div>
+																	
+
+                                                        <?php endif; ?>
+													<?php endforeach;?>
+													</div>
+																</div>
+											<?php endforeach; ?>
+										<?php else: ?>
+											<h4> No Lead Detail Available! </h4>
+										<?php endif; ?>
+                                  </div>	
+										<div class="row">
+											<div class="col-md-12 col-lg-12">
+												<h4 class="widget-footer bg-info">Lead Plan</h4>
+												<?php if ($plan <> ""): ?>
+												<div id="planpreview" class="widget-body">
+												<?php echo $plan; ?>
+												</div>
+												<?php else: ?>
+													<h4> No Plan Data Available! </h4>
+												<?php endif; ?>
+											</div>
+											<div class="col-md-12 col-lg-12">
+												<h4 class="widget-footer bg-info">Lead Document</h4>
+												<?php if ($document <> ""): ?>
+												<div id="docupreview" class="widget-body">
+												<?php echo $document; ?>
+												</div>
+												<?php else: ?>
+													<h4> No Document Available! </h4>
+												<?php endif?>
+											</div>
+										</div>								  
+                                  <div class="nav-tabs-horizontal white m-b-lg">
 										<ul id="crmtabs" class="nav nav-tabs" role="tablist">
 											<li role="presentation" >
 												<a href="#addengineer" class="tablink" id="leadengineer" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
-												<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Engineers</h5></a>
+												<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Engineers List</h5></a>
 											</li>
 											<li role="presentation" >
 												<a href="#addplanholder" class="tablink" id="leadplan" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" >
-												<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Plan Holders</h5></a>
+												<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Plan Holders List</h5></a>
 											</li>
 											<li role="presentation" >
 												<a href="#addbidders" class="tablink" id="leadbid" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" >
-												<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Bidders</h5></a>
+												<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Bidders List</h5></a>
 											</li>
 											<li role="presentation" >
 												<a href="#addrfi" class="tablink" id="leadrfitab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="">
@@ -153,7 +204,8 @@
 									
 									
                                 </div>
-                            </div>
+                           
+						   </div>
                         </div>
                     </div>
                     <div  class="col-md-4">
@@ -167,34 +219,35 @@
 								  src="" allowfullscreen>
 								</iframe>
 						</div>
+						<!-- Adjusted Removed 08202018
 						 <div style="height: auto;" class="widget">
                             <div style="height: 350px;"  class="widget-body">
                                 <h5 class="widget-footer bg-info">Lead Plan</h5>
                                 <div class="row">
-                                    <?php if ($plan <> ""): ?>
+                                    <?php //if ($plan <> ""): ?>
                                         <div id="planpreview" class="widget-body">
-                                            <?php echo $plan; ?>
+                                            <?php //echo $plan; ?>
                                         </div>
-                                        <?php else: ?>
+                                        <?php //else: ?>
                                             <div class="widget-body">
                                                 <h4> No Plan Data Available! </h4>
                                             </div>
-                                         <?php endif; ?>
+                                         <?php //endif; ?>
                                 </div>
                             </div>
                             <div style="height: 350px;"  class="widget-body">
                                 <h5 class="widget-footer bg-info">Lead Document</h5>
-                                <?php if ($document <> ""): ?>
+                                <?php //if ($document <> ""): ?>
                                     <div id="docupreview" class="widget-body">
-                                        <?php echo $document; ?>
+                                        <?php //echo $document; ?>
                                     </div>
-                                    <?php else: ?>
+                                    <?php //else: ?>
                                         <div class="widget-body">
                                             <h4> No Document Available! </h4>
                                         </div>
-                                        <?php endif?>
+                                        <?php //endif?>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </section>
@@ -208,26 +261,7 @@
 		  <div id="imgcaption"></div>
 		</div>
 
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                $('.preloader').hide();
-				
-				var id = <?php echo $this->input->get('projectid'); ?>;
-				$('#engineers').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_engineers/' + id);
-				$('#bidders').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_bidders/' + id);
-				$('#planholder').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_planholders/' + id);
-				$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + $('#address').text().trim());
-				
-            });
-        </script>
-		
-		<script>
-			function showme(img){
-				$('#imgprev').attr('src', img.attr('src'));
-				$('#imgcaption').attr('src', img.val());
-				$('#imgmodal').modal();
-			}
-		</script>
+
 
 </body>
 <script src="<?php echo base_url(); ?>libs/bower/jquery/dist/jquery.js"></script>
@@ -238,5 +272,32 @@
 <script src="<?php echo base_url(); ?>libs/bower/jquery-slimscroll/jquery.slimscroll.js"></script>
 <script src="<?php echo base_url(); ?>libs/bower/perfect-scrollbar/js/perfect-scrollbar.jquery.js"></script>
 <script src="<?php echo base_url(); ?>libs/bower/PACE/pace.min.js"></script>
-
+	<script src="<?php echo base_url(); ?>/libs/bower/summernote/dist/summernote.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                $('.preloader').hide();
+				
+				var id = <?php echo $this->input->get('projectid'); ?>;
+				$('#engineers').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_engineers/' + id);
+				$('#bidders').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_bidders/' + id);
+				$('#planholder').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_planholders/' + id);
+				$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + $('#address').val().trim());
+				
+				$('#specification, #project_scope, #more_info').summernote({
+					height: 80,
+					 toolbar: [],
+				});
+				$('#specification').summernote('disable');
+				$('#project_scope').summernote('disable');
+				$('#more_info').summernote('disable');
+            });
+        </script>
+		
+		<script>
+			function showme(img){
+				$('#imgprev').attr('src', img.attr('src'));
+				$('#imgcaption').attr('src', img.val());
+				$('#imgmodal').modal();
+			}
+		</script>
 </html>

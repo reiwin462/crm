@@ -13,7 +13,7 @@
 		</ul>
 		<div class="tab-content">
 			<div role="tabpanel" class="tab-pane fade active in" id="addprojleadtab">
-					<div class="container-fluid">
+					<div class="row" style="padding-bottom:0 !important;margin-bottom:0 !important;">
 						<div class="col-md-8">
 							<?php echo $form; ?>
 						</div>
@@ -26,46 +26,57 @@
 							  src="" allowfullscreen>
 							</iframe>
 						</div>
+						<div id="amazing_project_scope" class="col-md-6" style="padding-bottom:0 !important;margin-bottom:0 !important;">
+							<label>Project Description</label>
+							<textarea id="project_scope" name="project_scope" width="100%" rows="5"></textarea>
+						</div>
+						<div id="amazing_more_info" class="col-md-6" style="padding-bottom:0 !important;margin-bottom:0 !important;">
+							<label>Notes</label>
+							<textarea id="more_info" name="more_info" width="100%" rows="5"></textarea>
+						</div>
 					</div>
-					<div id="newleadbutton" class="container actbutt pull-center">
-						<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewprojlead();" >Save</button>
-						<button type="button" class="btn btn-sm mw-md btn-danger" onclick="reset();">Cancel</button>
+					<div class="row" style="padding-bottom:0 !important;margin-bottom:0 !important;">
+						<div id="newleadbutton" class="container actbutt">
+							<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewprojlead();" >Save</button>
+							<button type="button" class="btn btn-sm mw-md btn-danger" onclick="reset();">Cancel</button>
+						</div>
 					</div>
 				</div>
 
 				<div class="nav-tabs-horizontal white m-b-lg">
 					<ul id="crmtabs" class="nav nav-tabs" role="tablist">
 						<li role="presentation" >
-							<a href="#addleadspec" class="tablink" id="leadspec" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
-							<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Specification and Details</h5></a>
+							<a href="#addleadplan" class="tablink" id="leadplantab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadplan();">
+							 <h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Plans</h5></a>
 						</li>
 						<li role="presentation" >
 							<a href="#addengineer" class="tablink" id="leadengineer" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
-							<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Engineers</h5></a>
+							<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Engineers List</h5></a>
 						</li>
 						<li role="presentation" >
 							<a href="#addplanholder" class="tablink" id="leadplan" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" >
-							<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Plan Holders</h5></a>
+							<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Plan Holders List</h5></a>
 						</li>
 						<li role="presentation" >
 							<a href="#addbidders" class="tablink" id="leadbid" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" >
-							<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Bidders</h5></a>
+							<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Bidders List</h5></a>
 						</li>
 						<li role="presentation" >
 							<a href="#addleaddocument" class="tablink" id="leaddocu" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloaddocument();">
 							 <h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Documents</h5></a>
 						</li>
 						<li role="presentation" >
-							<a href="#addleadplan" class="tablink" id="leadplantab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="reloadplan();">
-							 <h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Plans</h5></a>
-						</li>
-						<li role="presentation" >
 							<a href="#addrfi" class="tablink" id="leadrfitab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="">
 							<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Project RFI</h5></a>
 						</li>
+						<!-- Adjusted Removed 08202018
+						<li role="presentation" >
+							<a href="#addleadspec" class="tablink" id="leadspec" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
+							<h5><i class="fa fa-plus-circle" aria-hidden="true"></i> Leads Specification and Details</h5></a>
+						</li> -->
 					</ul>
 					<div class="tab-content" id="leadtab">
-						<div role="tabpanel" class="tab-pane fade active in" id="addleadspec">		
+						<div role="tabpanel" class="tab-pane" id="addleadspec">		
 							<div class="row">
 								<footer class="widget-footer bg-info"><h5>Please fillup necessary fields below</h5></footer>
 								<div class="form-group">
@@ -88,28 +99,30 @@
 						</div>
 						<div role="tabpanel" class="tab-pane" id="addengineer">		
 							<div class="row">		
+								<div class="col-md-12">
 								<footer class="widget-footer bg-info"><h5>Please copy the table from the Weblink and Paste it to the Field Below</h5></footer>
 								<div id="engineers" class="table-responsive contentholder" contenteditable="true" preloader="Engineers List">Engineers List!</div>
-								<div class="col-md-12">
+								<br/>
 									<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewengineer();" > <i class="fa fa-check"></i>Save</button>
 								</div>
 							</div>
 						</div>
 						<div role="tabpanel" class="tab-pane" id="addplanholder">		
-							<div class="row">		
-								<footer class="widget-footer bg-info"><h5>Please copy the table from the Weblink and Paste it to the Field Below</h5></footer>
-								<div id="planholder" class="table-responsive contentholder" contenteditable="true" preloader="Plan Holder List">PLan Holders List!</div>
-								<div class="col-md-12">
+							<div class="row">	
+								<div class="col-md-12">							
+									<footer class="widget-footer bg-info"><h5>Please copy the table from the Weblink and Paste it to the Field Below</h5></footer>
+									<div id="planholder" class="table-responsive contentholder" contenteditable="true" preloader="Plan Holder List">PLan Holders List!</div>
 									<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewplanholder();" > <i class="fa fa-check"></i>Save</button>
 								</div>
 							</div>	
 						</div>
 						<div role="tabpanel" class="tab-pane" id="addbidders">
 							<div class="row">
-								<footer class="widget-footer bg-info"><h5>Please copy the table from the Weblink and Paste it to the Field Below</h5></footer>
-								<div id="bidders" class="table-responsive contentholder" contenteditable="true" preloader="Bidders List">Bidders List!</div>
-								<br>
+							
 								<div class="col-md-12">
+									<footer class="widget-footer bg-info"><h5>Please copy the table from the Weblink and Paste it to the Field Below</h5></footer>
+									<div id="bidders" class="table-responsive contentholder" contenteditable="true" preloader="Bidders List">Bidders List!</div>
+									<br>
 									<button type="button" class="btn btn-sm mw-md btn-success" onclick="addnewbidders();" > <i class="fa fa-check"></i>Save</button>
 								</div>
 							</div>	
@@ -129,7 +142,7 @@
 								</div>
 							</div>
 						</div>
-						<div role="tabpanel" class="tab-pane" id="addleadplan">
+						<div role="tabpanel" class="tab-pane fade active in" id="addleadplan">
 							<div class="row">
 										 <footer class="widget-footer bg-info">Please upload Image and PDF Files Only</footer>
 										<form id="leadplan" method="post" enctype="multipart/form-data" class="form-horizontal p-t-10">
@@ -216,8 +229,9 @@ document.addEventListener("DOMContentLoaded", function(){
 			$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + $(this).val());
 		}
 	});
-	
-	$('#more_info, #project_scope').summernote({
+	//$("#txtarea_specification").removeAttr('class');
+	//$("#txtarea_specification").attr('class','col-md-12 col-lg-8');
+	$('#more_info, #project_scope, #specification').summernote({
 		height: 80,
 		 toolbar: [
 		// [groupName, [list of button]]
@@ -250,7 +264,9 @@ var optfield = "";
 function addnewprojlead(){
 	
 	var isNull = "pass";
-	var formElements = new Array();
+	var formElements = new Array();	
+	$("#amazing_project_scope").appendTo("#projleadform");
+	$("#amazing_more_info").appendTo("#projleadform");
 	$("#projleadform :input").each(function(){
 		var isRequired = $(this).attr('required');
 		if(isRequired == "required"){
@@ -296,6 +312,9 @@ function addnewprojlead(){
 					}
 			});	
 		}
+		
+	$("#amazing_project_scope").appendTo("#addprojleadtab");
+	$("#amazing_more_info").appendTo("#addprojleadtab");
 	}
 
 function addnewdocument(){
