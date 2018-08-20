@@ -170,7 +170,25 @@ class Projectleadmodel extends CI_Model{
 		return $query->result();
 	}
 	
+	public function getfutureleads(){
+		$query = $this->db->query("SELECT link, lead_source, type_of_work, created_by, id from project_future_leads order by id desc");
+		return $query->result_array();
+	}
 	
+	public function insertnewfutureleads($postdata){
+		$this->db->query('insert into project_future_leads set '. rtrim($postdata,","));
+		return $this->db->insert_id();
+	}
+	
+	public function getfutureleaddetail($id){
+		$query = $this->db->get_where('project_future_leads', array('id'=>$id));
+		return $query->result();
+	}
+	
+	public function updatefuturelead($post, $id){
+		$this->db->query('update project_future_leads set '. rtrim($post,",") . 'where id='. trim($id));
+		return ($this->db->affected_rows() != 1) ? false : true;
+	}
 	
 
 	

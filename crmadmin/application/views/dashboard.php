@@ -59,11 +59,7 @@
 				</div><!-- .widget -->
 			</div>
 		</div><!-- .row -->
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
+
 		<div class="row">
 			<div class="col-md-12 col-sm-12">
 				<div class="widget" >
@@ -101,18 +97,7 @@
 			</div>
 			
 		</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
-		<div style="clear:both">&nbsp;</div>
+
 		<div class="row">
 			<div class="col-md-6 col-sm-12">
 				<div class="widget countries-widget">

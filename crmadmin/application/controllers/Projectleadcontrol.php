@@ -714,6 +714,100 @@ class Projectleadcontrol extends CI_Controller{
 		
 	}
 	
+	function showallfutureleads(){
+		$this->load->model('Projectleadmodel');
+		$data = $this->Projectleadmodel->getfutureleads();
+		$tabeldata = "";
+		if(count($data) > 0){						
+			foreach($data as $key=>$val){
+				$sty = "height: 20px; text-overflow: ellipsis; text-align: center;  vertical-align: middle;";
+				$tabeldata .= "<tr class='".$sty."'>";
+				$tabeldata .= "<td style='width:auto; padding:0px;'>".$val['link']."</td>";
+				$tabeldata .= "<td style='width:auto; padding:0px;'>".$val['lead_source']."</td>";
+				$tabeldata .= "<td style='width:auto; padding:0px;'>".$val['type_of_work']."</td>";
+				$tabeldata .= "<td style='width:auto; padding:0px;'>".$val['created_by']."</td>";
+
+				$lk = base_url('projectleadpreview?projectid='.$val['id']);
+				$id = $val['id'];
+				$tdval = "<div class='row'>";
+				$tdval .= "<button class='btn btn-primary' onclick=\"previewlead('".$id."')\">
+									<i class='fa fa-tv' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Preview Lead'></i>
+								</button>";
+				if($val['link'] <> ""){
+							if (strrpos($val['link'], "http") === false) { 
+								$tdval .= " <a href='".'http://'.$val['link']."' class='btn btn-success' target='_blank'>
+									<i class='fa fa-link' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Link to Lead'></i>
+								</button>";
+							}else{
+								$tdval .= " <a href='".$val['link']."' class='btn btn-success' target='_blank'>
+									<i class='fa fa-link' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Link to Lead'></i>
+								</a>";
+							}
+						}
+				$tdval .= "</div>";
+				$tabeldata .= "<td class=' vertical-align: middle;'><div class='form-group inline'>".$tdval."</div></td>";
+				$tabeldata .= "</tr>";
+			}
+		}else{
+			$tabeldata = "<tr>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+							<td>No Data Available</td>
+						 </tr>";
+		}
+		
+		echo $tabeldata;
+	}
+	
+	public function futureleaddetail($id){
+		if($id != ""){
+			$this->load->model('Projectleadmodel');
+			$lead = $this->Projectleadmodel->getfutureleaddetail(trim($id));
+			echo json_encode($lead);
+		}
+	}
+	
+	public function newfuturelead(){
+		$this->load->model('Projectleadmodel');
+		$decoded = json_decode($_POST['data'],true);
+		$engineer = $this->input->post('engineers');
+		$insertupdate = '';
+		$prjno = '';
+		$newdata = array();
+		$id = "";
+		if(count($decoded) > 0){
+			foreach ($decoded as $value) {
+				if($value["name"] == "id" and $value["value"] <> ""){
+					$id = $value["value"];
+				}
+				$insertupdate .= $value["name"] . "='" . addslashes($value["value"])."',";
+			}
+			$insertupdate .= 'engineers_list' . "='" . $engineer."',";
+			
+			if($id == ""){
+				$insertupdate .= 'created_by' . "='" . $this->session->userdata('crmuser')."',";
+				$insertupdate .= 'created_date' . "='" . date('Y-m-d H:i:s')."',";
+				$isprc = $this->Projectleadmodel->insertnewfutureleads($insertupdate);
+			}else{
+				$insertupdate .= 'modified_by' . "='" . $this->session->userdata('crmuser')."',";
+				$insertupdate .= 'modified_date' . "='" . date('Y-m-d H:i:s')."',";
+				$isprc = $this->Projectleadmodel->updatefuturelead($insertupdate, $id);
+				
+			}
+			
+			if($isprc > 0){
+				echo $isprc;
+			}else{
+				echo "error";
+			}
+		}else{
+			echo "error on post data";
+			exit();
+		}
+	}
+	
 	
 	function sendemail($sbj, $to, $msg){
 		

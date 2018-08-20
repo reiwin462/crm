@@ -312,6 +312,26 @@ class Crm_controller extends CI_Controller{
 				
 			}
 			
+			elseif($str == "futureleads"){
+				$this->load->model('Crmmodel');
+				$this->load->model('Formbuildermodel');
+				$this->load->model('Projectleadmodel');
+				$this->load->model('Leadmodel');
+				
+				$structure = $this->Crmmodel->gettablestructure('project_future_leads');
+				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '4', 'project_future_leads', 'yes','projfutureleadform');
+
+				$colhtm = "";
+				$colhtm .= "<th>Links</th>";
+				$colhtm .= "<th>Lead Source </th>";
+				$colhtm .= "<th>Type of Work</th>";
+				$colhtm .= "<th>Created By</th>";
+				$colhtm .= "<th id='nub'>Actions</th>";
+				
+				$data['columns'] = $colhtm;
+				$data['url'] = "projectleads/futureleads";
+				$this->load->view("main",$data);
+			}
 			elseif($str == "testpreview"){
 				$data['url'] = "projectleads/leadpreview";
 				$this->load->view("main",$data);

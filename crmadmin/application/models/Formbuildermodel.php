@@ -84,7 +84,7 @@ class Formbuildermodel extends CI_Model {
 								<div class="col-md-'.trim($colratio).' col-'.trim($colratio).' ">
 									<label for="'.$fldname.'"> '.ucwords($maskname).'&nbsp;'.$fldasterisk.'
 									<span class="pull-right ">
-										<i class="fa fa-plus" aria-hidden="true"></i><a href="#" onclick="newdropdown(\''.$fldname.'\');" > Add Item!</a>
+										<a href="#" onclick="newdropdown(\''.$fldname.'\');" > Add Item!</a>
 									</span>
 									</label>
 									
