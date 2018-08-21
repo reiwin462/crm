@@ -41,7 +41,7 @@
         <div class="wrap">
             <section class="app-content">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-12">
                         <div class="widget">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li role="presentation">
@@ -53,17 +53,19 @@
 							
 							   <div role="tabpanel" class="tab-pane fade active in" id="leaddetail">
                                   <div id="previewpane" class="widget-body">
+									<div class="row">
+										<div class="col-md-8 col-lg-8">
 										<?php if(count($leadinfo) > 0): ?>
 											<?php foreach($leadinfo as $key=>$val): ?>
-													<div class="row">
-																<div class="form-group">
-																<style>
-																	input[type="text"] {
-																		border:none !important;
-																		background-color:#f9f9f9 !important;
-																		border-bottom:2px solid #59ABE3 !important;
-																	}
-																</style>
+												<div class="row">
+													<div class="form-group">
+														<style>
+															input[type="text"] {
+																border:none !important;
+																background-color:#f9f9f9 !important;
+																border-bottom:2px solid #59ABE3 !important;
+															}
+														</style>
 													<?php foreach($val as $name=>$value): ?>
                                                         <?php if(!in_array($name, $exemptioarray)): ?>
 																<?php /* removed <div class="row prevrow">
@@ -75,38 +77,49 @@
 																	</div>
 																</div> */?>
 																	<?php if($name == "job_address" OR $name == "specification" ): ?>
-																	<div class="col-md-12 col-lg-12">
+																		<div class="col-md-12 col-lg-12">
 																	<?php elseif($name == "project_scope" OR $name == "more_info"): ?>
-																	<div class="col-md-6 col-lg-6">
+																		<div class="col-md-6 col-lg-6">
 																	<?php else: ?>
-																	<div class="col-md-4 col-lg-4">
+																		<div class="col-md-4 col-lg-4">
 																	<?php endif; ?>
-																		<label><?php 
-																			if($name == "project_scope") {
-																				echo "Project Description";
-																			} elseif($name == "more_info") {
-																				echo "Notes";
-																			} else {
-																				echo ucwords(str_replace('_', ' ', $name)); 
-																			}
-																		?></label>
-																		<?php if($name != "project_scope" && $name != "more_info" && $name != "specification"): ?>
-																		<input type="text" class="form-control" type="text" readonly id="<?php echo $name; ?>" value="<?php echo $value; ?>" />
-																		<?php else: ?>
-																		<textarea class="form-control" type="text" readonly id="<?php echo $name; ?>"><?php echo $value; ?></textarea>
-																		<?php endif; ?>
-																	</div>
-																	
-
+																			<label><?php 
+																				if($name == "project_scope") {
+																					echo "Project Description";
+																				} elseif($name == "more_info") {
+																					echo "Notes";
+																				} else {
+																					echo ucwords(str_replace('_', ' ', $name)); 
+																				}
+																			?></label>
+																			<?php if($name != "project_scope" && $name != "more_info" && $name != "specification"): ?>
+																			<input type="text" class="form-control" type="text" readonly id="<?php echo $name; ?>" value="<?php echo $value; ?>" />
+																			<?php else: ?>
+																			<textarea class="form-control" type="text" readonly id="<?php echo $name; ?>"><?php echo $value; ?></textarea>
+																			<?php endif; ?>
+																		</div>
                                                         <?php endif; ?>
 													<?php endforeach;?>
 													</div>
-																</div>
+												</div>
 											<?php endforeach; ?>
 										<?php else: ?>
 											<h4> No Lead Detail Available! </h4>
 										<?php endif; ?>
-                                  </div>	
+										</div>
+										<div class="col-md-4 col-lg-4">
+										<div class="widget">
+											<h5 class="widget-footer bg-info">Maps</h5>
+											<small class="text-center ">Maps are based on Address Supplied</small>
+												<iframe id="geomaps"
+												  width="100%"
+												  height="300"
+												  frameborder="0" style="border:1px solid #e2e2e2;"
+												  src="" allowfullscreen>
+												</iframe>
+										</div>
+										</div>
+										</div>
 										<div class="row">
 											<div class="col-md-12 col-lg-12">
 												<h4 class="widget-footer bg-info">Lead Plan</h4>
@@ -208,6 +221,7 @@
 						   </div>
                         </div>
                     </div>
+					<!--
                     <div  class="col-md-4">
 						<div class="widget">
 							<h5 class="widget-footer bg-info">Maps</h5>
@@ -248,7 +262,7 @@
                                         <?php //endif?>
                             </div>
                         </div> -->
-                    </div>
+                    </div>-->
                 </div>
             </section>
         </div>
