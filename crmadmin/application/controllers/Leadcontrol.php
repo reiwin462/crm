@@ -210,9 +210,9 @@ class Leadcontrol extends CI_Controller{
 					/*if(!move_uploaded_file($file_tmp, $original)) {
 						die();
 					}*/
-					$storage = new StorageClient(['projectId' => 'steve-unified','keyFilePath' => './key.json']);
+					$storage = new StorageClient(['projectId' => 'steve-db','keyFilePath' => './key.json']);
 					$file = fopen($file_tmp, 'r');
-					$bucket = $storage->bucket("steve-unified");
+					$bucket = $storage->bucket("steve-db-storage");
 					$oldobject = $bucket->object($uniq.$name);
 					if($oldobject->exists()) {
 						$iserror =  "error The file already exist in our server";
@@ -396,7 +396,7 @@ class Leadcontrol extends CI_Controller{
 							<div class="panel-body">
 								<small class="text-muted">Posted :['. $this->timeAgo($val->created_datetime)  .'] </small>
 								<p>'.$val->created_by. " wrote : " .$val->text.'</p>
-								<span>Attached Document : <a href="https://storage.googleapis.com/steve-unified/'.$val->path.'" target="_blank">'.$val->file_attachment.'</a></span>
+								<span>Attached Document : <a href="https://storage.googleapis.com/steve-db/'.$val->path.'" target="_blank">'.$val->file_attachment.'</a></span>
 							</div>
 						</div>
 					</div>

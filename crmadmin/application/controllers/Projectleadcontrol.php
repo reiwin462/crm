@@ -403,6 +403,7 @@ class Projectleadcontrol extends CI_Controller{
 	}
 	
 	public function getplan($projid){
+		
 		$htm = "<div class='row'>";
 		if(!isset($projid)){
 			echo "error";
@@ -416,10 +417,10 @@ class Projectleadcontrol extends CI_Controller{
 					$img = substr(trim($val['filename_type']), 0, 5);
 					if($img == "image"){
 						$fav = '<i class="fa fa-image "></i>';
-						//$htm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px'></a>";	
+						//$htm .= "<a href='https://storage.googleapis.com/steve-db/".$val['filename_path']."'' target='_blank'><img class='fancy' src='https://storage.googleapis.com/steve-db/".$val['filename_path']."' width='100px' height='100px'></a>";	
 						$htm .= "<div class='img-with-text d-inline'>";
 						$htm .= "<a href='#' class='btnclose' onclick='removeattachment(".trim($val['id']).");'><i class='fa fa-close'></i></a>";
-						$htm .= "<img src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";
+						$htm .= "<img src='https://storage.googleapis.com/steve-db-storage/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";
 						$htm .= "<small class='caption text-center'> ".$val['filename']." </small>";
 						$htm .= "<br>";
 						$htm .= "<small> ".$val['detail']." </small>";
@@ -428,7 +429,7 @@ class Projectleadcontrol extends CI_Controller{
 						$fav = '<i class="fa fa-file-alt"></i>'; 
 						$htm .= "<div class='img-with-text d-inline'>";
 						$htm .= "<a href='#' class='btnclose' onclick='removeattachment(".trim($val['id']).");'><i class='fa fa-close'></i></a>";
-						$htm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='../assets/images/pdf.png' width='100px' height='100px'></a>";
+						$htm .= "<a href='https://storage.googleapis.com/steve-db-storage/".$val['filename_path']."'' target='_blank'><img class='fancy' src='../assets/images/pdf.png' width='100px' height='100px'></a>";
 						$htm .= "<small class='caption  text-center'> ".$val['filename']." </small>";
 						$htm .= "<br>";
 						$htm .= "<small> ".$val['detail']." </small>";
@@ -478,9 +479,9 @@ class Projectleadcontrol extends CI_Controller{
 			/*if(!move_uploaded_file($file_tmp, $original)) {
 				die();
 			}*/
-			$storage = new StorageClient(['projectId' => 'steve-unified','keyFilePath' => './key.json']);
+			$storage = new StorageClient(['projectId' => 'steve-db','keyFilePath' => './key.json']);
 			$file = fopen($file_tmp, 'r');
-			$bucket = $storage->bucket("steve-unified");
+			$bucket = $storage->bucket("steve-db-storage");
 			$oldobject = $bucket->object($uniq.$name);
 			if($oldobject->exists()) {
 				$iserror =  "error The file already exist in our server";
@@ -499,7 +500,7 @@ class Projectleadcontrol extends CI_Controller{
 			echo "error ". $iserror;
 		}else{
 			$data = array(
-				"project_id"	=> $this->input->post('leadid'),
+				"project_id"	=> $this->input->post('id'),
 				"detail"		=> $this->input->post('detail'),
 				"filename"		=> addslashes($name),
 				"filename_path"	=> $attachment_filename,
@@ -518,8 +519,8 @@ class Projectleadcontrol extends CI_Controller{
 		}
 
 		/*
-		$html .= "<td><a href='https://storage.googleapis.com/steve-unified/$row->attachment' target='_blank'>DOWNLOAD</a></td>";
-		https://storage.googleapis.com/steve-unified/9a6d4756fcce0geogrout.jpg
+		$html .= "<td><a href='https://storage.googleapis.com/steve-db/$row->attachment' target='_blank'>DOWNLOAD</a></td>";
+		https://storage.googleapis.com/steve-db/9a6d4756fcce0geogrout.jpg
 		*/
 
 	}

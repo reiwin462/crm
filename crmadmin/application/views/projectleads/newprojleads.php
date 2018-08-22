@@ -431,13 +431,15 @@ function leadplanupload(){
 		  if (result.value) {
 				$('#prevDiv').hide();	
 				$('.preloader').fadeIn();
+				fd.append('detail', dt);
+				fd.append('id', idfld);
 				fd.append('file', document.getElementById("file").files[0]);
 				var xlink = "<?php echo base_url("Projectleadcontrol/planupload"); ?>";
 				$.ajax({
 				   url: xlink,
 				   method:"POST",
 				   enctype: 'multipart/form-data',
-				   data: fd, id: idfld, detail: dt,
+				   data: fd, 
 				   contentType:false,
 				   cache:false,
 				   processData:false,

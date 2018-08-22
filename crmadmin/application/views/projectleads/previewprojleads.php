@@ -618,6 +618,7 @@ function projleadupdate(bt){
 	$('#prlupdate').toggle();
 	$('#dtbl').toggle();
 	window.scrollTo(0, 0);
+	$('#leadplantab').trigger('click');
 }
 
 function cancelupdate(){
@@ -625,6 +626,7 @@ function cancelupdate(){
 	$('#prlupdate').hide();
 	proj_reset();
 	lock();
+
 }
 
 function projleaddelete(){
@@ -834,6 +836,7 @@ function addnewdocument(){
 	var docfkeys = $('#doc_keywords').val();
 	var docfdocu =  $('#doc_Content').val();
 	var idfld = $('#leadid').val();
+	
 
 	if(docfname == "" || docfkeys == "" || docfdocu == "" || idfld == ""){
 		swal({
@@ -864,7 +867,7 @@ function leadplanupload(){
 	var idfld = $('#leadid').val();
 	var fildata = document.getElementById("file").value;
 	var fd = new FormData($("#leadplan")[0]);
-
+	var dt = $('#detail').val();
 	if(idfld == ""){
 		swal({
 				type:  'error',
@@ -897,13 +900,15 @@ function leadplanupload(){
 		  if (result.value) {
 				$('#prevDiv').hide();	
 				$('.preloader').fadeIn();
+				fd.append('detail', dt);
+				fd.append('id', idfld);
 				fd.append('file', document.getElementById("file").files[0]);
 				var xlink = "<?php echo base_url("Projectleadcontrol/planupload"); ?>";
 				$.ajax({
 				   url: xlink,
-				   method:"POST",
+				   type:"POST",
 				   enctype: 'multipart/form-data',
-				   data: fd, id: idfld,
+				   data: fd,
 				   contentType:false,
 				   cache:false,
 				   processData:false,
@@ -930,7 +935,7 @@ function leadplanupload(){
 							  type: 'error',
 							  title: 'Upload',
 							  text: 'Your file may be corrupted or exceeds the server limit of 8388608 bytes',
-							  footer: '<a href></a>'
+							  footer: '<a href>'+ response +'</a>'
 							});
 						}
 				   },
