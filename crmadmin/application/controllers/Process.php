@@ -22,6 +22,26 @@ class Process extends CI_Controller{
 	}
 	
 	
+	public function savenewannouncement(){
+		$this->load->model('Crmmodel');
+		$array = array('message'=> addslashes($this->input->post('message')),
+				'created_by' => $this->session->userdata('crmuser'),
+				'created_date' => date('Y-m-d H:i:s'));
+		$msg = $this->Crmmodel->saveAnnouncement($array);
+		if($msg > 0){
+			echo "success";
+		}else{
+			echo "failed to post";
+		}
+	}
+	
+	public function getannouncement(){
+		$this->load->model('Crmmodel');
+		$announcemsg = $this->Crmmodel->retrieveannoucement();
+		echo json_encode($announcemsg);
+	}
+	
+	
 	public function getLeadCol(){
 		$this->load->model('Crmmodel');
 		$lead = $this->Crmmodel->getLeadCol();

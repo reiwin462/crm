@@ -79,7 +79,7 @@
           <h5 class="page-title hidden-menubar-top hidden-float">Customer Relation Management Tool</h5>
         </li>
       </ul>
-
+	  
       <ul class="nav navbar-toolbar navbar-toolbar-right navbar-right">
         <li class="nav-item dropdown hidden-float">
           <a href="javascript:void(0)" data-toggle="collapse" data-target="#navbar-search" aria-expanded="false">
@@ -102,7 +102,10 @@
         </li>
       </ul>
     </div>
-  </div><!-- navbar-container -->
+	
+  </div>
+
+  <!-- navbar-container -->
 </nav>
 <!--========== END app navbar -->
 
@@ -216,8 +219,21 @@
         <svg class="circular" viewBox="25 25 50 50">
             <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
 </div>
-
+<div class="row" style="color: #FFFFFF; background-color:#000080; padding: 2px; margin-bottom:10px;" >
+	<div class="col-md-12" >
+		<marquee scrollamount="5">
+			<h4 id="announce_msg">No Anouncement Yet</h4>
+		</marquee>	
+	</div>
+	<hr>
+	<div class="col-md-12">
+		<small class="text-muted" id="announce_own">Posted By: Mojo</small>
+		<small class="text-muted" id="announce_date"></small>
+		<span class="pull-right" onclick="newannouncement();" ><small style="color:#fff; font-weight: bold;"><i class="fa fa-cogs" aria-hidden="true"></i>&nbsp;New Announcement&nbsp;</small></span>
+	</div>
+</div>
 <div class="wrap">
+	
 	<section id="prevDiv" class="app-content">
 			<?php 
 				if(isset($otherdata)){
@@ -249,7 +265,32 @@
 
 </main>
 
-	
+
+
+<div id="newannouncementmodal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="padding-top:10px;">
+  <div class="modal-dialog modal-lg" >
+    <div class="modal-content" style="width:90%;">
+		  <div class="modal-header bg-primary">
+			<h4 class="modal-title" ><i class="fa fa-bullhorn" aria-hidden="true"></i> New Announcement
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			</h4>
+		  </div>
+		  <div class="modal-body">
+			<div class="row" style="padding:5px !important;margin-bottom:0 !important;">
+				<p>Announcement Details</p>
+				<textarea id="newannounce" class="form-control" style="min-width: 98%"></textarea>
+			</div>
+			<br>
+		  </div>
+		  <div class="modal-footer bg-default">
+			<button type="button" class="btn btn-sm mw-md btn-success" onclick="saveannouncement();" >Save</button>
+			<button type="button" class="btn btn-sm mw-md btn-danger" data-dismiss="modal">Cancel</button>
+		  </div>
+    </div>
+  </div>
+</div>
 
 	
 	<!-- build:js ../assets/js/core.min.js -->
@@ -315,11 +356,80 @@
 				format: 'YYYY-M-D'
 			});
 			$('.selectpicker').selectpicker();
-			
+			getannouncement();
 		});
 		
+		
+		function getannouncement(){
+			$.get("<?php echo base_url("process/getannouncement"); ?>") 
+			.success(function(data) {
+				if(data.length > 2){
+					var j = JSON.parse(data);
+					$("#announce_msg").html(j[0]['message']);
+					$("#announce_own").html('Posted By : ' + j[0]['created_by']);
+					//$("#announce_date").html([ timeSince(j[0]['created_date']) ]);
+				}
+			});
+		}
+		
+		function newannouncement(){
+			$('#newannounce').val();
+			$('#newannouncementmodal').modal();
+		}
+		
+		function saveannouncement(){
+			if($('#newannounce').val() == ""){
+				swal({
+				  type: 'info',
+				  title: 'validation',
+				  text: 'Please enter Details!',
+				  footer: '<a href> - </a>'
+				});
+				return false;
+			}
+			
+			$.post("<?php echo base_url("process/savenewannouncement"); ?>",
+			{message: $('#newannounce').val()}) 
+			.success(function(data) {
+					swal({
+					  type: 'success',
+					  title: 'Update',
+					  text: 'You have posted a new announcement!',
+					  footer: '<a href>'+ data +'</a>'
+					});	
+				document.location.reload();
+			});
+		}
+		
+		function timeSince(date) {
+
+		  var seconds = Math.floor((new Date() - date) / 1000);
+		  var interval = Math.floor(seconds / 31536000);
+		  if (interval > 1) {
+			return interval + " years";
+		  }
+		  interval = Math.floor(seconds / 2592000);
+		  if (interval > 1) {
+			return interval + " months";
+		  }
+		  interval = Math.floor(seconds / 86400);
+		  if (interval > 1) {
+			return interval + " days";
+		  }
+		  interval = Math.floor(seconds / 3600);
+		  if (interval > 1) {
+			return interval + " hours";
+		  }
+		  interval = Math.floor(seconds / 60);
+		  if (interval > 1) {
+			return interval + " minutes";
+		  }
+		  return Math.floor(seconds) + " seconds";
+		}
+		
 	</script>
-		<!-- build:js ../assets/js/app.min.js -->
+	
+	<!-- build:js ../assets/js/app.min.js -->
 
 	
 </body>

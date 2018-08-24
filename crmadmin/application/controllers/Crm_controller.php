@@ -401,6 +401,8 @@ class Crm_controller extends CI_Controller{
 		}
 	}
 	
+	
+	
 	public function amilog(){
 		if($this->session->userdata('crmuser') == ""){
 			return "OUT";

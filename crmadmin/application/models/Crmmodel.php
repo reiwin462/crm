@@ -159,6 +159,16 @@ class Crmmodel extends CI_Model {
 		}
 	}
 	
+	public function saveAnnouncement($annoucearray){
+		$query = $this->db->insert('crm_announcement', $annoucearray);
+		return $this->db->insert_id();
+	}
+	
+	public function retrieveannoucement(){
+		$query = $this->db->query('SELECT * FROM crm_announcement order by id desc limit 1');
+		return $query->result_array();
+	}
+	
 	
 	
 	
