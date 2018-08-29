@@ -107,12 +107,19 @@ class Crm_controller extends CI_Controller{
 				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'crm_leads', 'yes','leadform');
 				$cols  = $this->Leadmodel->getleadcol();
 				
-				$structuretask = $this->Crmmodel->gettablestructure('crm_task');
-				$data['formtask'] = $this->Formbuildermodel->createdynamicform($structuretask, '3', 'crm_task', 'no','taskform');
-				
 				$colhtm = '';
 				$rowthm = '';
 				
+				$colhtm = "";
+				$colhtm .= '<th>Owner</th>';
+				$colhtm .= '<th>First Name</th>';
+				$colhtm .= '<th>Last Name</th>';
+				$colhtm .= '<th>Title</th>';
+				$colhtm .= '<th>Phone</th>';
+				$colhtm .= '<th>Status</th>';
+				$colhtm .= '<th>State</th>';
+				$colhtm .= '<th style="width: 100px;">Action</th>';
+				/*
 				foreach( $cols[1] as $key=>$value){
 					if($key == "action"){
 						$colhtm .= '<th id="'.$key.'">'.$key.'</th>';
@@ -120,6 +127,7 @@ class Crm_controller extends CI_Controller{
 						$colhtm .= '<th id="'.$key.'">'.$key.'</th>';
 					}
 				}
+				*/
 				
 				$data['columns']  = $colhtm;
 				$data['leadstat'] =  $this->Leadmodel->getleadstatus();
@@ -279,6 +287,10 @@ class Crm_controller extends CI_Controller{
 				$rfistruc = $this->Crmmodel->gettablestructure('project_rfi');
 				$data['formrfi'] = $this->Formbuildermodel->createdynamicform($rfistruc, '3', '', 'yes','projrfi');
 				
+				
+				$calllog = $this->Crmmodel->gettablestructure('project_call_logs');
+				$data['calllogform'] = $this->Formbuildermodel->createdynamicform($calllog, '4', '', 'yes','projcalllog');
+				
 				$colhtm = "";
 				$colhtm .= "<th>Need Help</th>";
 				$colhtm .= "<th>Project No</th>";
@@ -310,6 +322,11 @@ class Crm_controller extends CI_Controller{
 				$data['url'] = "projectleads/previewprojleads";
 				$this->load->view("main",$data);
 				
+			}
+			elseif($str == "leadprojpreview"){
+				
+				$data['url'] = "projectleads/leadpreview";
+				$this->load->view("main",$data);
 			}
 			
 			elseif($str == "futureleads"){

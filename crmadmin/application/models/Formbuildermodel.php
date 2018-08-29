@@ -118,6 +118,15 @@ class Formbuildermodel extends CI_Model {
 								</div>
 							 </div>';
 				break;
+			
+			case "DATETIME":
+					$htm .= '<div class="form-group">
+								<div class="col-md-'.trim($colratio).' col-'.trim($colratio).'">
+									<label for="'.$fldname.'">'.ucwords($maskname).'&nbsp;'.$fldasterisk.'</label>
+									<input type="text" class="form-control dtime"  id="'.$fldname.'"  name="'.$fldname.'" ></input>
+								</div>
+							 </div>';
+				break;
 				
 			case "ENUM":
 					$opt = '';

@@ -2,13 +2,11 @@
 <div  class="widget" style="padding-bottom:10px;">
     <header class="widget-header info">
         <h4 class="widget-title"><span class="pull-left">Project Leads Details</span>
-		
-								<span class="pull-right">
-								
-										<small><i class="fa fa-circle-o sun" aria-hidden="true"></i> <span style="color:#fff !important;">Waiting for RFI</span> &nbsp;</small>
-										<small><i class="fa fa-circle-o hot" aria-hidden="true"></i> <span style="color:#fff !important;">Incomplete</span> &nbsp;</small>
-										<small><i class="fa fa-circle-o success" aria-hidden="true"></i> <span style="color:#fff !important;">Success</span></small>
-								</span>
+			<span class="pull-right">
+				<small><i class="fa fa-circle-o sun" aria-hidden="true"></i> <span style="color:#fff !important;">Waiting for RFI</span> &nbsp;</small>
+				<small><i class="fa fa-circle-o hot" aria-hidden="true"></i> <span style="color:#fff !important;">Incomplete</span> &nbsp;</small>
+				<small><i class="fa fa-circle-o success" aria-hidden="true"></i> <span style="color:#fff !important;">Success</span></small>
+			</span>
 		</h4>
     </header>
     <!-- Adjusted Removed 08202018
@@ -16,10 +14,14 @@
 		<div class="widget-body">-->
 			<div id="prlupdate"  class="nav-tabs-horizontal white m-b-lg">
 					<ul class="nav nav-tabs" role="tablist">
-						<div class="text-right" style="z-index: -1"><i class="fa fa-close" ></i>&nbsp;<a href='#' onclick="cancelupdate();">Close &nbsp;</a></div>
+						<div class="text-right" style="z-index: -1; margin-top: 10px;"><i class="fa fa-close" ></i>&nbsp;<a href='#' onclick="cancelupdate();">Close &nbsp;</a></div>
 						<li role="presentation" >
 							<a href="#addleadtab" id="leaddetailtab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
 							<i class="fa fa-plus-circle" aria-hidden="true"></i> Project Leads Details</a>
+						</li>
+						<li role="presentation" >
+							<a href="#calllogtab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="getcalllogs();">
+							<i class="fa fa-plus-circle" aria-hidden="true"></i> Call Logs Tab</a>
 						</li>
 					</ul>
 					
@@ -206,7 +208,14 @@
 						</div>
 						
 						</div>
-						
+						<div role="tabpanel" class="tab-pane" id="calllogtab">
+							<span class="pull-right">
+								<button type="button" onclick="newcalllog($('#leadid').val());" class="btn btn-sm btn-primary"><i class="fa fa-microphone" aria-hidden="true"></i> New Call Log Entry</button>
+							</span>
+							<div id="divcalllogs">
+								 
+							</div>
+						</div>
 					</div>
 			</div>
 		
@@ -232,7 +241,6 @@
 				</div>
 				<div class="tab-content" id="showleadall">
 					<div role="tabpanel" class="tab-pane fade active in" id="leadall">
-
 						<div id="leadsel" class="row">
 							<!--<div class="col-md-12">-->
 								<label class="col-md-1" style="padding-top:5px;">Status:</label>
@@ -263,31 +271,35 @@
 					</div>
 					<div role="tabpanel" class="tab-pane" id="clientwon">
 						<small>Client Won Leads List</small>
-						<table id="won-datatable" class="table table-striped" cellspacing="0" width="100%" style="font-size:11px !important;">
-							<thead>
-								<tr>
-									<?php 
-										echo $columns;
-									?>
-								</tr>
-							</thead>
-							<tbody id="wonleadsbody">
-							</tbody>
-						</table>
+						<div class="table-responsive">
+							<table id="won-datatable" class="table table-striped" cellspacing="0" width="100%" >
+								<thead>
+									<tr>
+										<?php 
+											echo $columns;
+										?>
+									</tr>
+								</thead>
+								<tbody id="wonleadsbody">
+								</tbody>
+							</table>
+						</div>
 					</div>
 					<div role="tabpanel" class="tab-pane" id="leaddead">
 						<small>Dead Leads List</small>
-						<table id="dead-datatable" class="table table-striped" cellspacing="0" width="100%" style="font-size:11px !important;">
-							<thead>
-								<tr>
-									<?php 
-										echo $columns;
-									?>
-								</tr>
-							</thead>
-							<tbody id="deadleadsbody">
-							</tbody>
-						</table>
+						<div class="table-responsive">
+							<table id="dead-datatable" class="table table-striped" cellspacing="0" width="100%" >
+								<thead>
+									<tr>
+										<?php 
+											echo $columns;
+										?>
+									</tr>
+								</thead>
+								<tbody id="deadleadsbody">
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -353,6 +365,30 @@
   </div>
 </div>
 
+<div id="calllogmodal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="padding-top:10px;">
+  <div class="modal-dialog modal-lg" >
+    <div class="modal-content" style="width:90%;">
+		  <div class="modal-header bg-primary">
+			<h5 class="modal-title" ><i class="fa fa-bullhorn" aria-hidden="true"></i> New Call Log
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			</h5>
+		  </div>
+		  <div class="modal-body">
+				<input type="hidden" name="projcallleadid" id="projcallleadid" ></input>
+				<?php 
+					echo $calllogform;
+				?>
+		  </div>
+		  <div class="modal-footer bg-info">
+			<button type="button" class="btn btn-sm mw-md btn-success" onclick="savecalldispo();" >Save</button>
+			<button type="button" class="btn btn-sm mw-md btn-danger" data-dismiss="modal">Cancel</button>
+		  </div>
+    </div>
+  </div>
+</div>
+
 <div id="imgmodal" class="modal fade" role="dialog">
   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
@@ -381,6 +417,19 @@ document.addEventListener("DOMContentLoaded", function() {
 	
 	$('#project_scope, #specification').summernote({
 		height: 80,
+		 toolbar: [
+		// [groupName, [list of button]]
+		['style', ['bold', 'italic', 'underline', 'clear']],
+		['font', ['strikethrough', 'superscript', 'subscript']],
+		['fontsize', ['fontsize']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['height', ['height']]
+		],
+	});
+	
+	$('#callnotes').summernote({
+		height: 150,
 		 toolbar: [
 		// [groupName, [list of button]]
 		['style', ['bold', 'italic', 'underline', 'clear']],
@@ -618,7 +667,11 @@ function projleadupdate(bt){
 	$('#prlupdate').toggle();
 	$('#dtbl').toggle();
 	window.scrollTo(0, 0);
+	$('#leaddetailtab').trigger('click');
+	$('#leaddetailtab').trigger('click');
 	$('#leadplantab').trigger('click');
+	
+	
 }
 
 function cancelupdate(){
@@ -755,6 +808,7 @@ function proj_reset(){
 	$('#bidder').html('');
 	$('#doclist').html('');
 	
+	$('#leaddetailtab').trigger('click');
 	$('#leaddetailtab').trigger('click');
 	$('#leadspec').trigger('click');
 }
@@ -1193,6 +1247,86 @@ function helpme(){
 			
 		  }
 		});
+}
+
+function newcalllog(pid){
+	$('#calllogmodal').modal();
+	$('#projcallleadid').val(pid);
+	$('#callnotes').summernote('code', '');
+	 $('#disposition').val('');
+	 $('#callback_date').val('');
+}
+
+function savecalldispo(){
+	var id = $('#projcallleadid').val();
+	var notes = $('#callnotes').summernote('code');
+	var dispo = $('#disposition').val();
+	var callback = $('#callback_date').val();
+	
+	if(notes == "" || notes == "<p><br></p>" || dispo == "" || dispo == null || id == ""){
+		swal({
+				type: 'info',
+				title: 'Disposistion Validation',
+				text: 'Some Fields Missing! Kindly fillup the form Properly!',
+				footer: '<a href></a>'
+			});
+		return false;
+	}
+	
+	if(dispo == "Callback" && callback == ""){
+		swal({
+				type: 'info',
+				title: 'Callback Date',
+				text: 'Please specify callback date!',
+				footer: '<a href></a>'
+			});
+		return false;
+	}
+	
+	Swal({
+		  title: 'Are you sure?',
+		  text: 'Lead Status will be Updated!',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, Tag it!',
+		  cancelButtonText: 'No, keep it'
+		}).then((result) => {
+			$('#calllogmodal').modal('hide');	
+		  if (result.value) {
+			  $('#calllogmodal').modal('hide');
+			  $('#prevDiv').hide();
+			  $('.preloader').fadeIn();	
+				var xlink = "<?php echo base_url(); ?>Projectleadcontrol/newcalllogs";
+				$.post(xlink,{data: {dispoid:id, disponotes:notes, disposition:dispo, dispocallback:callback}}) 
+				.success(function(data) {
+						getcalllogs();
+						datatablereload();
+						swal({
+							  type: 'success',
+							  title: 'Update',
+							  text: 'You have successfully updated an item. Thank you!',
+							  footer: '<a href>'+ data +'</a>'
+							});
+						$('.preloader').fadeOut();
+						$('#prevDiv').show();		
+				});
+				
+		  } else if (result.dismiss === Swal.DismissReason.cancel) {
+			
+		  }
+		});
+}
+
+function getcalllogs(){
+	var idfld = $('#leadid').val();
+	if(idfld == ""){
+		return false;
+	}
+	$('#divcalllogs').html('');
+	var xlink = "<?php echo base_url(); ?>projectleadcontrol/callhistory/" + idfld;
+	$.get(xlink, function(data, status){
+        $('#divcalllogs').html(data);
+    });
 }
 
 </script>

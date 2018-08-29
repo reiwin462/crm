@@ -190,8 +190,59 @@ class Projectleadmodel extends CI_Model{
 		return ($this->db->affected_rows() != 1) ? false : true;
 	}
 	
+	
+	public function getEngineerlist($daterange){
+		$query = $this->db->query('SELECT created_by, a.fullname FROM  project_leads AS prj LEFT JOIN `auth_accounts` AS a ON prj.created_by = a.username
+		WHERE prj.bid_date BETWEEN '. $daterange . " group by created_by");
+		return $query->result_array();
+	}
+	
+	public function getengineercountperstat($uname, $daterange){
+		$query = $this->db->query("SELECT lead_status, COUNT(lead_status)AS cnt FROM project_leads WHERE created_by = '".trim($uname)."' 
+		AND bid_date BETWEEN ".$daterange." GROUP BY lead_status");
+		return $query->result_array();
+	}
+	
+	public function getincompleteplansanddocu($uname, $daterange){
+		$query = $this->db->query("SELECT id, IFNULL((SELECT project_id FROM tblplan WHERE project_id =a.id ORDER BY id DESC LIMIT 1),0) AS plan,
+			 IFNULL((SELECT project_id FROM tbldocuments WHERE project_id =a.id ORDER BY id DESC LIMIT 1),0) AS documents
+			FROM project_leads AS a  WHERE bid_date between ".$daterange." 
+			AND created_by = '".trim($uname)."'");
+		return $query->result_array();
+	}
+	
+	public function gethotleads(){
+		$query = $this->db->query("SELECT project_no, lead_status, sales_representative, project_name, bid_value, created_by, id FROM project_leads WHERE bid_date =  CURDATE()");
+		return $query->result_array();
+	}
+	
+	public function getcallhistory($id){
+		$query = $this->db->query('select * from project_call_logs where project_id = '.trim($id). ' order by id desc');
+		return $query->result_array();
+	}
+	
+	public function myprojectleadcallback($id){
+		$query = $this->db->query("SELECT b.project_id, a.project_no, a.project_name, b.callback_date FROM project_call_logs AS b LEFT JOIN
+					`project_leads` AS a ON b.project_id = a.id WHERE disposition = 'Callback' AND callback_notify='NO' AND DATE(callback_date) <= CURDATE() and b.created_by = '".trim($id)."'");
+		return $query->result_array();
+	}
+	
+	public function acknowledgecallback($id){
+		$this->db->query("update project_call_logs set callback_notify='YES', acknowledge_date='".date('Y-m-d H:i:s')."' where callback_notify='NO' and DATE(callback_date) <= CURDATE() and created_by = '".trim($id)."'");
+		return $this->db->affected_rows();
+	}
+	
+	public function topweekestimator($daterange){
+		$query = $this->db->query("SELECT sales_representative, COUNT(sales_representative) AS workcount  FROM  `project_leads` WHERE 
+			lead_status <> 'DEAD' AND  bid_date BETWEEN ".$daterange." GROUP BY sales_representative");
+		return $query->result();
+	}
+	
+	public function topweekwork($daterange){
+		$query = $this->db->query("SELECT type_of_work, COUNT(type_of_work) AS workcount  FROM  `project_leads` WHERE 
+			lead_status <> 'DEAD' AND  bid_date BETWEEN ".$daterange." GROUP BY type_of_work");
+		return $query->result();
+	}
 
-	
-	
 	
 }

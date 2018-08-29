@@ -48,9 +48,17 @@
                                     <a href="#leaddetail" id="leaddetailtab" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true">
                                         <i class="fa fa-plus-circle" aria-hidden="true"></i> Project Leads Details</a>
                                 </li>
+								<li role="presentation">
+                                    <a href="#callnotes" aria-controls="leadtab" role="tab" data-toggle="tab" aria-expanded="true" onclick="">
+                                       <i class="fa fa-plus-circle" aria-hidden="true"></i> Call Log Details</a>
+                                </li>
                             </ul>
                             <div class="tab-content" id="leadtab">
-							
+								<div role="tabpanel" class="tab-pane" id="callnotes">
+									<div id="divcalllogs">
+										 
+									</div>
+								</div>
 							   <div role="tabpanel" class="tab-pane fade active in" id="leaddetail">
                                   <div id="previewpane" class="widget-body">
 									<div class="row">
@@ -220,7 +228,13 @@
                            
 						   </div>
                         </div>
+						
+					
+					
                     </div>
+					
+					
+					
 					<!--
                     <div  class="col-md-4">
 						<div class="widget">
@@ -262,7 +276,7 @@
                                         <?php //endif?>
                             </div>
                         </div> -->
-                    </div>-->
+                    </div>
                 </div>
             </section>
         </div>
@@ -292,6 +306,7 @@
                 $('.preloader').hide();
 				
 				var id = <?php echo $this->input->get('projectid'); ?>;
+				$('#divcalllogs').load('<?php echo base_url(); ?>/projectleadcontrol/callhistory/' + id);
 				$('#engineers').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_engineers/' + id);
 				$('#bidders').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_bidders/' + id);
 				$('#planholder').load('<?php echo base_url(); ?>/projectleadpreview/showhtmltable/project_planholders/' + id);
@@ -313,5 +328,6 @@
 				$('#imgcaption').attr('src', img.val());
 				$('#imgmodal').modal();
 			}
+			
 		</script>
 </html>

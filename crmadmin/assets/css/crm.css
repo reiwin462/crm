@@ -52,15 +52,29 @@ body{font-family: "Century Gothic";}
 
 #leadsel{height: 1px; padding: 2px;}
 #responsive-datatable{font-size:12px; padding:10px; margin: 0 auto;}
-
 #responsive-datatable .btn{font-size:12px; padding: 2px; height:30px; border: 1px solid #e2e2e2;}
 #responsive-datatable.thead th{padding: 2px; text-align: center;  font-size:11px !important;  width: 80px;}
-
 #responsive-datatable.tbody tr{font-size:12px; padding:10px; height: 20px !important; }
 #responsive-datatable.tbody td{padding: 2px; text-align: left; font-size:11px; text-overflow: hidden; height: 10px; width: 80px !important;}
 #responsive-datatable tr{padding: 2px; text-align: left; font-size:11px; text-overflow: hidden; height: 20px !important; text-overflow:ellipsis; }
-#responsive-datatable_wrapper td{height: 20px !important; padding: 0px; word-wrap: break-word; text-overflow: ellipsis;}
 
+
+#won-datatable{font-size:12px; padding:10px; margin: 0 auto;}
+#won-datatable .btn{font-size:12px; padding: 2px; height:30px; border: 1px solid #e2e2e2;}
+#won-datatable.thead th{padding: 2px; text-align: center;  font-size:11px !important;  width: 80px;}
+#won-datatable.tbody tr{font-size:12px; padding:10px; height: 20px !important; }
+#won-datatable.tbody td{padding: 2px; text-align: left; font-size:11px; text-overflow: hidden; height: 10px; width: 80px !important;}
+#won-datatable tr{padding: 2px; text-align: left; font-size:11px; text-overflow: hidden; height: 20px !important; text-overflow:ellipsis; }
+
+#dead-datatable{font-size:12px; padding:10px; margin: 0 auto;}
+#dead-datatable .btn{font-size:12px; padding: 2px; height:30px; border: 1px solid #e2e2e2;}
+#dead-datatable.thead th{padding: 2px; text-align: center;  font-size:11px !important;  width: 80px;}
+#dead-datatable.tbody tr{font-size:12px; padding:10px; height: 20px !important; }
+#dead-datatable.tbody td{padding: 2px; text-align: left; font-size:11px; text-overflow: hidden; height: 10px; width: 80px !important;}
+#dead-datatable tr{padding: 2px; text-align: left; font-size:11px; text-overflow: hidden; height: 20px !important; text-overflow:ellipsis; }
+
+
+#responsive-datatable_wrapper td{height: 20px !important; padding: 0px; word-wrap: break-word; text-overflow: ellipsis;}
 #responsive-datatable_filter{float: right !important; margin-bottom: 5px; margin-left: 10px; font-size: 12px;}
 #responsive-datatable_length {float:left; padding:2px; width:50px !important; margin-top: -10px; }
 #responsive-datatable_length label{float:left; margin-left:5px; }
@@ -158,3 +172,10 @@ body{font-family: "Century Gothic";}
 .nav-tabs-horizontal .nav-tabs > li > a, .nav-tabs > li > a { padding:10px !important; }
 select.form-control { height:28px !important; }
 #won-datatable .btn, #dead-datatable .btn { padding:5px !important;height:28px; }
+
+#engineerperfmon{}
+#engineerperfmon thead tr{padding: 10px !important; text-align: center; border-bottom: 2px solid #e2e2e2; margin-bottom:20px;}
+#engineerperfmon tbody tr:nth-child(even) {background-color: #f2f2f2; }
+#engineerperfmon tbody td{padding: 3px; border-bottom: 1px dotted #e2e2e2;}
+
+.callabacknotif{border: 1px solid #e2e2e2; padding: 10px; background-color:red; width: 520px !important; top: 50px !important; margin-top: 20px; !important;}

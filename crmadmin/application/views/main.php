@@ -172,6 +172,7 @@
             <i class="menu-caret zmdi zmdi-hc-sm zmdi-chevron-right"></i>
           </a>
           <ul class="submenu">
+			<li><a href="<?php echo base_url(); ?>crm/leadprojpreview"><span class="menu-text">Bid Queue</span></a></li>
 			<li><a href="<?php echo base_url(); ?>crm/createprojleads"><span class="menu-text">Add A Lead</span></a></li>
 			<li><a href="<?php echo base_url(); ?>crm/previewprojleads"><span class="menu-text">Preview Leads</span></a></li>
 			<li><a href="<?php echo base_url(); ?>crm/futureleads"><span class="menu-text">Future Leads</span></a></li>
@@ -292,6 +293,31 @@
   </div>
 </div>
 
+
+<div id="callbackmodal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="padding-top:10px;">
+  <div class="modal-dialog modal-lg" >
+    <div class="modal-content" style="width:90%;">
+		  <div class="modal-header bg-primary">
+			<h4 class="modal-title" ><i class="fa fa-bullhorn" aria-hidden="true"></i> Callback Reminder
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			</h4>
+		  </div>
+		  <div class="modal-body">
+			<div class="row" style="padding:10px !important;margin-bottom:0 !important; overflow-y: scroll;">
+				<div id="cbday"class="col-md-12">
+				</div>
+			</div>
+			<br>
+		  </div>
+		  <div class="modal-footer bg-info">
+			<button type="button" class="btn btn-sm mw-md btn-success" onclick="acknowledge();" ><i class="fa fa-toggle-on" aria-hidden="true"></i> Acknowledge</button>
+			<button type="button" class="btn btn-sm mw-md btn-danger" data-dismiss="modal"><i class="fa fa-close" aria-hidden="true"></i> Cancel</button>
+		  </div>
+    </div>
+  </div>
+</div>
 	
 	<!-- build:js ../assets/js/core.min.js -->
 	<script src="<?php echo base_url(); ?>libs/bower/jquery/dist/jquery.js"></script>
@@ -355,8 +381,13 @@
 			$('.dtp').datetimepicker({
 				format: 'YYYY-M-D'
 			});
+			$('.dtime').datetimepicker({
+				format: 'YYYY-M-D HH:mm:ss'
+			});
+			
 			$('.selectpicker').selectpicker();
 			getannouncement();
+			getcallbacks();
 		});
 		
 		
@@ -427,10 +458,33 @@
 		  return Math.floor(seconds) + " seconds";
 		}
 		
+		function getcallbacks(){
+			$('#cbday').html();
+			$.get("<?php echo base_url("projectleadcontrol/getmycallback"); ?>") 
+			.success(function(data) {
+				if(data != ""){
+					$('#cbday').html(data);
+					$('#callbackmodal').modal();
+				}
+			});
+		}
+		
+		function acknowledge(){
+			$.get("<?php echo base_url("projectleadcontrol/removecallbacks"); ?>") 
+			.success(function(data) {
+				swal({
+					  type: 'info',
+					  title: 'Callback Process',
+					  text: 'Callback Acknowledgement has been Sent',
+					  footer: '<a href>'+ data +'</a>'
+				}); 
+			});
+			$('#callbackmodal').modal('hide');
+		}
+		
 	</script>
 	
 	<!-- build:js ../assets/js/app.min.js -->
-
 	
 </body>
 </html>

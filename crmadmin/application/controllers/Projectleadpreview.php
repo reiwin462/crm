@@ -60,7 +60,7 @@ class Projectleadpreview extends CI_Controller{
 					$img = substr(trim($val['filename_type']), 0, 5);
 					if($img == "image"){
 						$planhtm .= "<div class='col-md-3 col-lg-3'>";
-						$planhtm .= "<img src='https://storage.googleapis.com/steve-unified/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";
+						$planhtm .= "<img src='https://storage.googleapis.com/steve-db-storage/".$val['filename_path']."' width='100px' height='100px' onclick='showme($(this));'>";
 						$planhtm .= "<span class='caption'> ".$val['filename']." </span>";
 						$planhtm .= "<br>";
 						$planhtm .= "<small> ".$val['detail']." </small>";
@@ -69,7 +69,7 @@ class Projectleadpreview extends CI_Controller{
 						$link = base_url()."/assets/images/pdf.png";
 						$planhtm .= '<i class="fa fa-file-alt"></i>'; 
 						$planhtm .= "<div align='center' class='col-md-3 col-lg-3'>";
-						$planhtm .= "<a href='https://storage.googleapis.com/steve-unified/".$val['filename_path']."'' target='_blank'><img class='fancy' src='$link' width='100px' height='100px'></a>";
+						$planhtm .= "<a href='https://storage.googleapis.com/steve-db-storage/".$val['filename_path']."'' target='_blank'><img class='fancy' src='$link' width='100px' height='100px'></a>";
 						$planhtm .= "<div align='center' class='caption'> ".$val['filename']." </div>";
 						$planhtm .= "<br>";
 						$planhtm .= "<small> ".$val['detail']." </small>";

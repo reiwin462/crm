@@ -4,7 +4,7 @@ use Google\Cloud\Storage\StorageClient;
 require_once(APPPATH.'third_party/sendgrid/SendGrid_loader.php');
 
 class Projectleadcontrol extends CI_Controller{
-
+	
 	public function index(){
 		
 	}
@@ -136,7 +136,11 @@ class Projectleadcontrol extends CI_Controller{
 								</button>
 								 <a href='". $lk ."' class='btn btn-danger' target='_blank'>
 									<i class='fa fa-eye' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Preview 2'></i>
-								</a>";
+								</a>
+								<button class='btn btn-info' onclick=\"newcalllog('".$id."')\" >
+									<i class='fa fa-phone' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Call Logs'></i>
+								</button>
+								";
 				if($val['link'] <> ""){
 							if (strrpos($val['link'], "http") === false) { 
 								$tdval .= " <a href='".'http://'.$val['link']."' class='btn btn-success' target='_blank'>
@@ -810,6 +814,264 @@ class Projectleadcontrol extends CI_Controller{
 	}
 	
 	
+	public function getengineerweek(){
+		$this->load->model('Projectleadmodel');
+		
+		$htm = "";
+		$wk = $this->getweek();
+		$engineer = $this->Projectleadmodel->getEngineerlist($wk);			
+		if(count($engineer) > 0){			
+			foreach($engineer as $key=>$val){				
+				$won =0;
+				$sql =0;
+				$mql =0;
+				$sdl =0;
+				$sql =0;
+				$nql =0;
+				$dead =0;
+				
+				$leadstat = $this->Projectleadmodel->getengineercountperstat($val["created_by"],$wk);
+				foreach($leadstat as $key2=>$val2){
+					switch ($val2["lead_status"]){
+						case "WON":
+							$won = $val2["cnt"];
+						break;
+						case "MQL":
+							$mql = $val2["cnt"];
+						break;
+						case "SDL":
+							$sdl = $val2["cnt"];
+						break;
+						case "SQL":
+							$sql = $val2["cnt"];
+						break;
+						case "NQL":
+							$nql = $val2["cnt"];
+						break;
+						case "DEAD":
+							$dead = $val2["cnt"];
+						break;
+					}
+				}
+				
+				$htm .= "<tr>";
+				$htm .= "<td>".$val["fullname"]."</td>";
+				$htm .= "<td>".$won."</td>";
+				$htm .= "<td>".$sql."</td>";
+				$htm .= "<td>".$mql."</td>";
+				$htm .= "<td>".$sdl."</td>";
+				$htm .= "<td>".$nql."</td>";
+				$htm .= "<td>".$dead."</td>";
+				$inc = $this->Projectleadmodel->getincompleteplansanddocu($val["created_by"],$wk);
+				$incCount = 0;
+				foreach($inc as $key=>$val){
+					if($val['plan'] == "0" || $val['documents'] == "0"){
+						$incCount++;
+					}
+				}
+				
+				$htm .= "<td>".$incCount."</td>";
+				$htm .= "</tr>";
+			
+			}
+		}else{
+			$htm .= "<tr>";
+			$htm .= "<td>No Data Available</td>";
+			$htm .= "<td>No Data Available</td>";
+			$htm .= "<td>No Data Available</td>";
+			$htm .= "<td>No Data Available</td>";
+			$htm .= "<td>No Data Available</td>";
+			$htm .= "<td>No Data Available</td>";
+			$htm .= "<td>No Data Available</td>";
+			$htm .= "<td>No Data Available</td>";
+			$htm .= "</tr>";
+			
+		}
+		
+		echo $htm;
+	}
+	
+	public function hotleads(){
+		$htm = "";
+		$this->load->model('Projectleadmodel');
+		$hotleads = $this->Projectleadmodel->gethotleads();
+		if(count($hotleads) > 0){
+			foreach($hotleads as $key=>$val){
+				$htm .= "<tr class='hot'>";
+				$htm .= "<td>".$val["project_no"]."</td>";
+				$htm .= "<td>".$val["lead_status"]."</td>";
+				$htm .= "<td>".$val["sales_representative"]."</td>";
+				$htm .= "<td>".$val["project_name"]."</td>";
+				$htm .= "<td>".$val["bid_value"]."</td>";
+				$htm .= "<td>".$val["created_by"]."</td>";
+				$htm .= "<td><a href=".base_url()."projectleadpreview?projectid=".$val["id"]." target='_blank' class='btn btn-sm btn-primary'><i class='fa fa-tv'></i> Preview</a></td>";
+				$htm .= "</tr>";
+			}
+		}else{
+			$htm = "<tr><td colspan=8></td></tr>";
+			$htm .= "<tr><td colspan=8 class='text-center'>No Schedule Bidding for Today ". Date('l jS \of F Y') ."</td></tr>";
+		}
+		echo $htm;
+	}
+	
+	
+	public function newcalllogs(){
+		$this->load->model('Projectleadmodel');
+		$calllogarray = array('');
+		
+		$calllogarray = array('project_id' => $this->input->post('data[dispoid]'),
+			'callnotes' => $this->input->post('data[disponotes]'),
+			'disposition' => $this->input->post('data[disposition]'),
+			'callback_date' => $this->input->post('data[dispocallback]'),
+			'created_by' => $this->session->userdata('crmuser'),
+			'created_date' => date('Y-m-d H:i:s'),
+		);
+		$isinsert = $this->Projectleadmodel->inserttotable('project_call_logs', $calllogarray);
+		if($isinsert > 0){
+			echo "success";
+		}else{
+			echo "failed";
+		}
+		
+	}
+	
+	public function callhistory($id){
+		$this->load->model('Projectleadmodel');
+		$callhistory = $this->Projectleadmodel->getcallhistory(trim(urldecode($id)));
+		$htm = "";
+		
+		if($callhistory > 0){
+			$htm .= '<div class="row">
+					<div style="margin-left: 20px;">
+					  <h5> <i class="fa fa-phone-square" aria-hidden="true"></i>&nbsp; Call Logs Here! </h5>
+					</div>
+				  </div>';
+			
+			$hist = "";
+			$img = "";
+			
+			foreach($callhistory as $key=>$val){
+				$dispo = $val['disposition'];
+				if($dispo == "UnContacted"){
+					$img ='<img src="'.base_url().'/assets/images/missed-call.png" width="30px" height="30px"></img>';
+				}elseif($dispo == "Contacted"){
+					$img ='<img src="'.base_url().'/assets/images/phone-receiver.png" width="30px" height="30px"></img>';
+				}elseif($dispo == "Callback"){
+					$img ='<img src="'.base_url().'/assets/images/phone-call.png" width="30px" height="30px"></img>';
+				}else{
+					$img ='<img src="'.base_url().'/assets/images/phone.png" width="30px" height="30px"></img>';
+				}
+				
+				$agent = $val['created_by'];
+				$notes = $val['callnotes'];
+				$cb = $val['callback_date'];
+				$dt = $val['created_date'];
+				
+				$hist .= '<div class="media">
+							<div class="media-left">
+								<div class="avatar avatar-sm avatar-circle" alt="'.$dispo.'">
+									'.$img.'
+								</div>
+							</div>
+								<div class="media-body">
+									<h5><a href="javascript:void(0)" class="text-color">'.$notes.'</a></h5>
+									<small class="text-muted">Posted By: '.$agent.'</small>
+										&nbsp;
+									<small class="text-muted">'.$this->timeAgo($dt).'</small>
+								</div>
+						</div>';
+			}
+				  
+			$htm  = $htm . $hist;
+		}else{
+			$htm = '<div class="media">
+							<div class="media-left">
+								<div class="avatar avatar-sm avatar-circle" >
+									<i class="fa fa-phone-square" aria-hidden="true"></i>
+								</div>
+							</div>
+								<div class="media-body">
+									<h5><a href="javascript:void(0)" class="text-color">No Call Logs Submmited for this Lead</a></h5>
+								</div>
+						</div>';
+		}
+		
+		echo $htm;
+	}
+	
+	
+	public function getmycallback(){
+		$htm = "";
+		$this->load->model('Projectleadmodel');
+		$callback = $this->Projectleadmodel->myprojectleadcallback($this->session->userdata('crmuser'));
+		if(count($callback) > 0){
+			$htm .= '<img src="'.base_url().'/assets/images/info.png" width="40px" height="40px"> Hello '.$this->session->userdata('crmuser').'</img><br>';
+			$htm .= '<h5 class="page-title">Please Take Note of Your Scheduled Callbacks</h5>';
+			$i =1;
+			$htm .= '<div class="col-md-12">';
+				foreach($callback as $key=>$val){
+					$date_a = new DateTime($val['callback_date']);
+					$date_b = new DateTime(date('Y-m-d H:i:s'));
+					$interval = date_diff($date_a,$date_b);
+				
+					$htm .= '<p>'.$i.') '.$interval->format('%d day(s) %H:%i:%s') .'</p><br>&nbsp; 
+							<br><blockquote style="font-size: 12px;"><a href="'.base_url().'projectleadpreview?projectid='.$val['project_id'].'" target="_blank">'. $val['project_name']. '</a></blockquote>'."<br>";
+					$i++;
+				}
+			$htm .= '</div>';
+		}else{
+			$htm = "";
+		}
+		
+		echo $htm;
+	}
+	
+	public function removecallbacks(){
+		$this->load->model('Projectleadmodel');
+		$callback = $this->Projectleadmodel->acknowledgecallback($this->session->userdata('crmuser'));
+		if($callback > 0){
+			echo "success";
+		}else{
+			echo "unable to remove callback notification";
+		}
+	}
+	
+	public function getweekestimator(){
+		
+		$this->load->model('Projectleadmodel');
+		$wk = $this->getweek();
+		$workarray = array();
+		$work = $this->Projectleadmodel->topweekestimator($wk);
+		if(count($work) > 0){
+			foreach($work as $key=>$val){
+				$innerworkarray = array('');
+				$innerworkarray =  array('label' => $val->sales_representative,
+						'data'=> $val->workcount);
+				array_push($workarray, $innerworkarray);
+			}
+			echo json_encode($workarray);
+		}else{
+			echo json_encode('no data');
+		}
+	}
+	
+	public function getweekwork(){
+		$str = "";
+		$this->load->model('Projectleadmodel');
+		$wk = $this->getweek();
+		$workarray = array();
+		$work = $this->Projectleadmodel->topweekwork($wk);
+		$i =0;
+		if(count($work) > 0){
+			foreach($work as $key=>$val){
+				$str .= '["'.$val->type_of_work.'",'. intval($val->workcount).'],';
+			}
+			echo "[ ".rtrim($str, ",")." ]";
+		}else{
+			echo json_encode('no data');
+		}
+	}
+	
 	function sendemail($sbj, $to, $msg){
 		
 		try {
@@ -946,6 +1208,19 @@ class Projectleadcontrol extends CI_Controller{
     }
 }
 	
-	
+public function getweek(){
+
+	$first_day_of_the_week = 'Sunday';
+	$start_of_the_week     = strtotime("Last $first_day_of_the_week");
+		if ( strtolower(date('l')) === strtolower($first_day_of_the_week) )
+			{$start_of_the_week = strtotime('today'); }
+	$end_of_the_week = $start_of_the_week + (60 * 60 * 24 * 7) - 1;
+	$date_format =  'Y-m-d';
+		
+	$startwk = date($date_format, $start_of_the_week);
+	$endwk = date($date_format, $end_of_the_week);
+	$datarange = "'".$startwk ."'"." AND ". "'".$endwk."'";
+	return $datarange;
+}
 	
 }
