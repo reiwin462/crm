@@ -25,13 +25,10 @@
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.fancybox-1.3.4.css">
 
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>libs/bower/summernote/dist/summernote.css">
-	
 	<!-- endbuild -->
-	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/raleway.css">
-	
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/raleway.css">	
 	<script src="<?php echo base_url(); ?>libs/bower/breakpoints.js/dist/breakpoints.min.js"></script>
 	<!------ fancybox --->
-	
 	
 	<script>
 		Breakpoints();
@@ -176,6 +173,8 @@
 			<li><a href="<?php echo base_url(); ?>crm/createprojleads"><span class="menu-text">Add A Lead</span></a></li>
 			<li><a href="<?php echo base_url(); ?>crm/previewprojleads"><span class="menu-text">Preview Leads</span></a></li>
 			<li><a href="<?php echo base_url(); ?>crm/futureleads"><span class="menu-text">Future Leads</span></a></li>
+			<li><a href="<?php echo base_url(); ?>crm/email"><span class="menu-text">Send Mail</span></a></li>
+			<li><a href="<?php echo base_url(); ?>crm/emailblast"><span class="menu-text">Email Blast</span></a></li>
           </ul>
         </li>
 		
@@ -344,6 +343,9 @@
 	<script src="<?php echo base_url(); ?>libs/bower/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 	<link rel="stylesheet" href="<?php echo base_url(); ?>libs/bower/bootstrap-select/dist/css/bootstrap-select.min.css">
 	
+	<script src="<?php echo base_url(); ?>libs/bower/select2/dist/js/select2.full.js"></script>
+	<link rel="stylesheet" href="<?php echo base_url(); ?>libs/bower/select2/dist/css/select2.css">
+	
 	<!-- build:js ../assets/js/app.min.js -->
 	<script src="<?php echo base_url(); ?>assets/js/library.js"></script>
 	<script src="<?php echo base_url(); ?>/libs/bower/summernote/dist/summernote.min.js"></script>
@@ -351,7 +353,6 @@
 	<script src="<?php echo base_url(); ?>assets/js/plugins.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/app.js"></script>
 	<script src="<?php echo base_url(); ?>assets/js/sweetalert2.js"></script>
-	
 	
 	<!-- endbuild -->
 	<script src="<?php echo base_url(); ?>libs/bower/moment/moment.js"></script>
@@ -385,7 +386,11 @@
 				format: 'YYYY-M-D HH:mm:ss'
 			});
 			
-			$('.selectpicker').selectpicker();
+			$('.selectpicker').select2({
+				tags: "true",
+			    placeholder: "Select an item",
+			    allowClear: true
+			});
 			getannouncement();
 			getcallbacks();
 		});

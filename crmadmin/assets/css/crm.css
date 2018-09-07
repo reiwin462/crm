@@ -50,6 +50,8 @@ body{font-family: "Century Gothic";}
     }
 }
 
+.txtarea{margin-top: 10px;}
+
 #leadsel{height: 1px; padding: 2px;}
 #responsive-datatable{font-size:12px; padding:10px; margin: 0 auto;}
 #responsive-datatable .btn{font-size:12px; padding: 2px; height:30px; border: 1px solid #e2e2e2;}
@@ -179,3 +181,24 @@ select.form-control { height:28px !important; }
 #engineerperfmon tbody td{padding: 3px; border-bottom: 1px dotted #e2e2e2;}
 
 .callabacknotif{border: 1px solid #e2e2e2; padding: 10px; background-color:red; width: 520px !important; top: 50px !important; margin-top: 20px; !important;}
+.new-message .panel-body {
+  line-height: 1; 
+}
+
+.select2{width:99.6% !important; height:auto !important; padding: 3px; font-size: 12px;  border: 1px solid #e2e2e2; min-height: 25px !important; }
+.select2-selection .select2-selection__rendered{padding: 2px !important; height:auto !important; min-height: 25px !important;} 
+.select2-selection .select2-selection__choice {padding: 2px !important; 
+	height:auto !important; margin:0 autppx !important; border-radius:0px!important; min-height: 25px 
+	!important; text-align: center !important; vertical-align: middle !important; display: inline-block !important;
+	background-color:transparent !important; border:none !important; font-weight: bold !important;
+}
+
+.select2-container .select2-selection--multiple{padding: 2px !important;height:auto !important;  border-radius:0px!important;  border-color: #e2e2e2; min-height: 25px !important; }
+.select2-selection__choice__remove{color: red !important; pading: 2px !important;}
+
+.note-editor{border-radius:0px;}
+.note-toolbar{background-color: #0090bc !important;}
+.note-btn{border-radius:0px !important;}
+
+
+#receipient{border: 2px solid #e2e2e2; padding: 10px; height: 380px; overflow-y:scroll; background-color:#f2f2f2;}

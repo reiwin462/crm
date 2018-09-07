@@ -192,8 +192,10 @@ class Projectleadmodel extends CI_Model{
 	
 	
 	public function getEngineerlist($daterange){
-		$query = $this->db->query('SELECT created_by, a.fullname FROM  project_leads AS prj LEFT JOIN `auth_accounts` AS a ON prj.created_by = a.username
-		WHERE prj.bid_date BETWEEN '. $daterange . " group by created_by");
+		//$query = $this->db->query('SELECT created_by, a.fullname FROM  project_leads AS prj LEFT JOIN `auth_accounts` AS a ON prj.created_by = a.username
+		//WHERE prj.bid_date BETWEEN '. $daterange . " group by prj.created_by");
+		
+		$query = $this->db->query('SELECT created_by FROM  project_leads WHERE bid_date BETWEEN '. $daterange . " group by created_by");
 		return $query->result_array();
 	}
 	
@@ -243,6 +245,6 @@ class Projectleadmodel extends CI_Model{
 			lead_status <> 'DEAD' AND  bid_date BETWEEN ".$daterange." GROUP BY type_of_work");
 		return $query->result();
 	}
-
+	
 	
 }

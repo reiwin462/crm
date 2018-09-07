@@ -397,11 +397,136 @@
   <div id="imgcaption"></div>
 </div>
 
+
+
+<div id="quickmail" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mailLargeMOdal" aria-hidden="true" style="padding-top:10px;">
+  <div class="modal-dialog modal-lg" >
+    <div class="modal-content" style="width:90%;">
+		  <div class="modal-header bg-primary">
+			<h5 class="modal-title" ><i class="fa fa-bullhorn" aria-hidden="true"></i> New Quick Mail
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			</h5>
+		  </div>
+		  <div class="modal-body">
+				<input type="hidden" name="quickmailid" id="quickmailid" ></input>
+				<form action="#">
+								<div class="panel-body" style="padding:5px; margin-top: 2px;">	
+									<div class="form-group" >
+										<div class="row">
+											<div class="col-md-12" style="margin-top:5px;">
+												  <div class="input-group" style="width:100%;">
+													<span class="input-group-addon" style="padding:0px;"><i class="glyphicon glyphicon-user" ></i> To&nbsp;&nbsp;&nbsp;:</span>
+													<select class="form-control selectpicker" id="mailto" id="mailto" data-live-search="true" multiple onchange="validateemail($(this));">
+														<?php 
+															if(count($emailaddress) > 0){
+																 foreach($emailaddress as $key=>$val){
+																	 echo '<option value='.$val->email.'>'.$val->email.'</option>';
+																 }
+															}
+														?>
+													</select>
+												 
+												 </div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12" style="margin-top:5px;">
+												<div class="input-group" style="width:100%;">
+													<span class="input-group-addon" style="padding:0px;"><i class="glyphicon glyphicon-user" ></i> Cc&nbsp;&nbsp;:</span>
+													<select class="form-control selectpicker"  name="mailcc" id="mailcc" data-live-search="true" multiple onchange="validateemail($(this));">
+														<?php 
+															 if(count($emailaddress) > 0){
+																 foreach($emailaddress as $key=>$val){
+																	 echo '<option value='.$val->email.'>'.$val->email.'</option>';
+																 }
+															}
+														?>
+													</select>
+												 </div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12" style="margin-top:5px;">
+												<div class="input-group " style="width:100%;">
+													<span class="input-group-addon" style="padding:0px;"><i class="glyphicon glyphicon-user" ></i> Bcc :</span>
+													<select class="form-control selectpicker"  name="mailbcc" id="mailbcc" data-live-search="true" multiple onchange="validateemail($(this));">
+														<?php 
+															 if(count($emailaddress) > 0){
+																 foreach($emailaddress as $key=>$val){
+																	 echo '<option value='.$val->email.'>'.$val->email.'</option>';
+																 }
+															}
+														?>
+													</select>
+												 </div>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon" style="padding:3px;  font-size:11px; "><i class="fa fa-suitcase" aria-hidden="true"></i> Subject</span>
+											<input type="text" class="form-control" placeholder="Subject" name="mailsubject" id="mailsubject" style="height: 40px;">
+										</div>
+									</div>
+									
+									<textarea id="emailmsg" name="emailmsg" class="form-control full-wysiwyg"></textarea>
+									<div class="form-group" >
+										<div class="row">
+											<div class="col-md-2 file-field">
+												<form id="mailattach" action="#" method="POST" enctype="multipart/form-data" class="form-horizontal p-t-10">
+													<input type="file" class="form-control" name="mailfile" id="mailfile" onchange="mailUpload(event);">
+												</form>
+											</div>
+											<div id="attachlist" class="col-md-10">
+												
+											</div>
+										</div>
+									</div>
+								
+								</div><!-- .panel-body -->
+								<div class="panel-footer clearfix">
+									<div class="pull-left">
+										
+									</div>
+								</div>
+							</form>
+		  </div>
+		  <div class="modal-footer bg-info">
+			<div class="form-group" >
+				<div class="row">
+					<div class="col-md-12">
+						<button type="button" class="btn btn-lg btn-success" onclick="sendemail();"><i class="fa fa-send"></i>&nbsp;&nbsp; Send &nbsp;&nbsp;</button>
+						<button type="button"  class="btn  btn-lg  btn-danger" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp; Cancel &nbsp;</button>
+					</div>
+				</div>
+			</div>
+		  </div>
+    </div>
+  </div>
+</div>
+
 <script>
 var recordid = "";
 var rowindex = "";
 
 document.addEventListener("DOMContentLoaded", function() {
+	
+	$('#emailmsg').summernote({
+		height: 150,
+		 toolbar: [
+		// [groupName, [list of button]]
+		['style', ['bold', 'italic', 'underline', 'clear']],
+		['font', ['strikethrough', 'superscript', 'subscript']],
+		['fontsize', ['fontsize']],
+		['color', ['color']],
+		['para', ['ul', 'ol', 'paragraph']],
+		['height', ['height']]
+		],
+	});
+	
 	$('#more_info').summernote({
 		height: 80,
 		 toolbar: [
@@ -459,7 +584,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			$('#geomaps').attr('src', "https://www.google.com/maps/embed/v1/place?key=AIzaSyBgdwfZSVM-XkwgcnoJMr-bmWPlEhVxbpE&q=" + $(this).val());
 		}
 	});
-	
 	
 	$('#doc_Content').summernote({
 		height: 120,
@@ -572,7 +696,6 @@ function updateprojlead(){
 	$("#amazing_project_scope").appendTo("#addprojleadtab");
 	$("#amazing_more_info").appendTo("#addprojleadtab");
 }
-
 
 
 function projleadupdate(bt){
@@ -1329,4 +1452,155 @@ function getcalllogs(){
     });
 }
 
+function quickmail(pid){
+	
+	$('#quickmail').modal();
+	$('#quickmailid').val(pid);
+	
+	$('#mailto').val();
+	$('#mailcc').val();
+	$('#mailbcc').val();
+	$('#mailsubject').val();
+	$('#emailmsg').summernote('code', '');
+	$('#attachlist').html('');
+}
+
+function sendemail(){
+	var to = $('#mailto').val();
+	var cc = $('#mailcc').val();
+	var bcc = $('#mailbcc').val();
+	var subject = $('#mailsubject').val();
+	var msg = $('#emailmsg').summernote('code');
+	var id = $('#quickmailid').val();
+	
+	var attach = [];
+	$('#attachlist a').each(function(){
+		attach.push($(this).attr('alt'));
+	});
+	
+	if(to == "" || to == null){
+		swal({
+				type: 'info',
+				title: 'Email Messaege Validation',
+				text: 'Please specify atleast 1 email receipient!',
+				footer: '<a href></a>'
+			});
+		return false;
+	}
+	if(subject == ""){
+		swal({
+				type: 'info',
+				title: 'Email Messaege Validation',
+				text: 'Please add Email Subject!',
+				footer: '<a href></a>'
+			});
+			return false;
+	}
+	if(msg == "<p><br></p>"){
+		swal({
+				type: 'info',
+				title: 'Email Messaege Validation',
+				text: 'Please add some email Email Content!',
+				footer: '<a href></a>'
+			});
+		return false;
+	}
+	Swal({
+		  title: 'Send Email?',
+		  text: 'Are you sure you want to Send this Email?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, Send it!',
+		  cancelButtonText: 'No!'
+		}).then((result) => {
+			  if (result.value) {
+					$('#prevDiv').hide();	
+					$('.preloader').fadeIn();	
+					var xlink = "<?php echo base_url("emailcontrol/sendmymail"); ?>";
+					$.post(xlink,{e_to:to, e_cc: cc, e_bcc: bcc, e_subj: subject, e_msg: msg, e_attach: attach, e_projid:id})
+					.success(function(response) {
+						if(response.includes('error')){
+							swal({
+									type: 'info',
+									title: 'Sending Message',
+									text: response,
+							});	
+						}else{
+							swal({
+									type: 'success',
+									title: 'Sending Message',
+									text: 'Message Successfully Sent To SMTP',
+							});
+							$('#quickmail').modal('hide');
+						}
+					});
+					$('#prevDiv').show();	
+					$('.preloader').fadeOut();
+			  } else if (result.dismiss === Swal.DismissReason.cancel) {
+				
+			  }
+		});
+}
+
+function checkEmail(email) {
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(email);
+}
+
+function mailUpload(e){
+	e.preventDefault();
+	var fd = new FormData($("#mailattach")[0]);
+	fd.append('mailfile', document.getElementById("mailfile").files[0]);
+	var xlink = "<?php echo base_url("Emailcontrol/newUpload"); ?>";
+		$.ajax({
+			url: xlink,
+			method:"POST",
+			enctype: 'multipart/form-data',
+			data: fd, 
+			contentType:false,
+			cache:false,
+			processData:false,
+			success:function(response){
+				if(response.includes('error')){
+					swal({
+						type: 'error',
+						title: 'Somthings Wrong with the Attachment',
+						text: 'Upload Issue',
+						footer: '<a href>'+ response +'</a>'
+					});
+				}else{
+					$('#attachlist').append(response);
+					swal({
+						type: 'success',
+						title: 'Attachment Posted',
+						text: 'Item has been posted on storage',
+					});
+				}
+			}
+		});
+}
+
+function validateemail(dta){
+	var email = dta.val();
+	if(email == "" || email == null){
+		return false;
+	}
+}
+
+function removeme(itm){
+	Swal({
+		  title: 'Send Email?',
+		  text: 'Are you sure you want to remove this attachment?',
+		  type: 'warning',
+		  showCancelButton: true,
+		  confirmButtonText: 'Yes, remove it!',
+		  cancelButtonText: 'No!'
+		}).then((result) => {
+			  if (result.value) {
+					itm.closest('div').remove()
+			  } else if (result.dismiss === Swal.DismissReason.cancel) {
+				
+			  }
+		});
+}
 </script>

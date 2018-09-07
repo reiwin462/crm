@@ -170,7 +170,10 @@ class Crmmodel extends CI_Model {
 	}
 	
 	
-	
+	public function getfullname($uname){
+		$query = $this->db->query("select fullname from  auth_accounts where  username='".trim($uname)."' order by id desc limit 1");
+		return $query->result();
+	}
 	
 	
 	

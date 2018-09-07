@@ -219,7 +219,7 @@ class Crm_controller extends CI_Controller{
 				
 				$structure = $this->Crmmodel->gettablestructure('crm_contacts');
 			
-				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'crm_contacts', 'yes','contactform');
+				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'crm_contacts', 'no','contactform');
 				$colhtm ="";
 				$colhtm .= "<th>Name</th>";
 				$colhtm .= "<th>Email</th>";
@@ -272,7 +272,10 @@ class Crm_controller extends CI_Controller{
 				$this->load->model('Formbuildermodel');
 				$this->load->model('Projectleadmodel');
 				$this->load->model('Leadmodel');
+				$this->load->model('Emailmodel');
 				
+				$data['emailaddress'] = $this->Emailmodel->emailist();
+					
 				$structure = $this->Crmmodel->gettablestructure('project_leads');
 				$data['structure']  = $structure;
 				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '3', 'project_leads', 'yes','projleadform');
@@ -349,6 +352,35 @@ class Crm_controller extends CI_Controller{
 				$data['url'] = "projectleads/futureleads";
 				$this->load->view("main",$data);
 			}
+			
+			elseif($str == "email"){
+				
+				$this->load->model('Emailmodel');
+				$this->load->model('Crmmodel');
+				$this->load->model('Formbuildermodel');
+				
+				$colhtm = "";
+				$colhtm .= '<th>Email</th>';
+				$colhtm .= '<th>Full Name</th>';
+				$colhtm .= '<th>Description</th>';
+				$colhtm .= '<th>Created</th>';
+				$colhtm .= '<th>Action</th>';
+				
+				$data['columns'] = $colhtm;
+				$structure = $this->Crmmodel->gettablestructure('email_accounts');
+				$data['form'] = $this->Formbuildermodel->createdynamicform($structure, '6', 'email_accounts', 'no','maillistform');
+				
+				$data['emailaddress'] = $this->Emailmodel->emailist();
+				$data['url'] = "email/emailmain";
+				$this->load->view("main",$data);
+			}
+			
+			elseif($str == "emailblast"){
+				
+				$data['url'] = "email/emailblaster";
+				$this->load->view("main",$data);
+			}
+
 			elseif($str == "testpreview"){
 				$data['url'] = "projectleads/leadpreview";
 				$this->load->view("main",$data);

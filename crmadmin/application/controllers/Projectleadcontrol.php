@@ -152,6 +152,9 @@ class Projectleadcontrol extends CI_Controller{
 								</a>";
 							}
 						}
+				$tdval .= "<button class='btn btn-info' onclick=\"quickmail('".$id."')\" >
+									<i class='fa fa-send-o' aria-hidden='true' style='font-size:16px' data-toggle='tooltip' title='Quick Mail'></i>
+							</button>";
 				$tdval .= "</div>";
 				$tabeldata .= "<td><div class='form-group inline'>".$tdval."</div></td>";
 				$tabeldata .= "</tr>";
@@ -191,7 +194,6 @@ class Projectleadcontrol extends CI_Controller{
 		$update = '';
 		$id = '';
 		//$uparray = array();
-		
 		foreach ($decoded as $value) {
 			if($value["name"] != "id"){
 				if($value["name"] == "bid_value"){
@@ -200,7 +202,6 @@ class Projectleadcontrol extends CI_Controller{
 					$update .= $value["name"] . "='" . addslashes($value["value"])."',";
 				}
 			}
-			
 			else{
 				$id = addslashes($value["value"]);
 			}
@@ -221,7 +222,6 @@ class Projectleadcontrol extends CI_Controller{
 		
 		$result=array_diff($uparray,$lead[0]);
 		if(count($result) > 0){
-			
 			$htm .= '<h3 style="font-family: Century Gothic;">Field Update</h3>';
 			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;"> Updated By : '.$this->session->userdata('crmuser').'</p>';
 			$htm .= '<p style="margin-top: 0px; font-size: 11px;  font-family: Century Gothic;">Date :'. date('Y-m-d H:i:s').'</p>';
@@ -231,7 +231,6 @@ class Projectleadcontrol extends CI_Controller{
 						<th style="border:0px solid #e2e2e2; background-color: #ffe693; width: 150px;">Field</th>
 						<th style="border:1px solid #e2e2e2; background-color: #ffe693; width: 350px; ">Updated Value</th>
 					</tr>';
-					
 			foreach($result as $key=>$val){
 				$htm .= '<tr><td style="border-bottom: 1px solid #e2e2e2;">'. str_replace('_',' ', $key).'</td><td style="border-bottom: 1px solid #e2e2e2;">'.$val.'</td></tr>';
 			}
@@ -250,9 +249,7 @@ class Projectleadcontrol extends CI_Controller{
 		$this->load->model('Projectleadmodel');
 		$update = '';
 		$stts = $_POST['data']['lead_status'];
-
 		$lead = $this->Projectleadmodel->getleaddata($id);
-		
 		$update = "lead_status" . "='" .$stts."',";
 		$update .= 'modified_by' . "='" . $this->session->userdata('crmuser')."',";
 		$update .= 'modified_date' . "='" . date('Y-m-d H:i:s')."',";
@@ -855,7 +852,7 @@ class Projectleadcontrol extends CI_Controller{
 				}
 				
 				$htm .= "<tr>";
-				$htm .= "<td>".$val["fullname"]."</td>";
+				$htm .= "<td>". $this->getname($val["created_by"])."</td>";
 				$htm .= "<td>".$won."</td>";
 				$htm .= "<td>".$sql."</td>";
 				$htm .= "<td>".$mql."</td>";
@@ -890,6 +887,14 @@ class Projectleadcontrol extends CI_Controller{
 		
 		echo $htm;
 	}
+	
+	public function getname($uname){
+		$this->load->model('Crmmodel');
+		$name = $this->Crmmodel->getfullname(trim($uname));
+		return $name[0]->fullname;
+	}
+	
+	
 	
 	public function hotleads(){
 		$htm = "";
@@ -1075,9 +1080,12 @@ class Projectleadcontrol extends CI_Controller{
 	function sendemail($sbj, $to, $msg){
 		
 		try {
-			$sendgrid = new SendGrid\SendGrid('user', 'pass');
-			$mail = new SendGrid\Mail();
 			
+			$emUser = $this->config->item('send_grid_user');
+			$emPass = $this->config->item('send_grid_pass');
+			
+			$sendgrid = new SendGrid\SendGrid($emUser, $emPass);
+			$mail = new SendGrid\Mail();
 			
 			if($this->session->userdata('crmuser') == "reiwin462@gmail.com"){
 				$mail->addTo($to)->
